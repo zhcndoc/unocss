@@ -4,7 +4,7 @@
   "version": "0.60.2",
   "private": true,
   "scripts": {
-    "zhlint-fix": "zhlint './*.md' --fix",
+    "zhlint-fix": "zhlint './**/*.md' --fix",
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview"
