@@ -34,6 +34,14 @@ export default defineConfig({
 })
 ```
 
+::: tip
+此预设包含在 `unocss` 包中，您也可以从那里导入它：
+
+```ts
+import { transformerVariantGroup } from 'unocss'
+```
+:::
+
 ## 用法
 
 ```html

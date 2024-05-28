@@ -35,6 +35,14 @@ export default defineConfig({
 })
 ```
 
+::: tip
+这个预设已包含在 `unocss` 包中，你也可以从那里导入它：
+
+```ts
+import { transformerDirectives } from 'unocss'
+```
+:::
+
 ## 用法
 
 ### `@apply`
