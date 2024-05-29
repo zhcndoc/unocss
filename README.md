@@ -85,3 +85,7 @@ UnoCSS is made possible thanks to the inspirations from the following projects:
 ## License
 
 [MIT](./LICENSE) License &copy; 2021-PRESENT [Anthony Fu](https://github.com/antfu)
+
+## Deploy
+
+[![Deployed on Zeabur](https://zeabur.com/deployed-on-zeabur-dark.svg)](https://zeabur.com?referralCode=ikxin&utm_source=ikxin)
