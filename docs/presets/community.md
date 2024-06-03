@@ -7,7 +7,7 @@
 - [unocss-preset-weapp](https://github.com/MellowCo/unocss-preset-weapp) - 由 [@MellowCo](https://github.com/MellowCo) 制作的微信小程序预设，适用于 [UniApp](https://uniapp.dcloud.io) 和 [Taro](https://taro-docs.jd.com/taro/docs)。
 - [unocss-preset-heropatterns](https://github.com/Julien-R44/unocss-preset-heropatterns) - 由 [@Julien-R44](https://github.com/Julien-R44) 制作的集成了 [Hero Patterns](https://heropatterns.com/) 的预设。
 - [unocss-preset-flowbite](https://github.com/Julien-R44/unocss-preset-flowbite) - 由 [@Julien-R44](https://github.com/Julien-R44) 制作的将 [Flowbite Tailwind 插件](https://github.com/themesberg/flowbite)移植至 UnoCSS 的预设。
-- [unocss-preset-forms](https://github.com/Julien-R44/unocss-preset-forms) - 由 [@Julien-R44](https://github.com/Julien-R44) 制作的将[@tailwindcss/forms](https://github.com/tailwindlabs/tailwindcss-forms) 移植至 UnoCSS 的预设。
+- [unocss-preset-forms](https://github.com/Julien-R44/unocss-preset-forms) - 由 [@Julien-R44](https://github.com/Julien-R44) 制作的将 [@tailwindcss/forms](https://github.com/tailwindlabs/tailwindcss-forms) 移植至 UnoCSS 的预设。
 - [unocss-preset-extra](https://github.com/MoomFE/unocss-preset-extra) - 由 [@Zhang-Wei-666](https://github.com/Zhang-Wei-666) 制作的 [Animate.css](https://animate.style) 预设以及其他一些规则。
 - [unocss-preset-daisy](https://github.com/kidonng/unocss-preset-daisy) - 由 [@kidonng](https://github.com/kidonng) 制作的 daisyUI 预设。
 - [unocss-preset-primitives](https://github.com/zirbest/unocss-preset-primitives) - 由 [@zirbest](https://github.com/zirbest) 制作的类似于 [headlessui-tailwindcss](https://github.com/tailwindlabs/headlessui/tree/main/packages/%40headlessui-tailwindcss)、radix-ui 的 UnoCSS 定制预设。
@@ -25,14 +25,14 @@
 - [unocss-preset-fluid](https://renatomoor.github.io/unocss-preset-fluid/) - 由 [@renatomoor](https://github.com/renatomoor) 提供的优雅地调整字体和间距而无需断点的 UnoCSS 预设。
 - [unocss-preset-block](https://github.com/unpreset/unocss-preset-block) - 由 [@chizuki](https://github.com/chizukicn) 制作的阻止一些非标准类名的 UnoCSS 预设。
 - [unocss-preset-animations](https://unocss-preset-animations.aelita.me/) - 由 [@Aelita](https://github.com/xsjcTony) 提供的用于灵活和可组合动画的 UnoCSS 预设。
-- [unocss-preset-shadcn](https://github.com/hyoban/unocss-preset-shadcn#readme) - 由 [@zouhang](https://github.com/zouhangwithsweet) 和[@hyoban](https://github.com/hyoban) 提供的使用 shadcn/ui 和 UnoCSS 的预设。
+- [unocss-preset-shadcn](https://github.com/hyoban/unocss-preset-shadcn#readme) - 由 [@zouhang](https://github.com/zouhangwithsweet) 和 [@hyoban](https://github.com/hyoban) 提供的使用 shadcn/ui 和 UnoCSS 的预设。
 - [@yeungkc/unocss-preset-safe-area](https://github.com/YeungKC/unocss-preset-safe-area) - 由 [YeungKC](https://github.com/YeungKC) 提供的在 Unocss 中使用安全区域的预设。
 - [@unifydev/unify-preset](https://github.com/unify-ui-dev/unify-preset/blob/main/README.md) - 由 [@johnkat-mj](https://github.com/Johnkat-Mj) 提供的由 UnoCSS 提供动力的原子主题 UI 库，类似于 DaisyUI 但可定制化。
 
 # 社区框架
 
 - [Anu](https://github.com/jd-solanki/anu) - 由 [@jd-solanki](https://github.com/jd-solanki) 提供的以开发体验为中心的基于 Vue 的实用组件库。
-- [Onu UI](https://github.com/onu-ui/onu-ui) - 由 [@zyyv](https://github.com/zyyv) 和[@yzh990918](https://github.com/yzh990918) 提供的倔强而轻量的 UnoCSS UI 库。
+- [Onu UI](https://github.com/onu-ui/onu-ui) - 由 [@zyyv](https://github.com/zyyv) 和 [@yzh990918](https://github.com/yzh990918) 提供的倔强而轻量的 UnoCSS UI 库。
 - [AtoUI](https://github.com/bennymi/ato-ui) - 由 [@bennymi](https://github.com/bennymi) 提供的为 Svelte 提供的元素 UI 库，提供易于主题化的设计系统。
 - [Una UI](https://unaui.com/) - 由 [@phojie](https://github.com/phojie) 提供的用于 Nuxt 3 的原子 UI 框架，由 UnoCSS 引擎驱动。
 

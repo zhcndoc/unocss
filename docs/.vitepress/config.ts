@@ -379,10 +379,10 @@ export default defineConfig({
       { icon: 'github', link: 'https://github.com/unocss/unocss' },
     ],
     footer: {
-      message: `<div style="display: flex; justify-content: center; gap: 12px;">
+      message: `
         <a style="text-decoration: none;" rel="nofollow" target="__blank" href="https://zeabur.com?referralCode=ikxin&amp;utm_source=ikxin">Deployed on Zeabur</a>
-        <a style="text-decoration: none;" rel="nofollow" target="__blank" href="https://beian.miit.gov.cn">沪ICP备2024070610号-3</a>
-      </div>`,
+        <a style="text-decoration: none; margin-left: 8px;" rel="nofollow" target="__blank" href="https://beian.miit.gov.cn">沪ICP备2024070610号-3</a>
+      `,
       copyright: 'Copyright © 2020-2024 Anthony Fu',
     },
   },
