@@ -243,6 +243,15 @@ export default defineConfig({
   description,
   outDir: './dist',
   head: [
+    ['meta', { name: 'baidu-site-verification', content: 'codeva-rhcRidvi5r' }],
+    [
+      'script',
+      {
+        'defer': '',
+        'src': 'https://analytics.ikxin.com/script.js',
+        'data-website-id': 'f0e90b0d-e086-4fdc-b173-de4857b71900',
+      },
+    ],
     ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
     ['link', { rel: 'alternate icon', href: '/favicon.ico', type: 'image/png', sizes: '16x16' }],
     ['meta', { name: 'author', content: 'Anthony Fu' }],
@@ -258,7 +267,7 @@ export default defineConfig({
     ['link', { rel: 'search', type: 'application/opensearchdescription+xml', href: '/search.xml', title: 'UnoCSS' }],
   ],
   lastUpdated: true,
-  cleanUrls: true,
+  cleanUrls: false,
   ignoreDeadLinks: [
     /^\/play/,
     /^\/interactive/,
@@ -363,16 +372,18 @@ export default defineConfig({
       '/config/': SidebarConfig,
     },
     editLink: {
-      pattern: 'https://github.com/unocss/unocss/edit/main/docs/:path',
-      text: '建议对此页面进行更改',
+      text: '在 GitHub 上查看此页面',
+      pattern: 'https://github.com/zhcndoc/unocss/tree/main/docs/:path',
     },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/unocss/unocss' },
-      { icon: 'discord', link: 'https://chat.antfu.me' },
     ],
     footer: {
-      message: '<a style="display: block; width: fit-content; margin: 10px auto;" href="https://zeabur.com?referralCode=ikxin&utm_source=ikxin"><img src=https://zeabur.com/deployed-on-zeabur-light.svg alt="Deployed on Zeabur"/></a>',
-      copyright: 'Copyright © 2021-PRESENT Anthony Fu',
+      message: `<div style="display: flex; justify-content: center; gap: 12px;">
+        <a style="text-decoration: none;" rel="nofollow" target="__blank" href="https://zeabur.com?referralCode=ikxin&amp;utm_source=ikxin">Deployed on Zeabur</a>
+        <a style="text-decoration: none;" rel="nofollow" target="__blank" href="https://beian.miit.gov.cn">沪ICP备2024070610号-3</a>
+      </div>`,
+      copyright: 'Copyright © 2020-2024 Anthony Fu',
     },
   },
 })

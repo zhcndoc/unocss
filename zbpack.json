@@ -1,0 +1,4 @@
+{
+  "build_command": "pnpm run deploy",
+  "output_dir": "docs/dist"
+}
