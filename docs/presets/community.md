@@ -38,11 +38,12 @@
 
 # 社区转换器
 
-- [unocss-transformer-attribute-values-group](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group) - 由 [@lvjiaxuan](https://github.com/lvjiaxuan) 提供的 UnoCSS 属性值组转换器。
-- [unocss-transformer-alias](https://github.com/zyyv/unocss-transformer-alias) - 由 [@zyyv](https://github.com/zyyv) 提供的 UnoCSS 快捷方式别名转换器。
-- [CSS to UnoCss](https://github.com/Simon-He95/transformToUnoCSS) - 由 [@Simon-He95](https://github.com/Simon-He95) 提供的将 CSS 转换为 UnoCSS 工具。
+- [unocss-transformer-attribute-values-group](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group) - Attribute values group transformer for UnoCSS by [@lvjiaxuan](https://github.com/lvjiaxuan).
+- [unocss-transformer-alias](https://github.com/zyyv/unocss-transformer-alias) - Transform alias for UnoCSS shortcuts by [@zyyv](https://github.com/zyyv).
+- [CSS to UnoCss](https://github.com/Simon-He95/transformToUnoCSS) - Transform CSS to Unocss by [@Simon-He95](https://github.com/Simon-He95).
+- [unocss-transformer-classnames-minifier](https://github.com/alisobirjanov/unocss-transformer-classnames-minifier) - Transform UnoCSS classnames minifier by [@alisobirjanov](https://github.com/alisobirjanov).
 
-# 社区工具
+# Community tools
 
 - [Unot](https://github.com/Simon-He95/unot) - 由 [@Simon-He95](https://github.com/Simon-He95) 提供的 VSCode 扩展，可以将 CSS 转换为 UnoCSS，并简化 UnoCSS 的编写过程。
 - [figma-to-unocss](https://github.com/zouhangwithsweet/figma-to-unocss) - 由 [@zouhang](https://github.com/zouhangwithsweet) 提供的 Figma 插件，可以将设计转换为 UnoCSS。

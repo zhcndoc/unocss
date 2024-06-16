@@ -58,6 +58,38 @@ export default defineConfig({
 
 我们推荐使用专门的 `uno.config.ts` 文件进行配置。详情见[配置文件](/guide/config-file)。
 
+You can enable the `nuxtLayers` option, so Nuxt will automatically merge `uno.config` files from each Nuxt layer:
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  // ...
+  unocss: {
+    nuxtLayers: true,
+  },
+})
+```
+
+then you can reexport the generated config in the root config file:
+
+```ts
+// uno.config.ts
+import config from './.nuxt/uno.config.mjs'
+
+export default config
+```
+
+or modify/extend it:
+
+```ts
+import { mergeConfigs } from '@unocss/core'
+import config from './.nuxt/uno.config.mjs'
+
+export default mergeConfigs(config, {
+  // your overrides
+})
+```
+
 ## 许可证
 
 - MIT 许可证 &copy; 2021-至今 [Anthony Fu](https://github.com/antfu)

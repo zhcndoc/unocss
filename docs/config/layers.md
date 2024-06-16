@@ -84,15 +84,17 @@ outputToCssLayers: true
 您可以通过以下方式更改 CSS 层的名称：
 
 ```ts
-outputToCssLayers: (layer) => {
-  // 默认层将输出到 "utilities" CSS 层。
-  if (layer === 'default')
-    return 'utilities'
+outputToCssLayers: {
+  cssLayerName: (layer) => {
+    // 默认层将输出到 "utilities" CSS 层。
+    if (layer === 'default')
+      return 'utilities'
 
-  // 快捷方式层将输出到 "utilities" CSS 层的 "shortcuts" 子层。
-  if (layer === 'shortcuts')
-    return 'utilities.shortcuts'
+    // 快捷方式层将输出到 "utilities" CSS 层的 "shortcuts" 子层。
+    if (layer === 'shortcuts')
+      return 'utilities.shortcuts'
 
-  // 所有其他层将使用它们的名称作为 CSS 层的名称。
+    // 所有其他层将使用它们的名称作为 CSS 层的名称。
+  }
 }
 ```

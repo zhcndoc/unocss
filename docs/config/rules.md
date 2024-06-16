@@ -65,6 +65,95 @@ rules: [
 
 恭喜！现在你拥有了自己强大的原子 CSS 实用程序。享受吧！
 
+## Ordering
+
+UnoCSS respects the order of the rules you defined in the generated CSS. Latter ones come with higher priority.
+
+When using dynamic rules, it may match multiple tokens. By default, the output of those matched under a single dynamic rule will be sorted alphabetically within the group.
+
+## Rules merging
+
+By default, UnoCSS will merge CSS rules with the same body to minimize the CSS size.
+
+For example, `<div class="m-2 hover:m2">` will generate:
+
+```css
+.hover\:m2:hover, .m-2 { margin: 0.5rem; }
+```
+
+Instead of two separate rules:
+
+```css
+.hover\:m2:hover { margin: 0.5rem; }
+.m-2 { margin: 0.5rem; }
+```
+
+## Special symbols
+
+Since v0.61, UnoCSS supports special symbols to define additional meta information for your generated CSS. You can access symbols from the second argument of the dynamic rule matcher function.
+
+For example:
+
+```ts
+rules: [
+  [/^grid$/, ([, d], { symbols }) => {
+    return {
+      [symbols.parent]: '@supports (display: grid)',
+      display: 'grid',
+    }
+  }],
+]
+```
+
+Will generate:
+
+```css
+@supports (display: grid) {
+  .grid {
+    display: grid;
+  }
+}
+```
+
+### Available symbols
+
+- `symbols.parent`: The parent wrapper of the generated CSS rule (eg. `@supports`, `@media`, etc.)
+- `symbols.selector`: A function to modify the selector of the generated CSS rule (see the example below)
+- `symbols.variants`: An array of variant handler that are applied to the current CSS object
+- `symbols.shortcutsNoMerge`: A boolean to disable the merging of the current rule in shortcuts
+
+## Multi-selector rules
+
+Since v0.61, UnoCSS supports multi-selector via [JavaScript Generator functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator).
+
+For example:
+
+```ts
+rules: [
+  [/^button-(.*)$/, function* ([, color], { symbols }) {
+    yield {
+      background: color
+    }
+    yield {
+      [symbols.selector]: selector => `${selector}:hover`,
+      // https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix
+      background: `color-mix(in srgb, ${color} 90%, black)`
+    }
+  }],
+]
+```
+
+Will generate multiple CSS rules:
+
+```css
+.button-red {
+  background: red;
+}
+.button-red:hover {
+  background: color-mix(in srgb, red 90%, black);
+}
+```
+
 ## 完全控制的规则
 
 ::: tip
@@ -112,27 +201,4 @@ ${selector}::after {
     }],
   ],
 })
-```
-
-## 排序
-
-UnoCSS 尊重您在生成的 CSS 中定义的规则的顺序。后面的规则优先级更高。
-
-使用动态规则时，可能会匹配多个令牌。默认情况下，在单个动态规则下匹配的输出将在组内按字母顺序排序。
-
-## 规则合并
-
-默认情况下，UnoCSS 将具有相同主体的 CSS 规则合并以最小化 CSS 大小。
-
-例如，`<div class="m-2 hover:m2">` 将生成：
-
-```css
-.hover\:m2:hover, .m-2 { margin: 0.5rem; }
-```
-
-而不是两条单独的规则：
-
-```css
-.hover\:m2:hover { margin: 0.5rem; }
-.m-2 { margin: 0.5rem; }
 ```
