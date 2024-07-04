@@ -1,4 +1,5 @@
 {
-  "build_command": "pnpm run deploy",
-  "output_dir": "docs/dist"
+  "app_dir": "docs",
+  "build_command": "pnpm -w run deploy",
+  "output_dir": "dist"
 }
