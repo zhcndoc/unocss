@@ -11,13 +11,13 @@ description: Nuxt 模块用于 UnoCSS。
 
 ::: code-group
   ```bash [pnpm]
-  pnpm add -D @unocss/nuxt
+  pnpm add -D unocss @unocss/nuxt
   ```
   ```bash [yarn]
-  yarn add -D @unocss/nuxt
+  yarn add -D unocss @unocss/nuxt
   ```
   ```bash [npm]
-  npm install -D @unocss/nuxt
+  npm install -D unocss @unocss/nuxt
   ```
 :::
 
