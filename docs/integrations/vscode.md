@@ -16,3 +16,7 @@ description: UnoCSS 适用于 VS Code。
 为了获得最佳的 IDE 体验，我们建议您[使用单独的 `uno.config.ts` 文件](/guide/config-file)来配置您的 UnoCSS。
 
 扩展将尝试在您的项目中查找 UnoCSS 配置。当没有找到配置时，扩展将被禁用。
+
+## 图标预设
+
+如果您正在使用[图标预设](/presets/icons)，您还可以安装 [Iconify IntelliSense](https://marketplace.visualstudio.com/items?itemName=antfu.iconify) 以获取图标的内联预览、自动补全和悬停信息。
