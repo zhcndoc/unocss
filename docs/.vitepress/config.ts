@@ -259,6 +259,21 @@ export default defineConfig({
         'data-website-id': 'f0e90b0d-e086-4fdc-b173-de4857b71900',
       },
     ],
+    [
+      'script',
+      {
+        async: '',
+        src: 'https://www.googletagmanager.com/gtag/js?id=G-HYH4TH7PWM',
+      },
+    ],
+    [
+      'script',
+      {},
+      `window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-HYH4TH7PWM');`,
+    ],
     ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
     ['link', { rel: 'alternate icon', href: '/favicon.ico', type: 'image/png', sizes: '16x16' }],
     ['meta', { name: 'author', content: 'Anthony Fu' }],
@@ -319,49 +334,21 @@ export default defineConfig({
     },
 
     search: {
-      provider: 'algolia',
+      provider: 'local',
       options: {
-        appId: 'ZPBCQYOD2S',
-        apiKey: '80a4a6cfab63fc127d8c5e8db5728995',
-        indexName: 'unocss',
         locales: {
           root: {
-            placeholder: '搜索文档',
             translations: {
               button: {
                 buttonText: '搜索文档',
                 buttonAriaLabel: '搜索文档',
               },
               modal: {
-                searchBox: {
-                  resetButtonTitle: '清除查询条件',
-                  resetButtonAriaLabel: '清除查询条件',
-                  cancelButtonText: '取消',
-                  cancelButtonAriaLabel: '取消',
-                },
-                startScreen: {
-                  recentSearchesTitle: '搜索历史',
-                  noRecentSearchesText: '没有搜索历史',
-                  saveRecentSearchButtonTitle: '保存至搜索历史',
-                  removeRecentSearchButtonTitle: '从搜索历史中移除',
-                  favoriteSearchesTitle: '收藏',
-                  removeFavoriteSearchButtonTitle: '从收藏中移除',
-                },
-                errorScreen: {
-                  titleText: '无法获取结果',
-                  helpText: '你可能需要检查你的网络连接',
-                },
+                noResultsText: '无法找到相关结果',
+                resetButtonTitle: '清除查询条件',
                 footer: {
                   selectText: '选择',
                   navigateText: '切换',
-                  closeText: '关闭',
-                  searchByText: '搜索提供者',
-                },
-                noResultsScreen: {
-                  noResultsText: '无法找到相关结果',
-                  suggestedQueryText: '你可以尝试查询',
-                  reportMissingResultsText: '你认为该查询应该有结果？',
-                  reportMissingResultsLinkText: '点击反馈',
                 },
               },
             },
@@ -382,18 +369,15 @@ export default defineConfig({
       '/config/': SidebarConfig,
     },
     editLink: {
-      text: '在 GitHub 上查看此页面',
+      text: '在 GitHub 上编辑此页面',
       pattern: 'https://github.com/zhcndoc/unocss/tree/main/docs/:path',
     },
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/unocss/unocss' },
+      { icon: 'github', link: 'https://github.com/zhcndoc/unocss' },
     ],
     footer: {
-      message: `
-        <a style="text-decoration: none;" rel="nofollow" target="__blank" href="https://zeabur.com?referralCode=ikxin&amp;utm_source=ikxin">Deployed on Zeabur</a>
-        <a style="text-decoration: none; margin-left: 8px;" rel="nofollow" target="__blank" href="https://beian.miit.gov.cn">沪ICP备2024070610号-3</a>
-      `,
-      copyright: 'Copyright © 2020-2024 Anthony Fu',
+      message: `<a target="_blank" href="https://www.zhcndoc.com?ref=unocss">简中文档</a>`,
+      copyright: '<a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn">沪ICP备2024070610号-3</a>',
     },
   },
 })
