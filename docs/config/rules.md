@@ -164,8 +164,7 @@ Will generate multiple CSS rules:
 
 它允许您从动态规则的主体函数中返回一个字符串，该字符串将**直接**传递给生成的 CSS (这也意味着您需要处理诸如 CSS 转义、变体应用、CSS 构建等问题)。
 
-```ts
-// uno.config.ts
+```ts [uno.config.ts]
 import { defineConfig, toEscapedSelector as e } from 'unocss'
 
 export default defineConfig({

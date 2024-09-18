@@ -22,10 +22,9 @@ UnoCSS 的指令转换器，用于 `@apply`、`@screen` 和 `theme()` 指令：`
   ```
 :::
 
-```ts
-// uno.config.ts
-import { defineConfig } from 'unocss'
+```ts [uno.config.ts]
 import transformerDirectives from '@unocss/transformer-directives'
+import { defineConfig } from 'unocss'
 
 export default defineConfig({
   // ...

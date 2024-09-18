@@ -12,8 +12,7 @@ outline: deep
 
 为你的项目设置 presets：
 
-```ts twoslash
-// uno.config.ts
+```ts twoslash [uno.config.ts]
 import { defineConfig, presetAttributify, presetUno } from 'unocss'
 
 export default defineConfig({
@@ -29,8 +28,7 @@ export default defineConfig({
 
 若要禁用默认 preset，你可以将 `presets` 设置为空数组：
 
-```ts twoslash
-// uno.config.ts
+```ts twoslash [uno.config.ts]
 import { defineConfig } from 'unocss'
 
 export default defineConfig({
