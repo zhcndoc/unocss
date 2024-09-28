@@ -150,6 +150,7 @@ const Nav: DefaultTheme.NavItem[] = [
   },
   { text: '交互式文档', link: '/interactive/', target: '_blank' },
   { text: '在线体验', link: '/play/', target: '_blank' },
+  { text: '教程', link: 'https://tutorial.unocss.dev/', target: '_blank' },
   {
     text: `v${version}`,
     items: [
