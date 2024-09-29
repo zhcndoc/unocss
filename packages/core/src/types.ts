@@ -597,6 +597,10 @@ export interface Preset<Theme extends object = object> extends ConfigBase<Theme>
    * Apply layer to all utilities and shortcuts
    */
   layer?: string
+  /**
+   * Custom API endpoint for cross-preset communication
+   */
+  api?: any
 }
 
 export type PresetFactory<Theme extends object = object, PresetOptions extends object | undefined = undefined> = (options?: PresetOptions) => Preset<Theme>
@@ -857,6 +861,7 @@ export interface GenerateResult<T = Set<string>> {
   layers: string[]
   getLayer: (name?: string) => string | undefined
   getLayers: (includes?: string[], excludes?: string[]) => string
+  setLayer: (layer: string, callback: (content: string) => Promise<string>) => Promise<string>
   matched: T
 }
 

@@ -383,6 +383,22 @@ presetIcons({
 })
 ```
 
+## 指令
+
+您可以使用 CSS 中的 `icon()` 指令来获取图标的元数据。
+
+```css
+.icon {
+  background-image: icon('i-carbon-sun');
+}
+```
+
+::: warning
+`icon()` 依赖于 `@unocss/preset-icons` 并且将使用配置，确保你已经添加了这个预设。
+:::
+
+关于 `icon()` 指令的更多信息，请查看[指令](/transformers/directives#icon)。
+
 ## 选项
 
 ### scale
