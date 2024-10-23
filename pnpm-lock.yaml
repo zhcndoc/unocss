@@ -393,6 +393,9 @@ catalogs:
     vue-eslint-parser:
       specifier: ^9.4.3
       version: 9.4.3
+    vue-flow-layout:
+      specifier: ^0.0.5
+      version: 0.0.5
     vue-router:
       specifier: ^4.4.5
       version: 4.4.5
@@ -1091,6 +1094,9 @@ importers:
       sirv:
         specifier: 'catalog:'
         version: 2.0.4
+      vue-flow-layout:
+        specifier: 'catalog:'
+        version: 0.0.5(typescript@5.6.2)
 
   packages/nuxt:
     dependencies:
@@ -10498,6 +10504,9 @@ packages:
     engines: {node: ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: '>=6.0.0'
+
+  vue-flow-layout@0.0.5:
+    resolution: {integrity: sha512-lZlqQ/Se1trGMtBMneZDWaiQiQBuxU8ivZ+KpJMem5zKROFpzuPq9KqyWABbSYbxq0qhqZs1I4DBwrY041rtOA==}
 
   vue-hot-reload-api@2.3.4:
     resolution: {integrity: sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==}
@@ -21303,6 +21312,12 @@ snapshots:
       semver: 7.6.3
     transitivePeerDependencies:
       - supports-color
+
+  vue-flow-layout@0.0.5(typescript@5.6.2):
+    dependencies:
+      vue: 3.5.10(typescript@5.6.2)
+    transitivePeerDependencies:
+      - typescript
 
   vue-hot-reload-api@2.3.4: {}
 
