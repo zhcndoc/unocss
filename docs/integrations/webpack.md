@@ -12,6 +12,10 @@ UnoCSS 的 webpack 插件：`@unocss/webpack`。当前，此插件仅支持 [`gl
 该插件不带有任何默认预设。
 :::
 
+## 先决条件
+
+`@unocss/webpack` 需要 `style-loader` 和 `css-loader` 来处理 CSS 文件。
+
 ## 安装
 
 ::: code-group

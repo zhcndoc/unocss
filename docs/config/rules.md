@@ -65,6 +65,27 @@ rules: [
 
 恭喜！现在你拥有了自己强大的原子 CSS 实用程序。享受吧！
 
+## CSS Rules Fallback
+
+In cases you might want to leverage CSS rules fallback to use new CSS features while also able to fallback to support old browsers, you can optionally return a 2D-array as the CSS representation for rules with the same keys. For example:
+
+```ts
+rules: [
+  [/^w-(\d+)dvh$/, ([_, d]) => {
+    return [
+      ['width', `${d}vh`],
+      ['width', `${d}dvh`],
+    ]
+  }],
+]
+```
+
+Which will make `w-100dvh` generates:
+
+```css
+.w-100dvh { width: 100vh; width: 100dvh; }
+```
+
 ## Ordering
 
 UnoCSS respects the order of the rules you defined in the generated CSS. Latter ones come with higher priority.
