@@ -1,14 +1,14 @@
 ---
 title: 主题
-description: UnoCSS 也支持您在 Tailwind CSS / Windi CSS 中可能熟悉的主题系统。
+description: UnoCSS 还支持您可能熟悉的 Tailwind CSS / Windi CSS 的主题系统。
 outline: deep
 ---
 
 # 主题
 
-UnoCSS 也支持您可能在 Tailwind CSS / Windi CSS 中熟悉的主题系统。在用户级别，您可以在配置中指定 `theme` 属性，并且它将被深度合并到默认主题中。
+UnoCSS 还支持您可能熟悉的 Tailwind CSS / Windi CSS 的主题系统。在用户层面，您可以在配置中指定 `theme` 属性，它将被深度合并到默认主题中。
 
-## 使用方法
+## 使用
 
 <!--eslint-skip-->
 
@@ -28,9 +28,9 @@ theme: {
 在解析过程中，`theme` 将始终存在于 `context` 中。
 :::
 
-### 在规则中使用
+### 在 `rules` 中使用
 
-在规则中使用主题：
+要在规则中使用主题：
 
 ```ts
 rules: [
@@ -41,9 +41,9 @@ rules: [
 ]
 ```
 
-### 在变体中使用
+### 在 `variants` 中使用
 
-在变体中使用主题：
+要在变体中使用主题：
 
 ```ts
 variants: [
@@ -56,9 +56,9 @@ variants: [
 ]
 ```
 
-### 在快捷方式中使用
+### 在 `shortcuts` 中使用
 
-在动态快捷方式中使用主题：
+要在动态快捷方式中使用主题：
 
 ```ts
 shortcuts: [
@@ -72,10 +72,10 @@ shortcuts: [
 ## 断点
 
 ::: warning
-当提供自定义 `breakpoints` 对象时，默认对象将被覆盖而不是合并。
+当提供自定义的 `breakpoints` 对象时，默认值将被覆盖，而不是合并。
 :::
 
-通过以下示例，您将只能使用 `sm:` 和 `md:` 断点变体：
+在以下示例中，您将只能使用 `sm:` 和 `md:` 断点变体：
 
 <!--eslint-skip-->
 
@@ -89,7 +89,7 @@ theme: {
 }
 ```
 
-If you want to inherit the `original` theme breakpoints, you can use the `extendTheme`:
+如果您想继承 `original` 主题的断点，可以使用 `extendTheme`：
 
 ```ts
 extendTheme: (theme) => {
@@ -108,7 +108,7 @@ extendTheme: (theme) => {
 `verticalBreakpoints` 与 `breakpoints` 相同，但用于垂直布局。
 :::
 
-另外，我们将按照大小 (相同单位) 对屏幕点进行排序。对于不同单位的屏幕点，为了避免错误，请在配置中使用统一的单位。
+此外，我们将按大小（相同单位）对屏幕点进行排序。对于不同单位的屏幕点，为了避免错误，请在配置中使用统一的单位。
 
 <!--eslint-skip-->
 
@@ -117,7 +117,7 @@ theme: {
   // ...
   breakpoints: {
     sm: '320px',
-    // 由于 uno 不支持不同单位大小的比较排序，请转换为相同单位。
+    // 因为 uno 不支持不同单位大小的比较排序，请转换为相同单位。
     // md: '40rem',
     md: `${40 * 16}px`,
     lg: '960px',
@@ -125,11 +125,11 @@ theme: {
 }
 ```
 
-## ExtendTheme
+## 扩展主题
 
-`ExtendTheme` allows you to edit the **deeply merged theme** to get the complete theme object.
+`ExtendTheme` 允许您编辑 **深度合并的主题** 以获取完整的主题对象。
 
-Custom functions mutate the theme object.
+自定义函数会修改主题对象。
 
 ```ts
 extendTheme: (theme) => {
@@ -140,7 +140,7 @@ extendTheme: (theme) => {
 }
 ```
 
-It's also possible to return a new theme object to completely replace the original one.
+也可以返回一个新的主题对象以完全替换原始对象。
 
 ```ts
 extendTheme: (theme) => {

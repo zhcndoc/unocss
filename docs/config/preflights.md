@@ -1,11 +1,11 @@
 ---
-title: 预设样式
-description: 你可以从配置中注入原始的 CSS 作为预设样式。解析后的主题可用于自定义 CSS。
+title: 预检
+description: 您可以从配置中注入原始 CSS 作为预检。已解析的主题可用于自定义 CSS。
 ---
 
-# 预设样式
+# 预检
 
-你可以从配置中注入原始的 CSS 作为预设样式。解析后的 `theme` 可用于自定义 CSS。
+您可以从配置中注入原始 CSS 作为预检。已解析的 `theme` 可用于自定义 CSS。
 
 <!--eslint-skip-->
 
