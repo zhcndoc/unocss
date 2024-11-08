@@ -18,3 +18,8 @@ jobs:
           target_branch: "upstream"
           upstream_repository: "unocss/unocss"
           upstream_branch: "main"
+
+      - name: Sync Tags
+        run: |
+          git fetch upstream --tags
+          git push origin --tags --force
