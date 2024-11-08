@@ -31,19 +31,20 @@
 
 # 社区框架
 
-- [Anu](https://github.com/jd-solanki/anu) - 由 [@jd-solanki](https://github.com/jd-solanki) 提供的以开发体验为中心的基于 Vue 的实用组件库。
-- [Onu UI](https://github.com/onu-ui/onu-ui) - 由 [@zyyv](https://github.com/zyyv) 和 [@yzh990918](https://github.com/yzh990918) 提供的倔强而轻量的 UnoCSS UI 库。
-- [AtoUI](https://github.com/bennymi/ato-ui) - 由 [@bennymi](https://github.com/bennymi) 提供的为 Svelte 提供的元素 UI 库，提供易于主题化的设计系统。
-- [Una UI](https://unaui.com/) - 由 [@phojie](https://github.com/phojie) 提供的用于 Nuxt 3 的原子 UI 框架，由 UnoCSS 引擎驱动。
+- [Anu](https://github.com/jd-solanki/anu) - 由 [@jd-solanki](https://github.com/jd-solanki) 开发的以 DX 为中心的实用 Vue 组件库。
+- [Onu UI](https://github.com/onu-ui/onu-ui) - 由 [@zyyv](https://github.com/zyyv) 和 [@yzh990918](https://github.com/yzh990918) 开发的轻量级 UnoCSS UI 库。
+- [AtoUI](https://github.com/bennymi/ato-ui) - 由 [@bennymi](https://github.com/bennymi) 提供的 Svelte 元素 UI 库，提供易于主题化的设计系统。
+- [Una UI](https://unaui.com/) - 由 [@phojie](https://github.com/phojie) 提供的 Nuxt 3 原子 UI 框架，基于 UnoCSS 引擎。
 
 # 社区转换器
 
-- [unocss-transformer-attribute-values-group](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group) - Attribute values group transformer for UnoCSS by [@lvjiaxuan](https://github.com/lvjiaxuan).
-- [unocss-transformer-alias](https://github.com/zyyv/unocss-transformer-alias) - Transform alias for UnoCSS shortcuts by [@zyyv](https://github.com/zyyv).
-- [CSS to UnoCss](https://github.com/Simon-He95/transformToUnoCSS) - Transform CSS to Unocss by [@Simon-He95](https://github.com/Simon-He95).
-- [unocss-transformer-classnames-minifier](https://github.com/alisobirjanov/unocss-transformer-classnames-minifier) - Transform UnoCSS classnames minifier by [@alisobirjanov](https://github.com/alisobirjanov).
+- [unocss-transformer-attribute-values-group](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group) - 由 [@lvjiaxuan](https://github.com/lvjiaxuan) 提供的 UnoCSS 属性值组转换器。
+- [unocss-transformer-alias](https://github.com/zyyv/unocss-transformer-alias) - 由 [@zyyv](https://github.com/zyyv) 提供的 UnoCSS 快捷方式别名转换器。
+- [CSS to UnoCss](https://github.com/Simon-He95/transformToUnoCSS) - 由 [@Simon-He95](https://github.com/Simon-He95) 提供的将 CSS 转换为 Unocss 的工具。
+- [unocss-transformer-classnames-minifier](https://github.com/alisobirjanov/unocss-transformer-classnames-minifier) - 由 [@alisobirjanov](https://github.com/alisobirjanov) 提供的 UnoCSS 类名压缩器。
+- [unocss-transformer-hash](https://github.com/unpreset/unocss-transformer-hash) - 由 [@zyyv](https://github.com/zyyv) 提供的 UnoCSS 工具哈希工具。
 
-# Community tools
+# 社区工具
 
 - [Unot](https://github.com/Simon-He95/unot) - 由 [@Simon-He95](https://github.com/Simon-He95) 提供的 VSCode 扩展，可以将 CSS 转换为 UnoCSS，并简化 UnoCSS 的编写过程。
 - [figma-to-unocss](https://github.com/zouhangwithsweet/figma-to-unocss) - 由 [@zouhang](https://github.com/zouhangwithsweet) 提供的 Figma 插件，可以将设计转换为 UnoCSS。
