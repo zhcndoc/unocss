@@ -29,6 +29,7 @@
 - [@yeungkc/unocss-preset-safe-area](https://github.com/YeungKC/unocss-preset-safe-area) - 由 [YeungKC](https://github.com/YeungKC) 提供的在 Unocss 中使用安全区域的预设。
 - [@unifydev/unify-preset](https://github.com/unify-ui-dev/unify-preset/blob/main/README.md) - 由 [@johnkat-mj](https://github.com/Johnkat-Mj) 提供的由 UnoCSS 提供动力的原子主题 UI 库，类似于 DaisyUI 但可定制化。
 - [unocss-preset-tailwindcss-motion](https://github.com/whatnickcodes/unocss-preset-tailwindcss-motion) - 通过非官方的 [Tailwind Motion](https://rombo.co/tailwind) 移植，提供极其出色的动画，由 [@whatnicktweets](https://x.com/whatnicktweets) 制作
+- [unocss-preset-magicss](https://github.com/unpreset/unocss-preset-magicss) - 集成魔法 CSS 动画预设由 [@zyyv](https://github.com/zyyv) 提供
 
 # 社区框架
 

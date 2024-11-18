@@ -394,7 +394,9 @@ export default defineConfig({
     lightModeSwitchTitle: '切换到浅色模式',
     darkModeSwitchTitle: '切换到深色模式',
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/zhcndoc/unocss' },
+      { icon: 'bluesky', link: 'https://bsky.app/profile/unocss.dev' },
+      { icon: 'github', link: 'https://github.com/unocss/unocss' },
+      { icon: 'discord', link: 'https://chat.antfu.me' },
     ],
     footer: {
       message: `<a target="_blank" href="https://www.zhcndoc.com?ref=unocss">简中文档</a>`,
