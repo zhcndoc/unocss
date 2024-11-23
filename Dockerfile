@@ -4,7 +4,7 @@ WORKDIR /app
 
 RUN apk add --no-cache git \
   && cd /app \
-  && git clone https://github.com/zhcndoc/vueuse.git . \
+  && git clone https://github.com/zhcndoc/unocss.git . \
   && corepack enable \
   && pnpm install \
   && pnpm -w run deploy
