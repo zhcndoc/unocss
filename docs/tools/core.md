@@ -26,7 +26,7 @@ UnoCSS 的核心引擎，没有任何预设：`@unocss/core`。可以用作您�
 ```ts
 import { createGenerator } from '@unocss/core'
 
-const generator = createGenerator(
+const generator = await createGenerator(
   { /* 用户选项 */ },
   { /* 默认选项 */ }
 )
