@@ -181,7 +181,11 @@ CSS 自定义属性的前缀。
 实用工具前缀。
 
 ### preflight
-- **类型：**`boolean`
+- **类型：**`boolean` | `on-demand`
 - **默认值：**`true`
 
-生成预设风格。
+生成预置 CSS。可以是：
+
+- `true`: 总是生成预置。
+- `false`: 不生成预置。
+- `on-demand`: 仅在需要时生成预置。
