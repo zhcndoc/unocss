@@ -442,6 +442,13 @@ presetIcons({
 
 匹配到缺少的图标时发出警告。
 
+### iconifyCollectionsNames
+
+- Type: `string[]`
+- Default: `undefined`
+
+Additional `@iconify-json` collections to use. This option should be used when there are new `@iconify-json` collections not listed in the default icons preset collection names.
+
 ### collections
 
 - 类型：`Record<string, (() => Awaitable<IconifyJSON>) | undefined | CustomIconLoader | InlineCollection>`
