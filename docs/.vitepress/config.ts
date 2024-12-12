@@ -251,30 +251,6 @@ export default defineConfig({
   description,
   outDir: './dist',
   head: [
-    ['meta', { name: 'baidu-site-verification', content: 'codeva-rhcRidvi5r' }],
-    [
-      'script',
-      {
-        'defer': '',
-        'src': 'https://analytics.ikxin.com/script.js',
-        'data-website-id': 'f0e90b0d-e086-4fdc-b173-de4857b71900',
-      },
-    ],
-    [
-      'script',
-      {
-        async: '',
-        src: 'https://www.googletagmanager.com/gtag/js?id=G-HYH4TH7PWM',
-      },
-    ],
-    [
-      'script',
-      {},
-      `window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-HYH4TH7PWM');`,
-    ],
     ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
     ['link', { rel: 'alternate icon', href: '/favicon.ico', type: 'image/png', sizes: '16x16' }],
     ['meta', { name: 'author', content: 'Anthony Fu' }],
@@ -288,6 +264,13 @@ export default defineConfig({
     ['meta', { name: 'twitter:site', content: '@antfu7' }],
     ['meta', { name: 'twitter:url', content: ogUrl }],
     ['link', { rel: 'search', type: 'application/opensearchdescription+xml', href: '/search.xml', title: 'UnoCSS' }],
+    [
+      'script',
+      {
+        src: 'https://www.zhcndoc.com/js/common.js',
+        async: '',
+      },
+    ],
   ],
   lastUpdated: true,
   cleanUrls: false,
@@ -399,7 +382,7 @@ export default defineConfig({
       { icon: 'discord', link: 'https://chat.antfu.me' },
     ],
     footer: {
-      message: `<a target="_blank" href="https://www.zhcndoc.com?ref=unocss">简中文档</a>`,
+      message: `<a target="_blank" href="https://www.zhcndoc.com">简中文档</a>`,
       copyright: '<a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn">沪ICP备2024070610号-3</a>',
     },
   },
