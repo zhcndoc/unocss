@@ -72,4 +72,4 @@ import { presetUno } from 'unocss'
 此预设的选项继承自 [`@unocss/preset-mini`](/presets/mini#选项)。
 :::
 
-有关默认预设的更多详细信息，请查看我们的[演示场](https://uno.antfu.me/play/)并尝试一下。同时，您还可以查看[实现](https://github.com/unocss/unocss/tree/main/packages)。
+有关默认预设的更多详细信息，请查看我们的[演示场](/play/)并尝试一下。同时，您还可以查看[实现](https://github.com/unocss/unocss/tree/main/packages)。
