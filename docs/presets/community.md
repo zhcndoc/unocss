@@ -51,3 +51,4 @@
 
 - [Unot](https://github.com/Simon-He95/unot) - 由 [@Simon-He95](https://github.com/Simon-He95) 提供的 VSCode 扩展，可以将 CSS 转换为 UnoCSS，并简化 UnoCSS 的编写过程。
 - [figma-to-unocss](https://github.com/zouhangwithsweet/figma-to-unocss) - 由 [@zouhang](https://github.com/zouhangwithsweet) 提供的 Figma 插件，可以将设计转换为 UnoCSS。
+- [hexo-unocss](https://github.com/imba97/hexo-unocss) - 支持使用 UnoCSS 编写文章的 Hexo 插件，由 [@imba97](https://github.com/imba97) 提供。
