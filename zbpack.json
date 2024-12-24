@@ -1,0 +1,7 @@
+{
+  "app_dir": "/",
+  "build_command": "pnpm -w run deploy",
+  "cache_dependencies": false,
+  "install_command": "cd / && rm -rf /src && git clone https://github.com/zhcndoc/unocss.git /src && cd /src && pnpm install",
+  "output_dir": "/docs/dist"
+}
