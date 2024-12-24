@@ -1,6 +1,6 @@
 {
   "app_dir": "/",
-  "build_command": "git fetch --tags && pnpm -w run deploy",
+  "build_command": "git fetch --tags && git ls-remote --tags origin && pnpm -w run deploy",
   "cache_dependencies": false,
   "install_command": "cd / && rm -rf /src && git clone https://github.com/zhcndoc/unocss.git /src && cd /src && pnpm install",
   "output_dir": "/docs/dist"
