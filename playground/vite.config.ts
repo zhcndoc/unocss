@@ -1,17 +1,31 @@
 import UnoCSS from '@unocss/vite'
 import Vue from '@vitejs/plugin-vue'
-import SimpleGit from 'simple-git'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
 import Inspect from 'vite-plugin-inspect'
 import { alias } from '../alias'
 
-const git = SimpleGit()
+const GITHUB_REPO = 'unocss/unocss'
+const GITHUB_API = 'https://api.github.com'
 
-const SHA = await git.revparse(['HEAD'])
-const LASTEST_TAG = (await git.raw(['describe', '--tags', '--abbrev=0'])).trim()
-const LASTEST_TAG_SHA = await git.revparse([LASTEST_TAG])
+async function getGitHubInfo() {
+  const [commitRes, tagsRes] = await Promise.all([
+    fetch(`${GITHUB_API}/repos/${GITHUB_REPO}/commits/main`),
+    fetch(`${GITHUB_API}/repos/${GITHUB_REPO}/tags`),
+  ])
+
+  const commitData = await commitRes.json()
+  const tagsData = await tagsRes.json()
+
+  const SHA = commitData.sha
+  const LASTEST_TAG = tagsData[0].name.replace('v', '')
+  const LASTEST_TAG_SHA = tagsData[0].commit.sha
+
+  return { SHA, LASTEST_TAG, LASTEST_TAG_SHA }
+}
+
+const { SHA, LASTEST_TAG, LASTEST_TAG_SHA } = await getGitHubInfo()
 
 export default defineConfig({
   base: '/play/',
