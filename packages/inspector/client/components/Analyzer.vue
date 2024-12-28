@@ -15,6 +15,7 @@ const props = defineProps<{
   colors: MatchedColor[]
 }>()
 
+const mergeSameUtil = ref(true)
 const selectors = computed(() => [...props.selectors].sort((a, b) => b.count - a.count))
 
 const colors = computed(() => {
@@ -23,8 +24,50 @@ const colors = computed(() => {
     .sort((a, b) => b.count - a.count)
 })
 
-const grouped = computed(() => {
-  return selectors.value.reduce<Grouped[]>((acc, item) => {
+const mergedSelectors = computed(() => {
+  if (!mergeSameUtil.value)
+    return selectors.value
+
+  const map = new Map<string, MatchedSelector>()
+  selectors.value.forEach((item) => {
+    const key = item.body
+    const target = map.get(key)
+    if (target) {
+      target.alias ||= {
+        [target.name]: target.count,
+      }
+      target.alias[item.name] = item.count
+      target.count += item.count
+      target.modules ||= []
+      for (const module of item.modules) {
+        if (!target.modules.includes(module)) {
+          target.modules.push(module)
+        }
+      }
+    }
+    else {
+      map.set(key, structuredClone(item))
+    }
+  })
+
+  const sorted = [...map.values()]
+    .sort((a, b) => b.count - a.count)
+
+  // Use name without bracket if possible
+  // `[text-sm] text-sm` -> `text-sm`
+  sorted.forEach((item) => {
+    if (item.alias) {
+      item.name = Object.keys(item.alias)
+        .sort((a, b) => b.localeCompare(a))[0]
+    }
+  })
+
+  return sorted
+})
+
+const grouped = computed(() => mergedSelectors
+  .value
+  .reduce<Grouped[]>((acc, item) => {
     const key = item.category
     const target = acc.find(_item => _item.name === key)
 
@@ -40,12 +83,17 @@ const grouped = computed(() => {
       })
     }
     return acc
-  }, []).sort((a, b) => b.count - a.count)
-})
+  }, [])
+  .sort((a, b) => b.count - a.count),
+)
 </script>
 
 <template>
   <div p-4 space-y-8>
+    <label flex="~ gap-2 items-center">
+      <input v-model="mergeSameUtil" type="checkbox">
+      <span>Merge Alias</span>
+    </label>
     <div v-if="selectors.length > 10">
       <div mb-4 op50 uppercase text-sm>
         Top 10 Utilities
@@ -53,7 +101,7 @@ const grouped = computed(() => {
       <div p-4 bg-active>
         <div flex="~ wrap" gap="x-2 y-2">
           <AnalyzerItem
-            v-for="(item, i) in selectors.slice(0, 10)"
+            v-for="(item, i) in mergedSelectors.slice(0, 10)"
             :key="i"
             :item="item"
           />
@@ -70,7 +118,7 @@ const grouped = computed(() => {
         <span v-for="(item, i) in colors" :key="i">
           <div p-2 w-25 inline-block of-hidden bg-active>
             <AnalyzerItem :item="item" />
-            <div font-mono text-sm op50 ws-nowrap of-ellipsis of-hidden>{{ item.color }}</div>
+            <div font-mono text-sm op50 ws-nowrap text-ellipsis of-hidden>{{ item.color }}</div>
             <div h-10 mt-1 :style="{ background: item.color }" />
           </div>
         </span>
@@ -90,9 +138,10 @@ const grouped = computed(() => {
     </div>
 
     <div>
-      <div mb-4 op50 uppercase text-sm>
+      <div mb4 op50 uppercase text-sm flex="~ gap-4 items-center">
         Utilities Usage
       </div>
+
       <FlowLayout v-if="grouped.length" :cols="2" :gap="16">
         <div v-for="(group, key) in grouped" :key="key" p-4 bg-active>
           <div text-sm pb-4>

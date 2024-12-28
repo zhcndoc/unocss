@@ -1,15 +1,22 @@
 import type { FilterPattern } from '@rollup/pluginutils'
-import type { ExtensionContext, StatusBarItem, WorkspaceConfiguration } from 'vscode'
+import type { ExtensionContext, StatusBarItem } from 'vscode'
 import path, { dirname } from 'path'
 import process from 'process'
 import { createFilter } from '@rollup/pluginutils'
 import { toArray } from '@unocss/core'
 import { findUp } from 'find-up'
 import { commands, Position, StatusBarAlignment, window, workspace } from 'vscode'
-import { version } from '../package.json'
+import { getConfig } from './configs'
 import { ContextLoader } from './contextLoader'
+import { commands as commandNames, displayName, version } from './generated/meta'
 import { defaultPipelineExclude, defaultPipelineInclude } from './integration'
 import { log } from './log'
+
+const skipMap = {
+  '<!-- @unocss-skip -->': ['<!-- @unocss-skip-start -->\n', '\n<!-- @unocss-skip-end -->'],
+  '/* @unocss-skip */': ['/* @unocss-skip-start */\n', '\n/* @unocss-skip-end */'],
+  '// @unocss-skip': ['// @unocss-skip-start\n', '\n// @unocss-skip-end'],
+}
 
 export async function activate(ext: ExtensionContext) {
   // Neither Jiti2 nor Tsx supports running in VS Code yet
@@ -24,69 +31,70 @@ export async function activate(ext: ExtensionContext) {
     return
   }
 
-  const config = workspace.getConfiguration('unocss')
-  const disabled = config.get<boolean>('disable', false)
-  if (disabled) {
+  const config = getConfig()
+  if (config.disable) {
     log.appendLine('➖ Disabled by configuration')
     return
   }
 
   const status = window.createStatusBarItem(StatusBarAlignment.Right, 200)
-  status.text = 'UnoCSS'
+  status.text = displayName
 
-  const root = config.get<string | string[]>('root')
+  const root = config.root
 
-  const ctx = await rootRegister(ext, Array.isArray(root) && !root.length
-    ? [projectPath]
-    : root
-      ? toArray(root).map(r => path.resolve(projectPath, r))
-      : [projectPath], config, status)
-
-  const skipMap = {
-    '<!-- @unocss-skip -->': ['<!-- @unocss-skip-start -->\n', '\n<!-- @unocss-skip-end -->'],
-    '/* @unocss-skip */': ['/* @unocss-skip-start */\n', '\n/* @unocss-skip-end */'],
-    '// @unocss-skip': ['// @unocss-skip-start\n', '\n// @unocss-skip-end'],
-  }
+  const loader = await rootRegister(
+    ext,
+    Array.isArray(root) && !root.length
+      ? [projectPath]
+      : root
+        ? toArray(root).map(r => path.resolve(projectPath, r))
+        : [projectPath],
+    status,
+  )
 
   ext.subscriptions.push(
-    commands.registerCommand('unocss.reload', async () => {
-      log.appendLine('🔁 Reloading...')
-      await ctx.reload()
-      log.appendLine('✅ Reloaded.')
-    }),
-    commands.registerCommand('unocss.insert-skip-annotation', async () => {
-      const activeTextEditor = window.activeTextEditor
-      if (!activeTextEditor)
-        return
-      const selection = activeTextEditor.selection
-      if (!selection)
-        return
-      // pick <!-- @unocss-skip-start --> or // @unocss-skip-start
-      const key = await window.showQuickPick(Object.keys(skipMap))
-      if (!key)
-        return
-      const [insertStart, insertEnd] = skipMap[key as keyof typeof skipMap]
-      activeTextEditor.edit((builder) => {
-        builder.insert(new Position(selection.start.line, 0), insertStart)
-        builder.insert(selection.end, insertEnd)
-      })
-    }),
+    commands.registerCommand(
+      commandNames.reload,
+      async () => {
+        log.appendLine('🔁 Reloading...')
+        await loader.reload()
+        log.appendLine('✅ Reloaded.')
+      },
+    ),
+    commands.registerCommand(
+      commandNames.insertSkipAnnotation,
+      async () => {
+        const activeTextEditor = window.activeTextEditor
+        if (!activeTextEditor)
+          return
+        const selection = activeTextEditor.selection
+        if (!selection)
+          return
+        // pick <!-- @unocss-skip-start --> or // @unocss-skip-start
+        const key = await window.showQuickPick(Object.keys(skipMap))
+        if (!key)
+          return
+        const [insertStart, insertEnd] = skipMap[key as keyof typeof skipMap]
+        activeTextEditor.edit((builder) => {
+          builder.insert(new Position(selection.start.line, 0), insertStart)
+          builder.insert(selection.end, insertEnd)
+        })
+      },
+    ),
   )
 }
 
 async function rootRegister(
   ext: ExtensionContext,
   root: string[],
-  config: WorkspaceConfiguration,
   status: StatusBarItem,
 ) {
   log.appendLine('📂 roots search mode.')
 
-  const _exclude = config.get<FilterPattern>('exclude')
-  const _include = config.get<FilterPattern>('include')
+  const config = getConfig()
 
-  const include: FilterPattern = _include || defaultPipelineInclude
-  const exclude: FilterPattern = _exclude || [/[\\/](node_modules|dist|\.temp|\.cache|\.vscode)[\\/]/, ...defaultPipelineExclude]
+  const include: FilterPattern = config.include || defaultPipelineInclude
+  const exclude: FilterPattern = config.exclude || [/[\\/](node_modules|dist|\.temp|\.cache|\.vscode)[\\/]/, ...defaultPipelineExclude]
   const filter = createFilter(include, exclude)
 
   const ctx = new ContextLoader(root[0], ext, status)
