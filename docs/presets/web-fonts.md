@@ -1,20 +1,16 @@
 ---
-title: Web 字体预设
-description: UnoCSS 的 Web 字体支持 (@unocss/preset-web-fonts)。
+title: 网络字体预设
+description: UnoCSS 的网络字体支持（@unocss/preset-web-fonts）。
 outline: deep
 ---
 
-# Web 字体预设
+# 网络字体预设
 
-通过提供字体名称，从 [Google Fonts](https://fonts.google.com/)、[FontShare](https://www.fontshare.com/) 等提供商使用 Web 字体。
+通过简单提供字体名称来使用来自 [Google Fonts](https://fonts.google.com/) 和 [FontShare](https://www.fontshare.com/) 的网络字体。
 
-查看[所有支持的提供商](#providers)。
+查看 [所有支持的提供商](#providers)。
 
-<<<<<<< HEAD
-[源代码](https://github.com/unocss/unocss/tree/main/packages/preset-web-fonts)
-=======
-[Source Code](https://github.com/unocss/unocss/tree/main/packages-presets/preset-web-fonts)
->>>>>>> origin/upstream
+[源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-web-fonts)
 
 ## 安装
 
@@ -48,7 +44,7 @@ export default defineConfig({
 ```
 
 ::: tip
-该预设已包含在 `unocss` 包中，您也可以从那里导入：
+此预设已包含在 `unocss` 包中，您也可以从那里导入：
 
 ```ts
 import { presetWebFonts } from 'unocss'
@@ -58,15 +54,15 @@ import { presetWebFonts } from 'unocss'
 
 ## 提供商
 
-目前支持的提供商：
+当前支持的提供商：
 
-- `none` - 什么也不做，将字体视为系统字体
+- `none` - 不执行操作，将字体视为系统字体
 - `google` - [Google Fonts](https://fonts.google.com/)
 - `bunny` - [隐私友好的 Google Fonts](https://fonts.bunny.net/)
-- `fontshare` - [ITF 的优质字体服务](https://www.fontshare.com/)
+- `fontshare` - [ITF 提供的高质量字体服务](https://www.fontshare.com/)
 
 ::: info
-欢迎通过 PR 添加更多提供商。🙌
+欢迎提出 PR 以添加更多提供商。🙌
 :::
 
 ### 自定义获取函数
@@ -84,7 +80,7 @@ export default defineConfig({
   presets: [
     presetUno(),
     presetWebFonts({
-      // 使用 axios 并设置 https 代理
+      // 使用带有 https 代理的 axios
       customFetch: (url: string) => axios.get(url, { httpsAgent: new ProxyAgent('https://localhost:7890') }).then(it => it.data),
       provider: 'google',
       fonts: {
@@ -99,30 +95,21 @@ export default defineConfig({
 ## 选项
 
 ### provider
-<<<<<<< HEAD
-- **类型：**`WebFontsProviders`
-- **默认值：**`google`
-=======
 
-- **Type:** `WebFontsProviders`
-- **Default:** `google`
->>>>>>> origin/upstream
+- **类型：** `WebFontsProviders`
+- **默认值：** `google`
 
-Web 字体的提供商服务。
+网络字体的提供商服务。
 
 ```ts
 type WebFontsProviders = 'google' | 'bunny' | 'fontshare' | 'none'
 ```
 
 ### fonts
-<<<<<<< HEAD
-- **类型：**`Record<string, WebFontMeta | string | (WebFontMeta | string)[]>`
-=======
 
-- **Type:** `Record<string, WebFontMeta | string | (WebFontMeta | string)[]>`
->>>>>>> origin/upstream
+- **类型：** `Record<string, WebFontMeta | string | (WebFontMeta | string)[]>`
 
-字体。更多详情请参见[示例](#example)。
+字体。有关更多详细信息，请参见 [示例](#example)。
 
 ```ts
 interface WebFontMeta {
@@ -131,59 +118,39 @@ interface WebFontMeta {
   italic?: boolean
   /**
    * 覆盖提供商
-   * @default <与根配置匹配>
+   * @default <匹配根配置>
    */
   provider?: WebFontsProviders
 }
 ```
 
 ### extendTheme
-<<<<<<< HEAD
-- **类型：**`boolean`
-- **默认值：**`true`
-=======
 
-- **Type:** `boolean`
-- **Default:** `true`
->>>>>>> origin/upstream
+- **类型：** `boolean`
+- **默认值：** `true`
 
 扩展主题对象。
 
 ### themeKey
-<<<<<<< HEAD
-- **类型：**`string`
-- **默认值：**`fontFamily`
-=======
 
-- **Type:** `string`
-- **Default:** `fontFamily`
->>>>>>> origin/upstream
+- **类型：** `string`
+- **默认值：** `fontFamily`
 
 主题对象的键。
 
 ### inlineImports
-<<<<<<< HEAD
-- **类型：**`boolean`
-- **默认值：**`true`
-=======
 
-- **Type:** `boolean`
-- **Default:** `true`
->>>>>>> origin/upstream
+- **类型：** `boolean`
+- **默认值：** `true`
 
 内联 CSS `@import()`。
 
 ### customFetch
-<<<<<<< HEAD
-- **类型：**`(url: string) => Promise<string>`
-- **默认值：**`undefined`
-=======
 
-- **Type:** `(url: string) => Promise<string>`
-- **Default:** `undefined`
->>>>>>> origin/upstream
+- **类型：** `(url: string) => Promise<string>`
+- **默认值：** `undefined`
 
-使用您自己的函数来获取字体源。查看[自定义获取函数](#custom-fetch-function)。
+使用您自己的函数获取字体源。请参见 [自定义获取函数](#custom-fetch-function)。
 
 ## 示例
 
@@ -194,7 +161,7 @@ presetWebFonts({
     // 这些将扩展默认主题
     sans: 'Roboto',
     mono: ['Fira Code', 'Fira Mono:400,700'],
-    // 自定义的
+    // 自定义字体
     lobster: 'Lobster',
     lato: [
       {
@@ -204,7 +171,6 @@ presetWebFonts({
       },
       {
         name: 'sans-serif',
-
         provider: 'none',
       },
     ],
@@ -219,28 +185,28 @@ presetWebFonts({
 ```css
 @import url('https://fonts.googleapis.com/css2?family=Roboto&family=Fira+Code&family=Fira+Mono:wght@400;700&family=Lobster&family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
-/* 层级: 默认 */
+/* layer: default */
 .font-lato {
-    font-family: "Lato", sans-serif;
+  font-family: "Lato", sans-serif;
 }
 .font-lobster {
-    font-family: "Lobster";
+  font-family: "Lobster";
 }
 .font-mono {
-    font-family: "Fira Code", "Fira Mono", ui-monospace, SFMono-Regular, Menlo,
+  font-family: "Fira Code", "Fira Mono", ui-monospace, SFMono-Regular, Menlo,
     Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 .font-sans {
-    font-family: "Roboto", ui-sans-serif, system-ui, -apple-system,
+  font-family: "Roboto", ui-sans-serif, system-ui, -apple-system,
     BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
     sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     "Noto Color Emoji";
 }
 ```
 
-## Serve Fonts Locally
+## 本地提供字体
 
-By default the preset will fetch the fonts from the provider's CDN. If you want to serve the fonts locally, you can download the fonts and serve them from your own server using the processor from `@unocss/preset-web-fonts/local`.
+默认情况下，预设将从提供商的 CDN 中获取字体。如果您想本地提供字体，可以下载字体并使用来自 `@unocss/preset-web-fonts/local` 的处理器在自己的服务器上提供它们。
 
 ```ts
 import presetWebFonts from '@unocss/preset-web-fonts'
@@ -255,15 +221,15 @@ export default defineConfig({
         sans: 'Roboto',
         mono: 'Fira Code',
       },
-      // This will download the fonts and serve them locally
+      // 这将下载字体并在本地提供
       processors: createLocalFontProcessor({
-        // Directory to cache the fonts
+        // 缓存字体的目录
         cacheDir: 'node_modules/.cache/unocss/fonts',
 
-        // Directory to save the fonts assets
+        // 保存字体资产的目录
         fontAssetsDir: 'public/assets/fonts',
 
-        // Base URL to serve the fonts from the client
+        // 为客户端提供字体的基本 URL
         fontServeBaseUrl: '/assets/fonts'
       })
     }),
@@ -271,10 +237,10 @@ export default defineConfig({
 })
 ```
 
-This will download the fonts assets to `public/assets/fonts` and serve them from `/assets/fonts` on the client. When doing this, please make sure the license of the fonts allows you to redistribute so, the tool is not responsible for any legal issues.
+这将把字体资产下载到 `public/assets/fonts` 并通过 `/assets/fonts` 从客户端提供它们。在这样做时，请确保字体的许可证允许您重新分发，因此该工具对此没有任何法律责任。
 
 ::: info
 
-This feature is Node.js specific and will not work in the browser.
+此功能特定于 Node.js，无法在浏览器中使用。
 
 :::

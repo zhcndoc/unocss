@@ -5,7 +5,7 @@ description: UnoCSS 的 MDC 提取器 (@unocss/extractor-mdc)
 
 # MDC 提取器
 
-支持从 [MDC (Markdown Components)](https://content.nuxtjs.org/guide/writing/mdc) 语法中提取类。
+支持从 [MDC (Markdown 组件)](https://content.nuxtjs.org/guide/writing/mdc) 语法中提取类。
 
 ## 安装
 
@@ -36,14 +36,14 @@ export default defineConfig({
 })
 ```
 
-它将应用于 `.md`、`.mdc` 和 `.markdown` 文件，以提取类的内联属性使用。例如
+它将对 `.md`、`.mdc` 和 `.markdown` 文件应用提取，以提取类的内联属性用法。例如：
 
 ```md
-# Title{.text-2xl.font-bold}
+# 标题{.text-2xl.font-bold}
 
-Hello [World]{.text-blue-500}
+你好 [世界]{.text-blue-500}
 
-![image](/image.png){.w-32.h-32}
+![图片](/image.png){.w-32.h-32}
 ```
 
-`text-2xl`、`font-bold`、`text-blue-500`、`w-32`、`h-32` 类将被提取。
+将提取 `text-2xl`、`font-bold`、`text-blue-500`、`w-32`、`h-32` 类。

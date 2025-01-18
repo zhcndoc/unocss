@@ -1,11 +1,11 @@
 ---
 title: 快捷方式
-description: UnoCSS 提供的快捷方式功能类似于 Windi CSS 的功能。
+description: UnoCSS 提供的快捷方式功能类似于 Windi CSS 的快捷方式。
 ---
 
 # 快捷方式
 
-快捷方式让你可以将多个规则组合成一个简写，灵感来源于 [Windi CSS](https://windicss.org/features/shortcuts.html)。
+快捷方式允许您将多个规则组合成一个简写，灵感来自于 [Windi CSS](https://windicss.org/features/shortcuts.html)。
 
 ## 用法
 
@@ -13,21 +13,21 @@ description: UnoCSS 提供的快捷方式功能类似于 Windi CSS 的功能。
 
 ```ts
 shortcuts: {
-  // 多个工具的快捷方式
+  // 多个实用工具的快捷方式
   'btn': 'py-2 px-4 font-semibold rounded-lg shadow-md',
   'btn-green': 'text-white bg-green-500 hover:bg-green-700',
-  // 单个工具的别名
+  // 单个实用工具别名
   'red': 'text-red-100',
 }
 ```
 
-除了简单的映射，UnoCSS 还允许你定义动态快捷方式。
+除了纯文本映射，UnoCSS 还允许您定义动态快捷方式。
 
-类似于 [规则](/config/rules)，动态快捷方式是一个匹配器 `RegExp` 和处理函数的组合。
+类似于 [规则](/config/rules)，动态快捷方式是匹配器 `RegExp` 和处理函数的组合。
 
 ```ts
 shortcuts: [
-  // 你仍然可以使用对象风格
+  // 您仍然可以使用对象风格
   {
     btn: 'py-2 px-4 font-semibold rounded-lg shadow-md',
   },

@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Meet the Team
-description: The development of UnoCSS is guided by an international team.
+title: 认识团队
+description: UnoCSS 的开发由一个国际团队指导。
 ---
 
 <script setup>

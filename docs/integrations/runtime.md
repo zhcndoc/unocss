@@ -6,68 +6,50 @@ outline: deep
 
 # 运行时
 
-UnoCSS 运行时提供了一个可以在浏览器中直接运行 UnoCSS 的 CDN 构建。它将检测 DOM 变化并即时生成样式。
+UnoCSS 运行时提供了一个 CDN 构建，能够在浏览器中直接运行 UnoCSS。它会检测 DOM 更改并动态生成样式。
 
-## 使用方法
+## 用法
 
-在你的 `index.html` 中添加以下行：
+在 `index.html` 中添加以下行：
 
 ```html [index.html]
 <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime"></script>
 ```
 
-可以通过在加载运行时之前定义配置来配置运行时：
+运行时可以通过在加载运行时之前定义配置来进行配置：
 
 ```html
 <!-- 定义 unocss 选项... -->
 <script>
-<<<<<<< HEAD
-window.__unocss = {
-  rules: [
-    // 自定义规则...
-  ],
-  presets: [
-    // 自定义预设...
-  ],
-  // ...
-}
-=======
   window.__unocss = {
     rules: [
-      // custom rules...
+      // 自定义规则...
     ],
     presets: [
-      // custom presets...
+      // 自定义预设...
     ],
     // ...
   }
->>>>>>> origin/upstream
 </script>
 <!-- ... 然后加载运行时 -->
 <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime"></script>
 ```
 
-默认情况下，将应用 [Uno 预设](/presets/uno)。
+默认情况下，[Uno 预设](/presets/uno) 将被应用。
 
-运行时不包括预设样式重置，如果你想要样式重置，你可以添加自己的样式重置，或者使用来自[重置包](/guide/style-reset)的重置样式。
+运行时不包含预设样式，如果你想要样式重置，可以添加你自己的样式或者使用 [重置包](/guide/style-reset) 中的一个。
 
 ```html
-<<<<<<< HEAD
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@unocss/reset/normalize.min.css">
-<!-- 或者 -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind.min.css">
-=======
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@unocss/reset/normalize.min.css" />
-<!-- or -->
+<!-- 或者 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind.min.css" />
->>>>>>> origin/upstream
 ```
 
-## 构建版本
+## 构建
 
-有几种构建版本适用于不同的使用场景。
+针对不同的使用场景，有多种构建可供选择。
 
-### Uno (默认)
+### Uno（默认）
 
 使用 `@unocss/preset-uno` 预设：
 
@@ -93,7 +75,7 @@ window.__unocss = {
 
 ### Core
 
-如果你需要混合匹配预设，你可以只加载核心运行时并手动指定预设。所有来自 UnoCSS 的[官方预设](/presets/#预设)都可用。在初始化核心运行时之前加载你需要的预设。
+如果需要混合使用预设，可以仅加载核心运行时并手动分配预设。所有来自 UnoCSS 的 [官方预设](/presets/#presets) 都可用。在初始化核心运行时之前加载所需的预设。
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime/preset-icons.global.js"></script>
@@ -111,7 +93,7 @@ window.__unocss = {
 <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime/core.global.js"></script>
 ```
 
-## 打包器使用
+## 打包器用法
 
 ```bash
 npm i @unocss/runtime
@@ -123,7 +105,7 @@ import initUnocssRuntime from '@unocss/runtime'
 initUnocssRuntime({ /* 选项 */ })
 ```
 
-一个 UnoCSS 配置可以通过使用 `defaults` 属性提供：
+可以通过 `defaults` 属性提供 UnoCSS 配置：
 
 ```ts
 import initUnocssRuntime from '@unocss/runtime'
@@ -146,23 +128,11 @@ export default defineConfig({
 
 ## 防止 FOUC
 
-由于 UnoCSS 在 DOM 准备就绪后运行，可能会出现 “未样式内容的闪烁” (FOUC)，这可能导致用户看到未样式化的页面。
+由于 UnoCSS 在 DOM 准备好后运行，可能会出现“未样式内容闪烁”（FOUC），这可能导致用户看到样式未应用的页面。
 
-使用 `un-cloak` 属性和诸如 `[un-cloak] { display: none }` 的 CSS 规则来隐藏未样式化的元素，直到 UnoCSS 为其应用样式。
+使用 `un-cloak` 属性和 CSS 规则，如 `[un-cloak] { display: none }` 来隐藏未样式元素，直到 UnoCSS 为其应用样式。
 
 ::: code-group
-<<<<<<< HEAD
-  ```css
-  [un-cloak] {
-    display: none;
-  }
-  ```
-  ```html
-  <div class="text-blue-500" un-cloak>
-    这段文字只有在变成蓝色后才可见。
-  </div>
-  ```
-=======
 
 ```css
 [un-cloak] {
@@ -171,8 +141,7 @@ export default defineConfig({
 ```
 
 ```html
-<div class="text-blue-500" un-cloak>This text will only be visible in blue color.</div>
+<div class="text-blue-500" un-cloak>这段文字将只以蓝色可见。</div>
 ```
 
->>>>>>> origin/upstream
 :::

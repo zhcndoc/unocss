@@ -1,11 +1,11 @@
 ---
 title: 变体组转换器
-description: 启用 UnoCSS 的 Windi CSS 变体组功能 (@unocss/transformer-variant-group)
+description: 启用 Windi CSS 的变体组功能以支持 UnoCSS (@unocss/transformer-variant-group)
 ---
 
 # 变体组转换器
 
-启用 UnoCSS 的 [Windi CSS 变体组功能](https://windicss.org/features/variant-groups.html)。
+启用 Windi CSS 的 [变体组功能](https://windicss.org/features/variant-groups.html) 以支持 UnoCSS。
 
 ## 安装
 
@@ -38,7 +38,7 @@ export default defineConfig({
 ```
 
 ::: tip
-此预设包含在 `unocss` 包中，您也可以从那里导入它：
+此预设已包含在 `unocss` 包中，您也可以从那里导入它：
 
 ```ts
 import { transformerVariantGroup } from 'unocss'
@@ -46,7 +46,7 @@ import { transformerVariantGroup } from 'unocss'
 
 :::
 
-## 用法
+## 使用方法
 
 ```html
 <div class="hover:(bg-gray-400 font-medium) font-(light mono)" />

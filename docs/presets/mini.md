@@ -1,18 +1,14 @@
 ---
-title: Mini 预设
-description: UnoCSS 的基本预设 (@unocss/preset-mini)。
+title: Mini preset
+description: UnoCSS 的最小预设 (@unocss/preset-mini)。
 outline: deep
 ---
 
-# Mini 预设
+# Mini preset
 
-UnoCSS 的基本预设，仅包含最基本的实用工具。
+UnoCSS 的基本预设，仅包含最基本的工具。
 
-<<<<<<< HEAD
-[源代码](https://github.com/unocss/unocss/tree/main/packages/preset-mini)
-=======
-[Source Code](https://github.com/unocss/unocss/tree/main/packages-presets/preset-mini)
->>>>>>> origin/upstream
+[源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-mini)
 
 ## 安装
 
@@ -39,13 +35,13 @@ import { defineConfig } from 'unocss'
 export default defineConfig({
   presets: [
     presetMini(),
-    // ...other presets
+    // ...其他预设
   ],
 })
 ```
 
 ::: tip
-此预设已包含在 `unocss` 包中，您也可以从那里导入：
+此预设已包含在 `unocss` 包中，您也可以从那里导入它：
 
 ```ts
 import { presetMini } from 'unocss'
@@ -55,13 +51,13 @@ import { presetMini } from 'unocss'
 
 ## 规则
 
-该预设是 [`@unocss/preset-wind`](/presets/wind) 的子集，仅包含与 CSS 属性对齐的最基本的实用工具，但不包括 Tailwind CSS 中引入的主观或复杂的实用工具 (`container`、`animation`、`gradient` 等)。这可以作为您自己的定制预设的起点，基于 Tailwind CSS 或 Windi CSS 中熟悉的实用工具。
+此预设是 [`@unocss/preset-wind`](/presets/wind) 的一个子集，仅包含与 CSS 属性相对应的最基本的工具，但排除了 Tailwind CSS 中引入的有偏见或复杂的工具（`container`、`animation`、`gradient` 等等）。这可以是您基于 Tailwind CSS 或 Windi CSS 中熟悉的工具的自定义预设的良好起点。
 
 ## 特性
 
-### 深色模式
+### 黑暗模式
 
-默认情况下，此预设生成基于类的深色模式，带有 `dark:` 变体。
+默认情况下，此预设生成基于类的黑暗模式，带有 `dark:` 变体。
 
 ```html
 <div class="dark:bg-red:10" />
@@ -75,7 +71,7 @@ import { presetMini } from 'unocss'
 }
 ```
 
-要选择基于媒体查询的深色模式，您可以使用 `@dark:` 变体：
+要选择基于媒体查询的黑暗模式，可以使用 `@dark:` 变体：
 
 ```html
 <div class="@dark:bg-red:10" />
@@ -89,7 +85,7 @@ import { presetMini } from 'unocss'
 }
 ```
 
-或使用 `dark:` 变体的配置全局设置
+或通过配置全局设置 `dark:` 变体
 
 ```ts
 presetMini({
@@ -99,7 +95,7 @@ presetMini({
 
 ### CSS @layer
 
-支持 [CSS 的原生 @layer](https://developer.mozilla.org/en-US/docs/Web/CSS/@layer)，通过 `layer-xx:` 变体。
+支持 [CSS 的原生 @layer](https://developer.mozilla.org/en-US/docs/Web/CSS/@layer)，带有变体 `layer-xx:`。
 
 ```html
 <div class="layer-foo:p4" />
@@ -121,18 +117,12 @@ presetMini({
 }
 ```
 
-<<<<<<< HEAD
 ### 主题
 
-您可以在配置中完全自定义您的主题属性，UnoCSS 最终将其深度合并到默认主题中。
-=======
-### Theme
-
-You can fully customize your theme property in your config, and UnoCSS will eventually deeply merge it to the default theme.
->>>>>>> origin/upstream
+您可以在配置中完全自定义主题属性，UnoCSS 最终会将其深度合并到默认主题中。
 
 :::warning
-`breakpoints` property isn't deeply merged, but overridden, see [Breakpoints](/config/theme#breakpoints).
+`breakpoints` 属性没有被深度合并，而是被覆盖，见 [断点](/config/theme#breakpoints)。
 :::
 
 ```ts
@@ -140,9 +130,9 @@ presetMini({
   theme: {
     // ...
     colors: {
-      veryCool: '#0000ff', // class="text-very-cool"
+      veryCool: '#0000ff', // 类名="text-very-cool"
       brand: {
-        primary: 'hsl(var(--hue, 217) 78% 51%)', // class="bg-brand-primary"
+        primary: 'hsl(var(--hue, 217) 78% 51%)', // 类名="bg-brand-primary"
       }
     },
   }
@@ -152,28 +142,23 @@ presetMini({
 ## 选项
 
 ### dark
-<<<<<<< HEAD
-- **类型：**`class | media | DarkModeSelectors`
-- **默认值：**`class`
-=======
 
-- **Type:** `class | media | DarkModeSelectors`
-- **Default:** `class`
->>>>>>> origin/upstream
+- **类型:** `class | media | DarkModeSelectors`
+- **默认值:** `class`
 
-深色模式选项。可以是 `class`、`media`，或自定义选择器对象 (`DarkModeSelectors`)。
+黑暗模式选项。可以是 `class`、`media` 或自定义选择器对象 (`DarkModeSelectors`)。
 
 ```ts
 interface DarkModeSelectors {
   /**
-   * 亮色变体的选择器。
+   * 用于浅色变体的选择器。
    *
    * @default '.light'
    */
   light?: string
 
   /**
-   * 深色变体的选择器。
+   * 用于黑暗变体的选择器。
    *
    * @default '.dark'
    */
@@ -182,55 +167,33 @@ interface DarkModeSelectors {
 ```
 
 ### attributifyPseudo
-<<<<<<< HEAD
-- **类型：**`Boolean`
-- **默认值：**`false`
-=======
 
-- **Type:** `Boolean`
-- **Default:** `false`
->>>>>>> origin/upstream
+- **类型:** `Boolean`
+- **默认值:** `false`
 
-将伪类选择器生成为 `[group=""]`，而不是 `.group`。
+生成伪选择器，如 `[group=""]`，而不是 `.group`。
 
 ### variablePrefix
-<<<<<<< HEAD
-- **类型：**`string`
-- **默认值：**
-=======
 
-- **Type:** `string`
-- **Default:** `un-`
->>>>>>> origin/upstream
-
-`un-`
+- **类型:** `string`
+- **默认值:** `un-`
 
 CSS 自定义属性的前缀。
 
 ### prefix
-<<<<<<< HEAD
-- **类型：**`string | string[]`
-- **默认值：**`undefined`
-=======
 
-- **Type:** `string | string[]`
-- **Default:** `undefined`
->>>>>>> origin/upstream
+- **类型:** `string | string[]`
+- **默认值:** `undefined`
 
-实用工具前缀。
+工具前缀。
 
 ### preflight
-<<<<<<< HEAD
-- **类型：**`boolean` | `on-demand`
-- **默认值：**`true`
-=======
 
-- **Type:** `boolean` | `on-demand`
-- **Default:** `true`
->>>>>>> origin/upstream
+- **类型:** `boolean | on-demand`
+- **默认值:** `true`
 
-生成预置 CSS。可以是：
+生成预飞行 CSS。可以是：
 
-- `true`: 总是生成预置。
-- `false`: 不生成预置。
-- `on-demand`: 仅在需要时生成预置。
+- `true`: 总是生成预飞行。
+- `false`: 不生成预飞行。
+- `on-demand`: 仅为已使用的工具生成预飞行。

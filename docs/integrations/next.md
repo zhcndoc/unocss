@@ -1,13 +1,13 @@
 ---
 title: Next.js
-description: 如何开始使用 UnoCSS 和 Next.js。
+description: 使用 UnoCSS 和 Next.js 的入门指南。
 ---
 
 # Next.js
 
-// TODO：链接到示例
+// TODO: 链接到示例
 
-开始使用 UnoCSS 和 Next.js。
+使用 UnoCSS 和 Next.js 的入门指南。
 
 ## 设置
 
@@ -31,7 +31,7 @@ npm install -D unocss @unocss/webpack
 
 ### 配置
 
-在项目的根目录创建 `uno.config.ts`。
+在项目根目录创建 `uno.config.ts`。
 
 ```ts [uno.config.ts]
 import {
@@ -52,7 +52,7 @@ export default defineConfig({
 
 ### 添加插件
 
-然后通过你的 `next.config.js` 将 UnoCSS 作为插件添加到 webpack 中。
+然后通过你的 `next.config.js` 将 UnoCSS 添加为 webpack 插件。
 
 ```js{9}
 // next.config.js
@@ -92,7 +92,7 @@ export default MyApp
 
 ## 使用
 
-使用 unocss 为你的组件设置样式！
+使用 unocss 美化你的组件！
 
 ```tsx
 /* index.tsx */
@@ -102,16 +102,16 @@ const Home: NextPage = () => {
       <main className="py-20 px-12 text-center flex flex-col items-center gap-20px">
         <span text="blue 5xl hover:red" cursor="default">Nextjs</span>
         <div className="i-carbon-car inline-block" text="4xl" />
-        <button className="btn w-10rem">Button</button>
+        <button className="btn w-10rem">按钮</button>
       </main>
     </>
   )
 }
 ```
 
-## 热模块重载
+## 热模块替换
 
-为了支持 HMR，你需要选择退出 webpack 的缓存。
+要支持 HMR，您必须关闭 webpack 的缓存。
 
 ```js{5}
 // next.config.js
@@ -125,7 +125,7 @@ const nextConfig = {
 }
 ```
 
-## 故障排除
+## 排除故障
 
 ### 关于虚拟模块的错误
 
@@ -137,6 +137,6 @@ Error: ENOENT: no such file or directory, open '.../_virtual_/__uno.css'
 
 ### 其他
 
-你可能需要将 `tsconfig.json` 中的目标至少提升到 `es2015` 才能构建你的项目。
+您可能需要在 `tsconfig.json` 中将目标提升到至少 `es2015` 以构建项目。
 
-默认不支持 `.js` 扩展名的文件。将文件扩展名改为 `.jsx` 或尝试在配置中包含 js 文件 `include: /\.js$/`。[了解更多](/guide/extracting#从构建工具管道中提取)。
+默认情况下不支持 `.js` 扩展名的文件。将文件扩展名更改为 `.jsx`，或尝试在配置中使用 `include: /\.js$/` 来包含 js 文件。[了解更多](/guide/extracting#extracting-from-build-tools-pipeline)。

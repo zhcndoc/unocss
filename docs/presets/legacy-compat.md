@@ -1,22 +1,18 @@
 ---
-title: Legacy Compat 预设
-description: 旧版兼容实用工具的集合。
+title: 兼容遗留预设
+description: 遗留兼容性实用工具的集合。
 outline: deep
 ---
 
-# Legacy Compat 预设
+# 兼容遗留预设
 
-旧版兼容实用工具的集合。
+遗留兼容性实用工具的集合。
 
-该预设不包含任何规则，而是对其他预设生成的 CSS 应用后处理。
+该预设不包含任何规则，它对其他预设生成的 CSS 进行后处理。
 
-默认情况下，没有任何选项被启用，您需要显式地选择每个选项。
+默认情况下，所有选项均未启用，您需要显式选择每一个选项。
 
-<<<<<<< HEAD
-[源代码](https://github.com/unocss/unocss/tree/main/packages/preset-legacy-compat)
-=======
-[Source Code](https://github.com/unocss/unocss/tree/main/packages-presets/preset-legacy-compat)
->>>>>>> origin/upstream
+[源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-legacy-compat)
 
 ## 安装
 
@@ -42,9 +38,9 @@ import { defineConfig } from 'unocss'
 
 export default defineConfig({
   presets: [
-    // ...other presets
+    // ...其他预设
     presetLegacyCompat({
-      // options
+      // 选项
       commaStyleColorFunction: true,
       legacyColorSpace: true
     }),
@@ -56,10 +52,10 @@ export default defineConfig({
 
 ### `commaStyleColorFunction`
 
-- **类型：**`boolean`
-- **默认值：**`false`
+- **类型：** `boolean`
+- **默认值：** `false`
 
-将颜色函数 (`rgb()` 和 `hsl()`) 从空格分隔改为逗号分隔，以更好地与旧版浏览器兼容。在 UnoCSS v0.57.0 之前的行为被改为空格分隔，以与 Tailwind CSS 对齐。
+将颜色函数（`rgb()` 和 `hsl()`）从空格分隔转换为逗号分隔，以便更好地兼容遗留浏览器。恢复 UnoCSS v0.57.0 之前的旧行为，该版本在 [#3221](https://github.com/unocss/unocss/pull/3221) 中更改为空格分隔，以与 Tailwind CSS 对齐。
 
 例如：
 
@@ -69,9 +65,9 @@ export default defineConfig({
 
 ### `legacyColorSpace`
 
-- **Type:** `boolean`
-- **Default:** `false`
+- **类型：** `boolean`
+- **默认值：** `false`
 
-Removes color space keywords such as `in oklch` and `in oklab` from the generated styles. This is useful for ensuring compatibility with legacy browsers that do not support these modern color spaces.
+从生成的样式中移除颜色空间关键字，例如 `in oklch` 和 `in oklab`。这对于确保与不支持这些现代颜色空间的遗留浏览器的兼容性非常有用。
 
-To enable this feature, set the `legacyColorSpace` option to `true`.
+要启用此功能，请将 `legacyColorSpace` 选项设置为 `true`。

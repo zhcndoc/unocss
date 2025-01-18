@@ -8,7 +8,7 @@ outline: deep
 
 <!-- @unocss-ignore -->
 
-将一组类编译成一个类。受到了 [Windi CSS 的编译模式](https://windicss.org/posts/modes.html#compilation-mode)和 [@UltraCakeBakery](https://github.com/UltraCakeBakery) 的 [issue #948](https://github.com/unocss/unocss/issues/948) 的启发。
+将一组类编译成一个类。灵感来自于 Windi CSS 的 [编译模式](https://windicss.org/posts/modes.html#compilation-mode) 和 [@UltraCakeBakery](https://github.com/UltraCakeBakery) 的 [issue #948](https://github.com/unocss/unocss/issues/948)。
 
 ## 安装
 
@@ -40,17 +40,18 @@ export default defineConfig({
 })
 ```
 
-## 用法
+::: tip
+此预设包含在 `unocss` 包中，您也可以从那里导入：
 
-<<<<<<< HEAD
-在类字符串的开头添加 `:uno:` 来标记它们进行编译。
-=======
 ```ts
 import { transformerCompileClass } from 'unocss'
 ```
 
 :::
->>>>>>> origin/upstream
+
+## 使用
+
+在类字符串的开头添加 `:uno:` 以标记它们进行编译。
 
 例如：
 
@@ -90,17 +91,13 @@ import { transformerCompileClass } from 'unocss'
 
 ## 选项
 
-<<<<<<< HEAD
-您可以使用选项配置编译类的触发字符串和前缀。有关详细信息，请参阅[类型定义](https://github.com/unocss/unocss/blob/main/packages/transformer-compile-class/src/index.ts#L4)。
-=======
-You can config the trigger string and prefix for compile class with the options. Refer to [the types](https://github.com/unocss/unocss/blob/main/packages-presets/transformer-compile-class/src/index.ts#L4) for details.
->>>>>>> origin/upstream
+您可以使用选项配置触发字符串和编译类的前缀。有关详细信息，请参阅 [类型](https://github.com/unocss/unocss/blob/main/packages-presets/transformer-compile-class/src/index.ts#L4)。
 
 ## 工具
 
 ### ESLint
 
-有一个 eslint 规则，用于在整个项目中强制执行类编译转换器：[@unocss/enforce-class-compile](https://unocss.dev/integrations/eslint#unocss-enforce-class-compile)
+有一个 eslint 规则用于在整个项目中强制使用类编译转换器：[@unocss/enforce-class-compile](https://unocss.dev/integrations/eslint#unocss-enforce-class-compile)
 
 **用法：**
 
@@ -115,4 +112,4 @@ You can config the trigger string and prefix for compile class with the options.
 
 ## 许可证
 
-- MIT 许可证 &copy; 2021-PRESENT [Anthony Fu](https://github.com/antfu)
+- MIT 许可证 &copy; 2021-至今 [Anthony Fu](https://github.com/antfu)

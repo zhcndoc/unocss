@@ -5,16 +5,12 @@ outline: deep
 
 # PostCSS 插件
 
-UnoCSS 的 PostCSS 插件。支持 `@apply`、`@screen` 和 `theme()` 指令。
+UnoCSS 的 PostCSS 插件。支持 `@apply`、 `@screen` 和 `theme()` 指令。
 
-<<<<<<< HEAD
-[源代码](https://github.com/unocss/unocss/tree/main/packages/postcss)
-=======
-[Source Code](https://github.com/unocss/unocss/tree/main/packages-integrations/postcss)
->>>>>>> origin/upstream
+[源代码](https://github.com/unocss/unocss/tree/main/packages-integrations/postcss)
 
-::: 警告
-这个包目前处于实验状态。它不遵循 semver，并且可能在补丁版本中引入重大更改。
+::: warning
+此包目前处于实验状态。它不遵循语义版本控制，可能在补丁版本中引入破坏性更改。
 :::
 
 ## 安装
@@ -64,26 +60,26 @@ export default defineConfig({
 @unocss;
 ```
 
-## 使用方法
+## 使用
 
 ### `@unocss`
 
-`@unocss` 规则是一个占位符。它将被生成的 CSS 替换。
+`@unocss` 是一个占位符。它将被生成的 CSS 替换。
 
-你也可以单独注入每一层：
+你也可以单独注入每个层：
 
 ```css [style.css]
 @unocss preflights;
 @unocss default;
 
 /*
-  备用层。建议总是包括。
-  只有未使用的层将被注入这里。
+  回退层。始终建议包含该层。
+  只有未使用的层会在此注入。
 */
 @unocss;
 ```
 
-如果你希望包含所有层，无论它们之前是否已包含，你可以使用 `@unocss all`。这在你想在多个文件中包含生成的 CSS 时很有用。
+如果你想包含所有层，无论它们是否之前被包含过，可以使用 `@unocss all`。这在你想在多个文件中包含生成的 CSS 时非常有用。
 
 ```css
 @unocss all;
@@ -110,7 +106,7 @@ export default defineConfig({
 
 ### `@screen`
 
-`@screen` 指令允许你使用名称引用你的断点，来自 [`theme.breakpoints`](https://github.com/unocss/unocss/blob/main/README.md#extend-theme)。
+`@screen` 指令允许你创建引用你命名的断点的媒体查询，这些命名来自 [`theme.breakpoints`](https://github.com/unocss/unocss/blob/main/README.md#extend-theme)。
 
 ```css
 .grid {
@@ -149,14 +145,9 @@ export default defineConfig({
 /* ... */
 ```
 
-<<<<<<< HEAD
 #### 断点变体支持
-`@screen` 还支持 `lt`、`at` 变体
-=======
-#### Breakpoint Variant Support
 
-`@screen` also supports `lt`、`at` variants
->>>>>>> origin/upstream
+`@screen` 也支持 `lt`、`at` 变体
 
 ##### `@screen lt`
 
@@ -201,9 +192,7 @@ export default defineConfig({
 
 ```css
 .grid {
-  @
-
-apply grid grid-cols-2;
+  @apply grid grid-cols-2;
 }
 @screen at-xs {
   .grid {
@@ -250,7 +239,7 @@ apply grid grid-cols-2;
 
 ### `theme()`
 
-使用 `theme()` 函数通过点标记访问你的主题配置值。
+使用 `theme()` 函数通过点表示法访问你的主题配置值。
 
 ```css
 .btn-blue {

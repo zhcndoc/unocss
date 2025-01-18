@@ -23,7 +23,7 @@ hero:
       link: https://unocss.dev/play/
       target: _blank
     - theme: alt
-      text: Tutorial
+      text: 教程
       link: https://tutorial.unocss.dev/
       target: _blank
 

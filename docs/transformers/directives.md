@@ -1,12 +1,12 @@
 ---
 title: 指令转换器
-description: UnoCSS 的指令转换器，用于 @apply、@screen 和 theme() 指令 (@unocss/transformer-directives)。
+description: UnoCSS 的 @apply、@screen 和 theme() 指令转换器 (@unocss/transformer-directives)
 outline: deep
 ---
 
 # 指令转换器
 
-UnoCSS 的指令转换器，用于 `@apply`、`@screen` 和 `theme()` 指令：`@unocss/transformer-directives`。
+UnoCSS 的 `@apply`、`@screen` 和 `theme()` 指令转换器: `@unocss/transformer-directives`。
 
 ## 安装
 
@@ -39,7 +39,7 @@ export default defineConfig({
 ```
 
 ::: tip
-这个预设已包含在 `unocss` 包中，你也可以从那里导入它：
+这个预设包含在 `unocss` 包中，你也可以从那里导入它：
 
 ```ts
 import { transformerDirectives } from 'unocss'
@@ -70,7 +70,7 @@ import { transformerDirectives } from 'unocss'
 
 #### `--at-apply`
 
-为了与纯 CSS 兼容，您可以使用 CSS 自定义属性来替换 `@apply` 指令：
+为了兼容普通 CSS，你可以使用 CSS 自定义属性来替换 `@apply` 指令：
 
 ```css
 .custom-div {
@@ -78,39 +78,34 @@ import { transformerDirectives } from 'unocss'
 }
 ```
 
-此功能默认启用，并带有一些别名，您可以通过以下方式配置或禁用：
+此功能默认启用，并带有一些别名，你可以通过以下方式进行配置或禁用：
 
 ```js
 transformerDirectives({
   // 默认值
   applyVariable: ['--at-apply', '--uno-apply', '--uno'],
-  // 或者禁用：
+  // 或禁用：
   // applyVariable: false
 })
 ```
 
 #### 添加引号
 
-要使用带有 `:` 的规则，您将需要引用整个值：
+要使用带有 `:` 的规则，你需要对整个值加上引号：
 
 ```css
 .custom-div {
-<<<<<<< HEAD
-  --at-apply: "hover:text-red hover:font-bold";
-  /* 或 */
-=======
   --at-apply: 'hover:text-red hover:font-bold';
-  /* or */
->>>>>>> origin/upstream
+  /* 或 */
   @apply 'hover:text-red hover:font-bold';
 }
 ```
 
-在 `@apply` 后使用引号是可选的，以满足某些格式化程序的行为。
+在 `@apply` 后面使用引号是可选的，以符合某些格式化程序的行为。
 
 ### `@screen`
 
-`@screen` 指令允许您创建媒体查询，其中引用您的断点名称来自 [`theme.breakpoints`](/config/theme)。
+`@screen` 指令允许你通过名称引用断点来创建媒体查询，来自 [`theme.breakpoints`](/config/theme)。
 
 ```css
 .grid {
@@ -127,10 +122,7 @@ transformerDirectives({
   }
 }
 /* ... */
-<<<<<<< HEAD
-=======
 ...;
->>>>>>> origin/upstream
 ```
 
 将被转换为：
@@ -153,7 +145,7 @@ transformerDirectives({
 /* ... */
 ```
 
-#### 断点变体支持
+#### 支持断点变体
 
 `@screen` 还支持 `lt`、`at` 变体：
 
@@ -247,7 +239,7 @@ transformerDirectives({
 
 ### `theme()`
 
-使用 `theme()` 函数通过点表示法访问您的主题配置值。
+使用 `theme()` 函数通过点表示法访问你的主题配置值。
 
 ```css
 .btn-blue {
@@ -265,10 +257,10 @@ transformerDirectives({
 
 ### `icon()`
 
-使用 `icon()` 函数将图标工具转换为特定的 svg 图标。
+使用 `icon()` 函数将图标实用工具转换为特定的 svg 图标。
 
 ::: warning
-`icon()` 依赖于 `@unocss/preset-icons` 并且将使用配置，确保你已经添加了这个预设。
+`icon()` 依赖于 `@unocss/preset-icons` 并将使用该配置，请确保你已添加该预设。
 :::
 
 ```css
@@ -285,12 +277,12 @@ transformerDirectives({
 }
 ```
 
-因为图标默认使用 `currentColor` 作为填充颜色，如果你想自定义图标的颜色，你可以使用 `icon('图标名称', '自定义颜色')`。
+由于图标默认使用 `currentColor` 作为填充颜色，如果你想自定义图标的颜色，可以使用 `icon('图标名称', '自定义颜色')`。
 
 ```css
 .icon {
   background-image: icon('i-carbon-moon', '#fff');
-  background-image: icon('i-carbon-moon', 'theme("colors.red.500")'); /* use theme color */
+  background-image: icon('i-carbon-moon', 'theme("colors.red.500")'); /* 使用主题颜色 */
 }
 ```
 
@@ -305,4 +297,4 @@ transformerDirectives({
 
 ## 许可证
 
-- MIT 许可证 &copy; 2022-PRESENT [hannoeru](https://github.com/hannoeru)
+- MIT 许可证 &copy; 2022-现在 [hannoeru](https://github.com/hannoeru)
