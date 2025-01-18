@@ -28,11 +28,19 @@ outline: deep
 
 ## 何时使用
 
+<<<<<<< HEAD
 | 使用场景 | | 描述 | 使用的包 |
 | --- | --- | --- | --- |
 | 小型应用 | :x: | 使用一个全局 CSS 文件更方便。使用常规 Vite 插件 [Svelte](/integrations/vite#svelte)/[SvelteKit](/integrations/vite#sveltekit)。 | [unocss/vite](/integrations/vite#svelte) |
 | 大型应用 | ✅ | Svelte 作用域可以帮助你避免全局 CSS 文件的不断增长。 | [@unocss/svelte-scoped/vite](#vite-plugin) |
 | 组件库 | ✅ | 生成的样式直接放在构建的组件中，无需在使用应用的构建管道中使用 UnoCSS。 | [@unocss/svelte-scoped/preprocess](#svelte-preprocessor) |
+=======
+| Use Case          |     | Description                                                                                                                                                 | Package to Use                                           |
+| ----------------- | --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| Smaller apps      | :x: | Having 1 global CSS file is more convenient. Use the regular Vite plugin for [Svelte](/integrations/vite#svelte)/[SvelteKit](/integrations/vite#sveltekit). | [unocss/vite](/integrations/vite#svelte)                 |
+| Larger apps       | ✅  | Svelte Scoped can help you avoid an ever-growing global CSS file.                                                                                           | [@unocss/svelte-scoped/vite](#vite-plugin)               |
+| Component library | ✅  | Generated styles are placed directly in built components without the need to use UnoCSS in a consuming app's build pipeline.                                | [@unocss/svelte-scoped/preprocess](#svelte-preprocessor) |
+>>>>>>> origin/upstream
 
 ## 工作原理
 
@@ -42,12 +50,21 @@ outline: deep
 
 因为 Svelte 作用域重写了你的实用类名，你在哪里可以写它们是有限制的：
 
+<<<<<<< HEAD
 | 支持的语法 | 示例 |
 | --- | --- |
 | 类属性 | `<div class="mb-1" />` |
 | 类指令 | `<div class:mb-1={condition} />` |
 | 类指令简写 | `<div class:logo />` |
 | 类属性 | `<Button class="mb-1" />` |
+=======
+| Supported Syntax          | Example                          |
+| ------------------------- | -------------------------------- |
+| Class attribute           | `<div class="mb-1" />`           |
+| Class directive           | `<div class:mb-1={condition} />` |
+| Class directive shorthand | `<div class:logo />`             |
+| Class prop                | `<Button class="mb-1" />`        |
+>>>>>>> origin/upstream
 
 Svelte 作用域设计为使用实用样式的项目的替代品。因此，也支持在类属性中找到的表达式 (例如 `<div class="mb-1 {foo ? 'mr-1' : 'mr-2'}" />`)，但我们建议你继续使用类指令语法。同时注意，如果你以其他方式使用了类名，如将它们放在 `<script>` 块中或使用属性化模式，则你需要在使用 Svelte 作用域之前采取额外的步骤。你可以使用 `safelist` 选项，并查看下面的[预设支持](#预设支持)部分以获取更多提示。
 
@@ -178,6 +195,7 @@ Svelte 作用域甚至能够正确处理如 `dark:text-white` 这样的上下文
 ### 安装
 
 ::: code-group
+<<<<<<< HEAD
   ```bash [pnpm]
   pnpm add -D unocss @unocss/svelte-scoped
   ```
@@ -188,6 +206,21 @@ Svelte 作用域甚至能够正确处理如 `dark:text-white` 这样的上下文
  ```bash [npm]
   npm install -D unocss @unocss/svelte-scoped
   ```
+=======
+
+```bash [pnpm]
+pnpm add -D unocss @unocss/svelte-scoped
+```
+
+```bash [yarn]
+yarn add -D unocss @unocss/svelte-scoped
+```
+
+```bash [npm]
+npm install -D unocss @unocss/svelte-scoped
+```
+
+>>>>>>> origin/upstream
 :::
 
 #### 添加插件
@@ -220,6 +253,8 @@ export default defineConfig({
 
 将 `%unocss-svelte-scoped.global%` 占位符添加到你的 `<head>` 标签中。在 Svelte 中，这是 `index.html`。在 SvelteKit 中，这将在 `app.html` 的 `%sveltekit.head%` 之前：
 
+<!-- eslint-skip -->
+
 ```html [index.html]
 <head>
   <!-- ... -->
@@ -245,9 +280,15 @@ export async function handle({ event, resolve }) {
 }
 ```
 
+<<<<<<< HEAD
 这种转换必须在一个文件中，其[路径包括 `hooks` 和 `server`](https://github.com/unocss/unocss/blob/main/packages/svelte-scoped/src/_vite/global.ts#L12) (例如 `src/hooks.server.js`，`src/hooks.server.ts`)，因为 `svelte-scoped` 将在你的服务器钩子文件中查找以替换 `unocss_svelte_scoped_global_styles` 为你的全球样式。确保不要从另一个文件导入这种转换，如当使用 [`@sveltejs/kit/hooks`](https://kit.svelte.dev/docs/modules#sveltejs-kit-hooks-sequence) 中的 `sequence`。
 
 *在常规的 Svelte 项目中，Vite 的 `transformIndexHtml` 钩子将自动执行此操作。*
+=======
+This transformation must be in a file whose [path includes `hooks` and `server`](https://github.com/unocss/unocss/blob/main/packages-integrations/svelte-scoped/src/_vite/global.ts#L12) (e.g. `src/hooks.server.js`, `src/hooks.server.ts`) as `svelte-scoped` will be looking in your server hooks file to replace `unocss_svelte_scoped_global_styles` with your global styles. Make sure to not import this transformation from another file, such as when using [sequence](https://kit.svelte.dev/docs/modules#sveltejs-kit-hooks-sequence) from `@sveltejs/kit/hooks`.
+
+_In a regular Svelte project, Vite's `transformIndexHtml` hook will do this automatically._
+>>>>>>> origin/upstream
 
 ## Svelte 预处理器
 
@@ -258,15 +299,19 @@ export async function handle({ event, resolve }) {
 ### 安装
 
 ::: code-group
-  ```bash [pnpm]
-  pnpm add -D unocss @unocss/svelte-scoped
-  ```
-  ```bash [yarn]
-  yarn add -D unocss @unocss/svelte-scoped
-  ```
-  ```bash [npm]
-  npm install -D unocss @unocss/svelte-scoped
-  ```
+
+```bash [pnpm]
+pnpm add -D unocss @unocss/svelte-scoped
+```
+
+```bash [yarn]
+yarn add -D unocss @unocss/svelte-scoped
+```
+
+```bash [npm]
+npm install -D unocss @unocss/svelte-scoped
+```
+
 :::
 
 #### 添加预处理器
@@ -328,7 +373,11 @@ const config = {
 
 任何以句点开始的特殊预设样式，例如 `.prose :where(a):not(:where(.not-prose, .not-prose *))`，将被包裹在 `:global()` 中以避免被 Svelte 编译器自动剥离。
 
+<<<<<<< HEAD
 *如果你的类不依赖于预设样式或你的构建组件仅在已包含预设样式的应用中使用，则在单个组件中添加预设样式是不必要的。*
+=======
+_Adding preflights into individual components is unnecessary if your classes do not depend on preflights or your built components are being consumed only in apps that already include preflights._
+>>>>>>> origin/upstream
 
 ### 安全列表
 
@@ -358,9 +407,19 @@ export default defineConfig({
 
 由于需要在全局样式表中有少量必要样式，并且其他样式包含在需要的每个组件中，预设需要根据情况进行处理：
 
+<<<<<<< HEAD
 | 预设 | 支持 | 注释 |
 | --- | :-- | :-- |
 | [@unocss/preset-uno](https://unocss.dev/presets/uno), [@unocss/preset-mini](https://unocss.dev/presets/mini), [@unocss/preset-wind](https://unocss.dev/presets/wind), [@unocss/preset-icons](https://github.com/unocss/unocss/tree/main/packages/preset-icons), [@unocss/web-fonts](https://github.com/unocss/unocss/tree/main/packages/preset-icons) | ✅ |
+=======
+| Preset                                                                                                                                                                                                                                                                                                                                                                | Supported | Notes                                                                                                                                                                                                                                                             |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [@unocss/preset-uno](https://unocss.dev/presets/uno), [@unocss/preset-mini](https://unocss.dev/presets/mini), [@unocss/preset-wind](https://unocss.dev/presets/wind), [@unocss/preset-icons](https://github.com/unocss/unocss/tree/main/packages-presets/preset-icons), [@unocss/web-fonts](https://github.com/unocss/unocss/tree/main/packages-presets/preset-icons) | ✅        | These and all community plugins, e.g. [unocss-preset-forms](https://github.com/Julien-R44/unocss-preset-forms), that only rely on rules/variants/preflights will work.                                                                                            |
+| [@unocss/preset-typography](https://github.com/unocss/unocss/tree/main/packages-presets/preset-typography)                                                                                                                                                                                                                                                            | ✅        | Due to how this preset adds rulesets to your preflights you must add the `prose` class to your safelist when using this preset, otherwise the preflights will never be triggered. All other classes from this preset, e.g. `prose-pink`, can be component scoped. |
+| [@unocss/preset-rem-to-px](https://github.com/unocss/unocss/tree/main/packages-presets/preset-rem-to-px)                                                                                                                                                                                                                                                              | ✅        | This and all presets like it that only modify style output will work.                                                                                                                                                                                             |
+| [@unocss/preset-attributify](https://github.com/unocss/unocss/tree/main/packages-presets/preset-attributify)                                                                                                                                                                                                                                                          | -         | Preset won't work. Instead use [unplugin-attributify-to-class](https://github.com/MellowCo/unplugin-attributify-to-class) Vite plugin (`attributifyToClass({ include: [/\.svelte$/]})`) before the Svelte Scoped Vite plugin                                      |
+| [@unocss/preset-tagify](https://github.com/unocss/unocss/tree/main/packages-presets/preset-tagify)                                                                                                                                                                                                                                                                    | -         | Presets that add custom extractors will not work. Create a preprocessor to convert `<text-red>Hi</text-red>` to `<span class="text-red">Hi</span>`, then create a PR to add the link here.                                                                        |
+>>>>>>> origin/upstream
 
 这些和所有社区插件，例如 [unocss-preset-forms](https://github.com/Julien-R44/unocss-preset-forms)，只依赖于规则/变体/预设样式将工作。 |
 | [@unocss/preset-typography](https://github.com/unocss/unocss/tree/main/packages/preset-typography) | ✅ | 由于这个预设如何向你的预设样式中添加规则集，你必须在使用这个预设时将 `prose` 类添加到你的安全列表中，否则预设样式将永远不会被触发。这个预设的其他所有类，例如 `prose-pink`，可以在组件作用域中使用。 |

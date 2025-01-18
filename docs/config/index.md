@@ -6,8 +6,9 @@ outline: deep
 
 # 配置 UnoCSS
 
-## 配置
-配置是使 UnoCSS 功能强大的关键。
+## Configuration
+
+Configurations are what make UnoCSS powerful.
 
 - [规则](/config/rules) - 定义原子 CSS 工具
 - [快捷方式](/config/shortcuts) - 将多个规则组合成一个简写。
@@ -23,6 +24,7 @@ outline: deep
 ## 选项
 
 ### rules
+
 - **类型:** `Rule<Theme>[]`
 
 生成 CSS 工具的规则。后面的条目优先级更高。
@@ -34,6 +36,7 @@ outline: deep
 类似于 Windi CSS 的快捷方式，允许通过组合现有的工具创建新的工具。后面的条目优先级更高。
 
 ### theme
+
 - **类型:** `Theme`
 
 共享规则配置的主题对象。
@@ -41,7 +44,7 @@ outline: deep
 ### extendTheme
 
 - **类型:** `Arrayable<ThemeExtender<Theme>>`
-自定义函数用于修改主题对象。
+  自定义函数用于修改主题对象。
 
 也可以返回一个新的主题对象以完全替换原始对象。
 
@@ -58,22 +61,26 @@ outline: deep
 处理源文件并输出可能的类/选择器的提取器。可以根据语言进行识别。
 
 ### preflights
+
 - **类型:** `Preflight<Theme>[]`
 
 原始 CSS 注入。
 
 ### layers
+
 - **类型:** `Record<string, number>`
 
 层顺序。默认为 0。
 
 ### outputToCssLayers
+
 - **类型:** `boolean | UseCssLayersOptions`
 - **默认:** `false`
 
 输出层到 CSS 级联层。
 
 #### cssLayerName
+
 - **类型:** `(internalLayer: string) => string | undefined | null`
 
 指定内部层应输出到的 CSS 层的名称（可以是子层，例如 "mylayer.mysublayer"）。
@@ -82,6 +89,7 @@ outline: deep
 如果返回 `null`，则内部层不会输出到 CSS 层。
 
 ### sortLayers
+
 - **类型:** `(layers: string[]) => string[]`
 
 自定义函数以排序层。
@@ -93,6 +101,7 @@ outline: deep
 常用案例的预定义配置。
 
 ### transformers
+
 - **类型:** `SourceCodeTransformer[]`
 
 针对源代码的自定义转换器。
@@ -129,6 +138,7 @@ outline: deep
 变体分隔符。
 
 ### extractorDefault
+
 - **类型:** `Extractor | null | false`
 - **默认:** `import('@unocss/core').defaultExtractor`
 
@@ -165,6 +175,7 @@ outline: deep
 提取作为工具用法的源选项。
 
 支持的源：
+
 - `filesystem` - 从文件系统提取
 - `plain` - 从纯内联文本提取
 - `pipeline` - 从构建工具的转换管道提取，例如 Vite 和 Webpack
@@ -235,19 +246,23 @@ outline: deep
 将触发配置重新加载的文件列表。
 
 ### cli
+
 UnoCSS CLI 选项。
 
 #### entry
+
 - **类型:** `Arrayable<CliEntryItem>`
 
 UnoCSS cli 入口点。
 
 ##### patterns
+
 - **类型:** `string[]`
 
 用于从文件系统提取的 Glob 模式。
 
 ##### outFile
+
 - **类型:** `string`
 
 输出文件路径。

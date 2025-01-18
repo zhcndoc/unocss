@@ -10,15 +10,19 @@ description: Astro 的 UnoCSS 集成 (@unocss/astro)。
 ## 安装
 
 ::: code-group
-  ```bash [pnpm]
-  pnpm add -D unocss
-  ```
-  ```bash [yarn]
-  yarn add -D unocss
-  ```
-  ```bash [npm]
-  npm install -D unocss
-  ```
+
+```bash [pnpm]
+pnpm add -D unocss
+```
+
+```bash [yarn]
+yarn add -D unocss
+```
+
+```bash [npm]
+npm install -D unocss
+```
+
 :::
 
 ```ts [astro.config.ts]
@@ -47,15 +51,19 @@ export default defineConfig({
 默认情况下，不会注入[浏览器样式重置](/guide/style-reset)。要启用它，请安装 `@unocss/reset` 包：
 
 ::: code-group
-  ```bash [pnpm]
-  pnpm add -D @unocss/reset
-  ```
-  ```bash [yarn]
-  yarn add -D @unocss/reset
-  ```
-  ```bash [npm]
-  npm install -D @unocss/reset
-  ```
+
+```bash [pnpm]
+pnpm add -D @unocss/reset
+```
+
+```bash [yarn]
+yarn add -D @unocss/reset
+```
+
+```bash [npm]
+npm install -D @unocss/reset
+```
+
 :::
 
 并更新你的 `astro.config.ts`：
@@ -78,15 +86,19 @@ export default defineConfig({
 此插件不附带任何默认预设。
 
 ::: code-group
-  ```bash [pnpm]
-  pnpm add -D @unocss/astro
-  ```
-  ```bash [yarn]
-  yarn add -D @unocss/astro
-  ```
-  ```bash [npm]
-  npm install -D @unocss/astro
-  ```
+
+```bash [pnpm]
+pnpm add -D @unocss/astro
+```
+
+```bash [yarn]
+yarn add -D @unocss/astro
+```
+
+```bash [npm]
+npm install -D @unocss/astro
+```
+
 :::
 
 ```ts [astro.config.mjs]
@@ -102,7 +114,7 @@ export default {
 有关更多详细信息，请参考 [Vite 插件](/integrations/vite)。
 
 ::: info
-如果你正在构建基于 UnoCSS 的元框架，请参考[此文件](https://github.com/unocss/unocss/blob/main/packages/unocss/src/astro.ts)，查看如何绑定默认预设的示例。
+如果你正在构建基于 UnoCSS 的元框架，请参考[此文件](https://github.com/unocss/unocss/blob/main/packages-presets/unocss/src/astro.ts)，查看如何绑定默认预设的示例。
 :::
 
 ## 注意事项

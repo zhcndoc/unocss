@@ -10,20 +10,28 @@ outline: deep
 
 查看[所有支持的提供商](#providers)。
 
+<<<<<<< HEAD
 [源代码](https://github.com/unocss/unocss/tree/main/packages/preset-web-fonts)
+=======
+[Source Code](https://github.com/unocss/unocss/tree/main/packages-presets/preset-web-fonts)
+>>>>>>> origin/upstream
 
 ## 安装
 
 ::: code-group
-  ```bash [pnpm]
-  pnpm add -D @unocss/preset-web-fonts
-  ```
-  ```bash [yarn]
-  yarn add -D @unocss/preset-web-fonts
-  ```
-  ```bash [npm]
-  npm install -D @unocss/preset-web-fonts
-  ```
+
+```bash [pnpm]
+pnpm add -D @unocss/preset-web-fonts
+```
+
+```bash [yarn]
+yarn add -D @unocss/preset-web-fonts
+```
+
+```bash [npm]
+npm install -D @unocss/preset-web-fonts
+```
+
 :::
 
 ```ts [uno.config.ts]
@@ -45,6 +53,7 @@ export default defineConfig({
 ```ts
 import { presetWebFonts } from 'unocss'
 ```
+
 :::
 
 ## 提供商
@@ -90,8 +99,14 @@ export default defineConfig({
 ## 选项
 
 ### provider
+<<<<<<< HEAD
 - **类型：**`WebFontsProviders`
 - **默认值：**`google`
+=======
+
+- **Type:** `WebFontsProviders`
+- **Default:** `google`
+>>>>>>> origin/upstream
 
 Web 字体的提供商服务。
 
@@ -100,7 +115,12 @@ type WebFontsProviders = 'google' | 'bunny' | 'fontshare' | 'none'
 ```
 
 ### fonts
+<<<<<<< HEAD
 - **类型：**`Record<string, WebFontMeta | string | (WebFontMeta | string)[]>`
+=======
+
+- **Type:** `Record<string, WebFontMeta | string | (WebFontMeta | string)[]>`
+>>>>>>> origin/upstream
 
 字体。更多详情请参见[示例](#example)。
 
@@ -118,26 +138,50 @@ interface WebFontMeta {
 ```
 
 ### extendTheme
+<<<<<<< HEAD
 - **类型：**`boolean`
 - **默认值：**`true`
+=======
+
+- **Type:** `boolean`
+- **Default:** `true`
+>>>>>>> origin/upstream
 
 扩展主题对象。
 
 ### themeKey
+<<<<<<< HEAD
 - **类型：**`string`
 - **默认值：**`fontFamily`
+=======
+
+- **Type:** `string`
+- **Default:** `fontFamily`
+>>>>>>> origin/upstream
 
 主题对象的键。
 
 ### inlineImports
+<<<<<<< HEAD
 - **类型：**`boolean`
 - **默认值：**`true`
+=======
+
+- **Type:** `boolean`
+- **Default:** `true`
+>>>>>>> origin/upstream
 
 内联 CSS `@import()`。
 
 ### customFetch
+<<<<<<< HEAD
 - **类型：**`(url: string) => Promise<string>`
 - **默认值：**`undefined`
+=======
+
+- **Type:** `(url: string) => Promise<string>`
+- **Default:** `undefined`
+>>>>>>> origin/upstream
 
 使用您自己的函数来获取字体源。查看[自定义获取函数](#custom-fetch-function)。
 
@@ -169,6 +213,8 @@ presetWebFonts({
 ```
 
 将自动生成以下 CSS：
+
+<!-- eslint-skip -->
 
 ```css
 @import url('https://fonts.googleapis.com/css2?family=Roboto&family=Fira+Code&family=Fira+Mono:wght@400;700&family=Lobster&family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');

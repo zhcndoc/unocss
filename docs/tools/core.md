@@ -10,15 +10,19 @@ UnoCSS 的核心引擎，没有任何预设：`@unocss/core`。可以用作您�
 ## 安装
 
 ::: code-group
-  ```bash [pnpm]
-  pnpm add -D @unocss/core
-  ```
-  ```bash [yarn]
-  yarn add -D @unocss/core
-  ```
-  ```bash [npm]
-  npm install -D @unocss/core
-  ```
+
+```bash [pnpm]
+pnpm add -D @unocss/core
+```
+
+```bash [yarn]
+yarn add -D @unocss/core
+```
+
+```bash [npm]
+npm install -D @unocss/core
+```
+
 :::
 
 ## 用法

@@ -10,15 +10,19 @@ UnoCSS 的 ESLint 配置：`@unocss/eslint-config`。
 ## 安装
 
 ::: code-group
-  ```bash [pnpm]
-  pnpm add -D @unocss/eslint-config
-  ```
-  ```bash [yarn]
-  yarn add -D @unocss/eslint-config
-  ```
-  ```bash [npm]
-  npm install -D @unocss/eslint-config
-  ```
+
+```bash [pnpm]
+pnpm add -D @unocss/eslint-config
+```
+
+```bash [yarn]
+yarn add -D @unocss/eslint-config
+```
+
+```bash [npm]
+npm install -D @unocss/eslint-config
+```
+
 :::
 
 使用[扁平配置样式](https://eslint.org/docs/latest/use/configure/configuration-files-new)：
@@ -90,8 +94,13 @@ _该规则旨在与[编译类转换器](https://unocss.dev/transformers/compile-
 
 选项：
 
+<<<<<<< HEAD
 - `prefix` (字符串) - 可与[自定义前缀](https://github.com/unocss/unocss/blob/main/packages/transformer-compile-class/src/index.ts#L34)结合使用。默认值：`:uno:`
 - `enableFix` (布尔值) - 当设为 `false` 时，可用于逐步迁移。默认值：`true`
+=======
+- `prefix` (string) - can be used in combination with [custom prefix](https://github.com/unocss/unocss/blob/main/packages-presets/transformer-compile-class/src/index.ts#L34). Default: `:uno:`
+- `enableFix` (boolean) - can be used for gradual migration when `false`. Default: `true`
+>>>>>>> origin/upstream
 
 **注意**：目前仅支持 Vue。如果你需要在 JSX 中使用，_欢迎贡献 PR_。如果你在寻找 Svelte 中的此功能，你可能需要 [`svelte-scoped`](https://unocss.dev/integrations/svelte-scoped) 模式。
 

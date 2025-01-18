@@ -12,20 +12,28 @@ outline: deep
 
 默认情况下，没有任何选项被启用，您需要显式地选择每个选项。
 
+<<<<<<< HEAD
 [源代码](https://github.com/unocss/unocss/tree/main/packages/preset-legacy-compat)
+=======
+[Source Code](https://github.com/unocss/unocss/tree/main/packages-presets/preset-legacy-compat)
+>>>>>>> origin/upstream
 
 ## 安装
 
 ::: code-group
-  ```bash [pnpm]
-  pnpm add -D @unocss/preset-legacy-compat
-  ```
-  ```bash [yarn]
-  yarn add -D @unocss/preset-legacy-compat
-  ```
-  ```bash [npm]
-  npm install -D @unocss/preset-legacy-compat
-  ```
+
+```bash [pnpm]
+pnpm add -D @unocss/preset-legacy-compat
+```
+
+```bash [yarn]
+yarn add -D @unocss/preset-legacy-compat
+```
+
+```bash [npm]
+npm install -D @unocss/preset-legacy-compat
+```
+
 :::
 
 ```ts [uno.config.ts]

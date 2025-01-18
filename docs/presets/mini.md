@@ -8,20 +8,28 @@ outline: deep
 
 UnoCSS 的基本预设，仅包含最基本的实用工具。
 
+<<<<<<< HEAD
 [源代码](https://github.com/unocss/unocss/tree/main/packages/preset-mini)
+=======
+[Source Code](https://github.com/unocss/unocss/tree/main/packages-presets/preset-mini)
+>>>>>>> origin/upstream
 
 ## 安装
 
 ::: code-group
-  ```bash [pnpm]
-  pnpm add -D @unocss/preset-mini
-  ```
-  ```bash [yarn]
-  yarn add -D @unocss/preset-mini
-  ```
-  ```bash [npm]
-  npm install -D @unocss/preset-mini
-  ```
+
+```bash [pnpm]
+pnpm add -D @unocss/preset-mini
+```
+
+```bash [yarn]
+yarn add -D @unocss/preset-mini
+```
+
+```bash [npm]
+npm install -D @unocss/preset-mini
+```
+
 :::
 
 ```ts [uno.config.ts]
@@ -42,6 +50,7 @@ export default defineConfig({
 ```ts
 import { presetMini } from 'unocss'
 ```
+
 :::
 
 ## 规则
@@ -112,9 +121,15 @@ presetMini({
 }
 ```
 
+<<<<<<< HEAD
 ### 主题
 
 您可以在配置中完全自定义您的主题属性，UnoCSS 最终将其深度合并到默认主题中。
+=======
+### Theme
+
+You can fully customize your theme property in your config, and UnoCSS will eventually deeply merge it to the default theme.
+>>>>>>> origin/upstream
 
 :::warning
 `breakpoints` property isn't deeply merged, but overridden, see [Breakpoints](/config/theme#breakpoints).
@@ -137,8 +152,14 @@ presetMini({
 ## 选项
 
 ### dark
+<<<<<<< HEAD
 - **类型：**`class | media | DarkModeSelectors`
 - **默认值：**`class`
+=======
+
+- **Type:** `class | media | DarkModeSelectors`
+- **Default:** `class`
+>>>>>>> origin/upstream
 
 深色模式选项。可以是 `class`、`media`，或自定义选择器对象 (`DarkModeSelectors`)。
 
@@ -161,28 +182,52 @@ interface DarkModeSelectors {
 ```
 
 ### attributifyPseudo
+<<<<<<< HEAD
 - **类型：**`Boolean`
 - **默认值：**`false`
+=======
+
+- **Type:** `Boolean`
+- **Default:** `false`
+>>>>>>> origin/upstream
 
 将伪类选择器生成为 `[group=""]`，而不是 `.group`。
 
 ### variablePrefix
+<<<<<<< HEAD
 - **类型：**`string`
 - **默认值：**
+=======
+
+- **Type:** `string`
+- **Default:** `un-`
+>>>>>>> origin/upstream
 
 `un-`
 
 CSS 自定义属性的前缀。
 
 ### prefix
+<<<<<<< HEAD
 - **类型：**`string | string[]`
 - **默认值：**`undefined`
+=======
+
+- **Type:** `string | string[]`
+- **Default:** `undefined`
+>>>>>>> origin/upstream
 
 实用工具前缀。
 
 ### preflight
+<<<<<<< HEAD
 - **类型：**`boolean` | `on-demand`
 - **默认值：**`true`
+=======
+
+- **Type:** `boolean` | `on-demand`
+- **Default:** `true`
+>>>>>>> origin/upstream
 
 生成预置 CSS。可以是：
 

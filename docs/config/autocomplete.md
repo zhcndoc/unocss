@@ -1,7 +1,9 @@
 # 自动完成功能
 
 自动完成功能可以为 UnoCSS 的智能建议进行定制，适用于<a href="/play" target="_blank" rel="noreferrer">在线编辑器</a>和[VS Code 插件](/integrations/vscode)。
+
 <!--eslint-skip-->
+
 ```ts
 autocomplete: {
   templates: [
@@ -31,6 +33,6 @@ autocomplete: {
 
 - `shorthands` 是简写名称到其模板的映射。如果是 `Array`，它将是逻辑或分组。
 
-- `extractors` 用于获取可能的类并将类名样式建议转换为正确的格式。例如，您可以查看我们如何实现 [属性化自动完成功能提取器](https://github.com/unocss/unocss/blob/main/packages/preset-attributify/src/autocomplete.ts)。
+- `extractors` 用于获取可能的类并将类名样式建议转换为正确的格式。例如，您可以查看我们如何实现 [属性化自动完成功能提取器](https://github.com/unocss/unocss/blob/main/packages-presets/preset-attributify/src/autocomplete.ts)。
 
 - 有关更多帮助，请参阅 [此处](/tools/autocomplete)。

@@ -10,15 +10,19 @@ description: Nuxt 模块用于 UnoCSS。
 ## 安装
 
 ::: code-group
-  ```bash [pnpm]
-  pnpm add -D unocss @unocss/nuxt
-  ```
-  ```bash [yarn]
-  yarn add -D unocss @unocss/nuxt
-  ```
-  ```bash [npm]
-  npm install -D unocss @unocss/nuxt
-  ```
+
+```bash [pnpm]
+pnpm add -D unocss @unocss/nuxt
+```
+
+```bash [yarn]
+yarn add -D unocss @unocss/nuxt
+```
+
+```bash [npm]
+npm install -D unocss @unocss/nuxt
+```
+
 :::
 
 在你的 Nuxt 配置文件中添加 `@unocss/nuxt`：
@@ -45,12 +49,21 @@ export default defineConfig({
 
 ## 支持状态
 
+<<<<<<< HEAD
 | | Nuxt 2 | Nuxt Bridge | Nuxt 3 |
 | --- | :-- | :-- | :-- |
 | Webpack 开发 | ✅ | ✅ | 🚧 |
 | Webpack 构建 | ✅ | ✅ | ✅ |
 | Vite 开发 | - | ✅ | ✅ |
 | Vite 构建 | - | ✅ | ✅ |
+=======
+|               | Nuxt 2 | Nuxt Bridge | Nuxt 3 |
+| ------------- | :----- | :---------- | :----- |
+| Webpack Dev   | ✅     | ✅          | 🚧     |
+| Webpack Build | ✅     | ✅          | ✅     |
+| Vite Dev      | -      | ✅          | ✅     |
+| Vite Build    | -      | ✅          | ✅     |
+>>>>>>> origin/upstream
 
 ## 配置
 

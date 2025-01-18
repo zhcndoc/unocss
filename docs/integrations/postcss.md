@@ -7,7 +7,11 @@ outline: deep
 
 UnoCSS 的 PostCSS 插件。支持 `@apply`、`@screen` 和 `theme()` 指令。
 
+<<<<<<< HEAD
 [源代码](https://github.com/unocss/unocss/tree/main/packages/postcss)
+=======
+[Source Code](https://github.com/unocss/unocss/tree/main/packages-integrations/postcss)
+>>>>>>> origin/upstream
 
 ::: 警告
 这个包目前处于实验状态。它不遵循 semver，并且可能在补丁版本中引入重大更改。
@@ -16,15 +20,19 @@ UnoCSS 的 PostCSS 插件。支持 `@apply`、`@screen` 和 `theme()` 指令。
 ## 安装
 
 ::: code-group
-  ```bash [pnpm]
-  pnpm add -D unocss @unocss/postcss
-  ```
-  ```bash [yarn]
-  yarn add -D unocss @unocss/postcss
-  ```
-  ```bash [npm]
-  npm install -D unocss @unocss/postcss
-  ```
+
+```bash [pnpm]
+pnpm add -D unocss @unocss/postcss
+```
+
+```bash [yarn]
+yarn add -D unocss @unocss/postcss
+```
+
+```bash [npm]
+npm install -D unocss @unocss/postcss
+```
+
 :::
 
 ```ts [postcss.config.mjs]
@@ -119,7 +127,6 @@ export default defineConfig({
   }
 }
 /* ... */
-...
 ```
 
 将被转换为：
@@ -142,8 +149,14 @@ export default defineConfig({
 /* ... */
 ```
 
+<<<<<<< HEAD
 #### 断点变体支持
 `@screen` 还支持 `lt`、`at` 变体
+=======
+#### Breakpoint Variant Support
+
+`@screen` also supports `lt`、`at` variants
+>>>>>>> origin/upstream
 
 ##### `@screen lt`
 

@@ -13,15 +13,19 @@ outline: deep
 ## 安装
 
 ::: code-group
-  ```bash [pnpm]
-  pnpm add -D @unocss/transformer-compile-class
-  ```
-  ```bash [yarn]
-  yarn add -D @unocss/transformer-compile-class
-  ```
-  ```bash [npm]
-  npm install -D @unocss/transformer-compile-class
-  ```
+
+```bash [pnpm]
+pnpm add -D @unocss/transformer-compile-class
+```
+
+```bash [yarn]
+yarn add -D @unocss/transformer-compile-class
+```
+
+```bash [npm]
+npm install -D @unocss/transformer-compile-class
+```
+
 :::
 
 ```ts [uno.config.ts]
@@ -38,13 +42,21 @@ export default defineConfig({
 
 ## 用法
 
+<<<<<<< HEAD
 在类字符串的开头添加 `:uno:` 来标记它们进行编译。
+=======
+```ts
+import { transformerCompileClass } from 'unocss'
+```
+
+:::
+>>>>>>> origin/upstream
 
 例如：
 
 ```html
 <div class=":uno: text-center sm:text-left">
-  <div class=":uno: text-sm font-bold hover:text-red"/>
+  <div class=":uno: text-sm font-bold hover:text-red" />
 </div>
 ```
 
@@ -52,7 +64,7 @@ export default defineConfig({
 
 ```html
 <div class="uno-qlmcrp">
-  <div class="uno-0qw2gr"/>
+  <div class="uno-0qw2gr" />
 </div>
 ```
 
@@ -78,7 +90,11 @@ export default defineConfig({
 
 ## 选项
 
+<<<<<<< HEAD
 您可以使用选项配置编译类的触发字符串和前缀。有关详细信息，请参阅[类型定义](https://github.com/unocss/unocss/blob/main/packages/transformer-compile-class/src/index.ts#L4)。
+=======
+You can config the trigger string and prefix for compile class with the options. Refer to [the types](https://github.com/unocss/unocss/blob/main/packages-presets/transformer-compile-class/src/index.ts#L4) for details.
+>>>>>>> origin/upstream
 
 ## 工具
 

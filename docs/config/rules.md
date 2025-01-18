@@ -19,6 +19,8 @@ rules: [
 
 每当在用户的代码库中检测到 `m-1` 时，将生成以下 CSS：
 
+<!-- eslint-skip -->
+
 ```css
 .m-1 { margin: 0.25rem; }
 ```
@@ -57,6 +59,8 @@ rules: [
 
 将生成相应的 CSS：
 
+<!-- eslint-skip -->
+
 ```css
 .m-100 { margin: 25rem; }
 .m-3 { margin: 0.75rem; }
@@ -82,6 +86,8 @@ rules: [
 
 这将使 `h-100dvh` 生成：
 
+<!-- eslint-skip -->
+
 ```css
 .h-100dvh { height: 100vh; height: 100dvh; }
 ```
@@ -99,14 +105,21 @@ UnoCSS 尊重您在生成的 CSS 中定义的规则顺序。后面的规则优�
 例如，`<div class="m-2 hover:m2">` 将生成：
 
 ```css
-.hover\:m2:hover, .m-2 { margin: 0.5rem; }
+.hover\:m2:hover,
+.m-2 {
+  margin: 0.5rem;
+}
 ```
 
 而不是两个单独的规则：
 
 ```css
-.hover\:m2:hover { margin: 0.5rem; }
-.m-2 { margin: 0.5rem; }
+.hover\:m2:hover {
+  margin: 0.5rem;
+}
+.m-2 {
+  margin: 0.5rem;
+}
 ```
 
 ## 特殊符号

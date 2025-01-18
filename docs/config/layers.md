@@ -22,6 +22,8 @@ rules: [
 
 这将生成：
 
+<!-- eslint-skip -->
+
 ```css
 /* 层: default */
 .btn { padding: 4px; }
@@ -107,18 +109,24 @@ outputToCssLayers: {
 
 ```html
 <p class="uno-layer-my-layer:text-xl">text</p>
+```
 
+<!-- eslint-skip -->
+
+```css
 /* 层: my-layer */
-.uno-layer-my-layer\:text-xl{font-size:1.25rem;line-height:1.75rem;}
+.uno-layer-my-layer\:text-xl{ font-size:1.25rem; line-height:1.75rem; }
 ```
 
 `layer-<name>:` 可用于创建 CSS @layer。
 
 ```html
 <p class="layer-my-layer:text-xl">text</p>
+```
 
+<!-- eslint-skip -->
+
+```css
 /* 层: default */
-@layer my-layer{
-.layer-my-layer\:text-xl{font-size:1.25rem;line-height:1.75rem;}
-}
+@layer my-layer{ .layer-my-layer\:text-xl{ font-size:1.25rem; line-height:1.75rem; } }
 ```

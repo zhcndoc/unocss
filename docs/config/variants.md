@@ -46,6 +46,8 @@ rules: [
 
 因此，以下 CSS 将被生成：
 
+<!-- eslint-skip -->
+
 ```css
 .hover\:m-2:hover { margin: 0.5rem; }
 ```
@@ -54,4 +56,4 @@ rules: [
 
 ## 更进一步
 
-变体系统非常强大，在本指南中无法全面覆盖，您可以查看 [默认预设的实现](https://github.com/unocss/unocss/tree/main/packages/preset-mini/src/_variants) 以了解更高级的用法。
+变体系统非常强大，在本指南中无法全面覆盖，您可以查看 [默认预设的实现](https://github.com/unocss/unocss/tree/main/packages-presets/preset-mini/src/_variants) 以了解更高级的用法。

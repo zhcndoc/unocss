@@ -14,7 +14,11 @@ const toggleDark = () => {
 
 使用 UnoCSS 为任何图标提供纯 CSS 解决方案。
 
+<<<<<<< HEAD
 [源代码](https://github.com/unocss/unocss/tree/main/packages/preset-icons)
+=======
+[Source Code](https://github.com/unocss/unocss/tree/main/packages-presets/preset-icons)
+>>>>>>> origin/upstream
 
 ::: tip
 推荐阅读：[纯 CSS 图标](https://antfu.me/posts/icons-in-pure-css)
@@ -54,6 +58,7 @@ const toggleDark = () => {
 ## 安装
 
 ::: code-group
+<<<<<<< HEAD
   ```bash [pnpm]
   pnpm add -D @unocss/preset-icons @iconify-json/[你想要的集合]
   ```
@@ -63,6 +68,21 @@ const toggleDark = () => {
   ```bash [npm]
   npm install -D @unocss/preset-icons @iconify-json/[你想要的集合]
   ```
+=======
+
+```bash [pnpm]
+pnpm add -D @unocss/preset-icons @iconify-json/[the-collection-you-want]
+```
+
+```bash [yarn]
+yarn add -D @unocss/preset-icons @iconify-json/[the-collection-you-want]
+```
+
+```bash [npm]
+npm install -D @unocss/preset-icons @iconify-json/[the-collection-you-want]
+```
+
+>>>>>>> origin/upstream
 :::
 
 我们使用 [Iconify](https://iconify.design) 作为图标数据源。您需要按照 `@iconify-json/*` 模式在 `devDependencies` 中安装相应的图标集。例如，Material Design Icons 的图标集为 `@iconify-json/mdi`，Tabler 的图标集为 `@iconify-json/tabler`。您可以参考 [Icônes](https://icones.js.org/) 或 [Iconify](https://icon-sets.iconify.design/) 查看所有可用集合。
@@ -85,6 +105,7 @@ export default defineConfig({
 ```ts
 import { presetIcons } from 'unocss'
 ```
+
 :::
 
 ::: info
@@ -94,15 +115,19 @@ import { presetIcons } from 'unocss'
 如果您希望一次性安装 Iconify 上所有可用的图标集 (约 130MB)：
 
 ::: code-group
-  ```bash [pnpm]
-  pnpm add -D @iconify/json
-  ```
-  ```bash [yarn]
-  yarn add -D @iconify/json
-  ```
-  ```bash [npm]
-  npm install -D @iconify/json
-  ```
+
+```bash [pnpm]
+pnpm add -D @iconify/json
+```
+
+```bash [yarn]
+yarn add -D @iconify/json
+```
+
+```bash [npm]
+npm install -D @iconify/json
+```
+
 :::
 
 ### 额外属性
@@ -250,7 +275,12 @@ export default defineConfig({
 外部包必须包含带有 `IconifyJSON` 格式中的 `icons` 数据的 `icons.json` 文件，可以使用 Iconify Tools 导出。查看[将图标集导出为 JSON 包](https://iconify.design/docs/libraries/tools/export/json-package.html)获取更多详情。
 :::
 
+<<<<<<< HEAD
 例如，您可以使用 `an-awesome-collection` 或 `@my-awesome-collections/some-collection` 来加载您的自定义或第三方图标：
+=======
+For example, you can use `an-awesome-collection` or `@my-awesome-collections/some-collection` to load your custom or third party icons:
+
+>>>>>>> origin/upstream
 ```ts [unocss.config.ts]
 import { createExternalPackageIconLoader } from '@iconify/utils/lib/loader/external-pkg'
 import { defineConfig, presetIcons } from 'unocss'
@@ -264,7 +294,12 @@ export default defineConfig({
 })
 ```
 
+<<<<<<< HEAD
 您还可以将其与其他自定义图标加载程序结合使用，例如：
+=======
+You can also combine it with other custom icon loaders, for example:
+
+>>>>>>> origin/upstream
 ```ts [unocss.config.ts]
 import { createExternalPackageIconLoader } from '@iconify/utils/lib/loader/external-pkg'
 import { defineConfig, presetIcons } from 'unocss'
@@ -416,10 +451,19 @@ presetIcons({
 生成的 CSS 图标的模式。
 
 :::tip
+<<<<<<< HEAD
 - `mask` - 使用背景颜色和 `mask` 属性进行单色图标的渲染
 - `bg` - 使用背景图像渲染图标，颜色是静态的
 - `auto` - 根据图标的样式智能地在 `mask` 和 `bg` 之间决定模式
   :::
+=======
+
+- `mask` - use background color and the `mask` property for monochrome icons
+- `bg` - use background image for the icons, colors are static
+- `auto` - smartly decide mode between `mask` and `bg` per icon based on its style
+
+:::
+>>>>>>> origin/upstream
 
 ### prefix
 

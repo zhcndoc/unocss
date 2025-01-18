@@ -8,20 +8,28 @@ outline: deep
 
 此预设为其他预设启用了 [Tagify 模式](#tagify-模式)。
 
+<<<<<<< HEAD
 [源代码](https://github.com/unocss/unocss/tree/main/packages/preset-tagify)
+=======
+[Source Code](https://github.com/unocss/unocss/tree/main/packages-presets/preset-tagify)
+>>>>>>> origin/upstream
 
 ## 安装
 
 ::: code-group
-  ```bash [pnpm]
-  pnpm add -D @unocss/preset-tagify
-  ```
-  ```bash [yarn]
-  yarn add -D @unocss/preset-tagify
-  ```
-  ```bash [npm]
-  npm install -D @unocss/preset-tagify
-  ```
+
+```bash [pnpm]
+pnpm add -D @unocss/preset-tagify
+```
+
+```bash [yarn]
+yarn add -D @unocss/preset-tagify
+```
+
+```bash [npm]
+npm install -D @unocss/preset-tagify
+```
+
 :::
 
 ```ts [uno.config.ts]
@@ -41,9 +49,15 @@ export default defineConfig({
 当您只需要将单个 unocss 规则应用于元素时，此预设会非常有用。
 
 ```html
+<<<<<<< HEAD
 <span class="text-red"> 红色文本 </span>
 <div class="flex"> 弹性盒 </div>
 今天我感觉 <span class="i-line-md-emoji-grin"></span>！
+=======
+<span class="text-red"> red text </span>
+<div class="flex">flexbox</div>
+I'm feeling <span class="i-line-md-emoji-grin"></span> today!
+>>>>>>> origin/upstream
 ```
 
 使用 Tagify 模式，您可以将 CSS 样式嵌入到 HTML 标签中：
@@ -94,23 +108,45 @@ presetTagify({
 ## 选项
 
 ### prefix
+<<<<<<< HEAD
 - **类型：**`string`
+=======
+
+- **Type:** `string`
+>>>>>>> origin/upstream
 
 要用于 Tagify 变体的前缀。
 
 ### excludedTags
+<<<<<<< HEAD
 - **类型：**`string[] | RegExp[]`
 - **默认值：**`['b', /^h\d+$/, 'table']`
+=======
+
+- **Type:** `string[] | RegExp[]`
+- **Default:** `['b', /^h\d+$/, 'table']`
+>>>>>>> origin/upstream
 
 不进行处理的标签。
 
 ### extraProperties
+<<<<<<< HEAD
 - **类型：**`Record<string, string> | ((matched: string) => Partial<Record<string, string>>)`
+=======
+
+- **Type:** `Record<string, string> | ((matched: string) => Partial<Record<string, string>>)`
+>>>>>>> origin/upstream
 
 要应用于匹配规则的额外 CSS 属性。
 
 ### defaultExtractor
+<<<<<<< HEAD
 - **类型：**`boolean`
 - **默认值：**`true`
+=======
+
+- **Type:** `boolean`
+- **Default:** `true`
+>>>>>>> origin/upstream
 
 启用默认提取器。

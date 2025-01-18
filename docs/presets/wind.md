@@ -8,7 +8,11 @@ outline: deep
 
 UnoCSS 的 Tailwind CSS / Windi CSS 精简预设。
 
+<<<<<<< HEAD
 [源代码](https://github.com/unocss/unocss/tree/main/packages/preset-wind)
+=======
+[Source Code](https://github.com/unocss/unocss/tree/main/packages-presets/preset-wind)
+>>>>>>> origin/upstream
 
 ::: info
 此预设继承自 [`@unocss/preset-mini`](/presets/mini)。
@@ -17,15 +21,19 @@ UnoCSS 的 Tailwind CSS / Windi CSS 精简预设。
 ## 安装
 
 ::: code-group
-  ```bash [pnpm]
-  pnpm add -D @unocss/preset-wind
-  ```
-  ```bash [yarn]
-  yarn add -D @unocss/preset-wind
-  ```
-  ```bash [npm]
-  npm install -D @unocss/preset-wind
-  ```
+
+```bash [pnpm]
+pnpm add -D @unocss/preset-wind
+```
+
+```bash [yarn]
+yarn add -D @unocss/preset-wind
+```
+
+```bash [npm]
+npm install -D @unocss/preset-wind
+```
+
 :::
 
 ```ts [uno.config.ts]
@@ -45,12 +53,21 @@ export default defineConfig({
 ```ts
 import { presetWind } from 'unocss'
 ```
+
 :::
 
+<<<<<<< HEAD
 ## 规则
 此预设的主要目标是提供与 [Tailwind CSS](https://tailwindcss.com/) 和 [Windi CSS](https://windicss.org/) 的兼容性。需要注意的是，完全的兼容性可能无法得到保证。请参阅它们的 [文档](https://tailwindcss.com/docs) 以获取详细用法。
 
 有关此预设中包含的所有规则和预设，请参考我们的 <a href="/interactive/" target="_blank">交互式文档</a> 或直接访问 [源代码](https://github.com/unocss/unocss/tree/main/packages/preset-wind)。
+=======
+## Rules
+
+The primary goal of this preset is to provide compatibility with [Tailwind CSS](https://tailwindcss.com/) and [Windi CSS](https://windicss.org/). It should be noted that complete compatibility may not be guaranteed. Please refer to their [documentation](https://tailwindcss.com/docs) for detailed usage.
+
+For all rules and presets included in this preset, please refer to our <a href="/interactive/" target="_blank">interactive docs</a> or directly go to the [source code](https://github.com/unocss/unocss/tree/main/packages-presets/preset-wind).
+>>>>>>> origin/upstream
 
 ## 与 Tailwind CSS 的区别
 
@@ -63,13 +80,13 @@ import { presetWind } from 'unocss'
 Tailwind [允许](https://tailwindcss.com/docs/background-position#using-custom-values) 使用裸语法为 `background-position` 使用自定义值：
 
 ```html
-<div class="bg-[center_top_1rem]">
+<div class="bg-[center_top_1rem]"></div>
 ```
 
 Wind 预设将把 `center_top_1rem` 解释为颜色。要完成相同的操作，请使用 `position:` 前缀：
 
 ```html
-<div class="bg-[position:center_top_1rem]">
+<div class="bg-[position:center_top_1rem]"></div>
 ```
 
 ### 动画
@@ -84,9 +101,9 @@ Tailwind CSS 具有较少的内置动画，我们完全支持其动画规则，�
 
 例如
 
-| Tailwind CSS | Animate.css |
-|:--:|:--:|
-| `animate-bounce` | `animate-bounce-alt` |
+|                                                                                                                                         Tailwind CSS                                                                                                                                          |                                                                                                                                            Animate.css                                                                                                                                            |
+| :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|                                                                                                                                       `animate-bounce`                                                                                                                                        |                                                                                                                                       `animate-bounce-alt`                                                                                                                                        |
 | <div w-full flex="~ items-center justify-center"><div class="animate-bounce bg-white dark:bg-slate-800 p-2 w-10 h-10 ring-1 ring-purple-900/5 dark:ring-purple-200/20 shadow-lg rounded-full flex items-center justify-center"><div text-purple size-5 i-carbon-arrow-down></div></div></div> | <div w-full flex="~ items-center justify-center"><div class="animate-bounce-alt bg-white dark:bg-slate-800 p-2 w-10 h-10 ring-1 ring-purple-900/5 dark:ring-purple-200/20 shadow-lg rounded-full flex items-center justify-center"><div text-purple size-5 i-carbon-arrow-down></div></div></div> |
 
 如果您想自定义或修改动画效果，我们提供高度可定制的配置项。您可以通过配置项修改动画的持续时间、延迟、速度曲线等。
@@ -137,14 +154,15 @@ export default defineConfig({
   }
 })
 ```
+
 :::
 
 ## 与 Windi CSS 的区别
 
 ### 断点
 
-| Windi CSS | UnoCSS |
-|:--|:--|
+| Windi CSS | UnoCSS      |
+| :-------- | :---------- |
 | `<sm:p-1` | `lt-sm:p-1` |
 | `@lg:p-1` | `at-lg:p-1` |
 | `>xl:p-1` | `xl:p-1`    |
@@ -153,8 +171,8 @@ export default defineConfig({
 
 此预设使用 `_` 而不是 `,` 来尊重括号语法中的空格。
 
-| Windi CSS | UnoCSS |
-|:--|:--|
+| Windi CSS                          | UnoCSS                             |
+| :--------------------------------- | :--------------------------------- |
 | `grid-cols-[1fr,10px,max-content]` | `grid-cols-[1fr_10px_max-content]` |
 
 由于某些 CSS 规则需要 `,` 作为值的一部分，例如 `grid-cols-[repeat(3,auto)]`。
@@ -189,8 +207,14 @@ export default defineConfig({
 :::
 
 ### important
+<<<<<<< HEAD
 - **类型:** `boolean | string`
 - **默认值:** `false`
+=======
+
+- **Type:** `boolean | string`
+- **Default:** `false`
+>>>>>>> origin/upstream
 
 `important` 选项允许您控制 UnoCSS 的工具是否应标记为 `!important`。这在将 UnoCSS 与具有高特异性选择器的现有 CSS 一起使用时非常有用。
 

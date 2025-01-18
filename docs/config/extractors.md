@@ -12,7 +12,7 @@ export default defineConfig({
 })
 ```
 
-默认情况下，[extractorSplit](https://github.com/unocss/unocss/blob/main/packages/core/src/extractors/split.ts) 将始终被应用，它将源代码拆分为标记并直接传递给引擎。
+默认情况下，[extractorSplit](https://github.com/unocss/unocss/blob/main/packages-engine/core/src/extractors/split.ts) 将始终被应用，它将源代码拆分为标记并直接传递给引擎。
 
 要覆盖默认提取器，您可以使用 `extractorDefault` 选项。
 
@@ -30,4 +30,4 @@ export default defineConfig({
 })
 ```
 
-例如，请查看 [pug 提取器](https://github.com/unocss/unocss/tree/main/packages/extractor-pug) 或 [attributify 提取器](https://github.com/unocss/unocss/blob/main/packages/preset-attributify/src/extractor.ts) 的实现。
+例如，请查看 [pug 提取器](https://github.com/unocss/unocss/tree/main/packages-integrations/extractor-pug) 或 [attributify 提取器](https://github.com/unocss/unocss/blob/main/packages-presets/preset-attributify/src/extractor.ts) 的实现。

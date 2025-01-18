@@ -20,15 +20,19 @@ Vite 插件随 `unocss` 包一起发布。
 ## 安装
 
 ::: code-group
-  ```bash [pnpm]
-  pnpm add -D unocss
-  ```
-  ```bash [yarn]
-  yarn add -D unocss
-  ```
-  ```bash [npm]
-  npm install -D unocss
-  ```
+
+```bash [pnpm]
+pnpm add -D unocss
+```
+
+```bash [yarn]
+yarn add -D unocss
+```
+
+```bash [npm]
+npm install -D unocss
+```
+
 :::
 
 安装插件：
@@ -147,7 +151,11 @@ export default {
 }
 ```
 
+<<<<<<< HEAD
 您可以在 [examples/vite-react](https://github.com/unocss/unocss/tree/main/examples/vite-react) 目录中找到一个使用这两个插件的 `React` 示例项目，检查 `package.json` 文件中的脚本和其 Vite 配置文件。
+=======
+You have a `React` example project on [examples/vite-react](https://github.com/unocss/unocss/tree/main/examples/vite-react) directory using both plugins, check the scripts on `package.json` and its Vite configuration file.
+>>>>>>> origin/upstream
 
 <ContentExample :item="playgrounds['vite-react']"  class="Link" integrations />
 
@@ -265,7 +273,11 @@ export default {
 }
 ```
 
+<<<<<<< HEAD
 在每个 `web component` 中，只需在其样式 CSS 块中添加 `@unocss-placeholder`：
+=======
+On each `web component` just add `@unocss-placeholder` to its style CSS block:
+>>>>>>> origin/upstream
 
 ```ts
 const template = document.createElement('template')
@@ -346,6 +358,7 @@ template.innerHTML = `
 </div>
 `
 ```
+
 <ContentExample :item="playgrounds['vite-lit']"  class="Link" integrations />
 
 ### Solid

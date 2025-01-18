@@ -62,15 +62,11 @@ export const classes = {
 如果您希望 UnoCSS 在提取文件时跳过一段代码块，而不是在任何提取文件中提取它，请使用成对的 `@unocss-skip-start` `@unocss-skip-end`。请注意，它必须**成对**使用才能生效。
 
 ```html
-<p class="text-green text-xl">
-  绿色大
-</p>
+<p class="text-green text-xl">绿色大</p>
 
 <!-- @unocss-skip-start -->
 <!-- `text-red` 将不会被提取 -->
-<p class="text-red">
-  红色
-</p>
+<p class="text-red">红色</p>
 <!-- @unocss-skip-end -->
 ```
 
@@ -122,7 +118,8 @@ export default defineConfig({
 有时您可能希望使用动态连接，例如：
 
 ```html
-<div class="p-${size}"></div> <!-- 这不起作用！ -->
+<div class="p-${size}"></div>
+<!-- 这不起作用！ -->
 ```
 
 由于 UnoCSS 在构建时使用静态提取工作，因此在编译时它无法知道所有实用程序的组合。为此，您可以配置 `safelist` 选项。
@@ -132,6 +129,8 @@ safelist: 'p-1 p-2 p-3 p-4'.split(' ')
 ```
 
 将始终生成相应的 CSS：
+
+<!-- eslint-skip -->
 
 ```css
 .p-1 { padding: 0.25rem; }
@@ -157,7 +156,8 @@ safelist: [
 解决动态构建实用程序的限制的另一种方法是使用对象，以静态方式列出所有组合。例如，如果您希望有这个：
 
 ```html
-<div class="text-${color} border-${color}"></div> <!-- 这不起作用！ -->
+<div class="text-${color} border-${color}"></div>
+<!-- 这不起作用！ -->
 ```
 
 您可以创建一个对象，列出所有组合 (假设您知道要使用的 `color` 的所有可能值)

@@ -8,20 +8,28 @@ outline: deep
 
 这个预设为其他预设启用了 [Attributify 模式](#attributify-mode)。
 
+<<<<<<< HEAD
 [源代码](https://github.com/unocss/unocss/tree/main/packages/preset-attributify)
+=======
+[Source Code](https://github.com/unocss/unocss/tree/main/packages-presets/preset-attributify)
+>>>>>>> origin/upstream
 
 ## 安装
 
 ::: code-group
-  ```bash [pnpm]
-  pnpm add -D @unocss/preset-attributify
-  ```
-  ```bash [yarn]
-  yarn add -D @unocss/preset-attributify
-  ```
-  ```bash [npm]
-  npm install -D @unocss/preset-attributify
-  ```
+
+```bash [pnpm]
+pnpm add -D @unocss/preset-attributify
+```
+
+```bash [yarn]
+yarn add -D @unocss/preset-attributify
+```
+
+```bash [npm]
+npm install -D @unocss/preset-attributify
+```
+
 :::
 
 ```ts [uno.config.ts]
@@ -41,6 +49,7 @@ export default defineConfig({
 ```ts
 import { presetAttributify } from 'unocss'
 ```
+
 :::
 
 ## Attributify 模式
@@ -48,7 +57,9 @@ import { presetAttributify } from 'unocss'
 假设您有这样一个使用 Tailwind CSS 实用程序的按钮。当列表变得更长时，阅读和维护变得非常困难。
 
 ```html
-<button class="bg-blue-400 hover:bg-blue-500 text-sm text-white font-mono font-light py-2 px-4 rounded border-2 border-blue-200 dark:bg-blue-500 dark:hover:bg-blue-600">
+<button
+  class="bg-blue-400 hover:bg-blue-500 text-sm text-white font-mono font-light py-2 px-4 rounded border-2 border-blue-200 dark:bg-blue-500 dark:hover:bg-blue-600"
+>
   Button
 </button>
 ```
@@ -76,17 +87,13 @@ import { presetAttributify } from 'unocss'
 例如：
 
 ```html
-<button class="border border-red">
-  Button
-</button>
+<button class="border border-red">Button</button>
 ```
 
 可以写成：
 
 ```html
-<button border="~ red">
-  Button
-</button>
+<button border="~ red">Button</button>
 ```
 
 ## Valueless attributify
@@ -145,7 +152,11 @@ presetAttributify({
 
 创建 `shims.d.ts` 文件，内容如下：
 
+<<<<<<< HEAD
 > 默认情况下，类型包括来自 `@unocss/preset-uno` 的常见属性。如果需要自定义属性，请参考[类型源](https://github.com/unocss/unocss/blob/main/packages/preset-attributify/src/jsx.ts)实现自己的类型。
+=======
+> By default, the type includes common attributes from `@unocss/preset-uno`. If you need custom attributes, refer to the [type source](https://github.com/unocss/unocss/blob/main/packages-presets/preset-attributify/src/jsx.ts) to implement your own type.
+>>>>>>> origin/upstream
 
 ### Vue
 

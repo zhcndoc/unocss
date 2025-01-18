@@ -8,20 +8,28 @@ outline: deep
 
 为 UnoCSS 提供了一组文字段落类，可用于向原始 HTML 添加排版默认设置。
 
+<<<<<<< HEAD
 [源代码](https://github.com/unocss/unocss/tree/main/packages/preset-typography)
+=======
+[Source Code](https://github.com/unocss/unocss/tree/main/packages-presets/preset-typography)
+>>>>>>> origin/upstream
 
 ## 安装
 
 ::: code-group
-  ```bash [pnpm]
-  pnpm add -D @unocss/preset-typography
-  ```
-  ```bash [yarn]
-  yarn add -D @unocss/preset-typography
-  ```
-  ```bash [npm]
-  npm install -D @unocss/preset-typography
-  ```
+
+```bash [pnpm]
+pnpm add -D @unocss/preset-typography
+```
+
+```bash [yarn]
+yarn add -D @unocss/preset-typography
+```
+
+```bash [npm]
+npm install -D @unocss/preset-typography
+```
+
 :::
 
 ::: tip
@@ -30,6 +38,7 @@ outline: deep
 ```ts
 import { presetTypography } from 'unocss'
 ```
+
 :::
 
 ## 使用
@@ -52,6 +61,7 @@ export default defineConfig({
 ```
 
 ::: code-group
+<<<<<<< HEAD
   ```html [类]
   <article class="text-base prose prose-truegray xl:text-xl">
     {{ markdown }}
@@ -68,6 +78,23 @@ export default defineConfig({
     </p>
   </article>
   ```
+=======
+
+```html [Classes]
+<article class="text-base prose prose-truegray xl:text-xl">
+  {{ markdown }}
+  <p class="not-prose">Some text</p>
+</article>
+```
+
+```html [Attributes]
+<article text-base prose prose-truegray xl="text-xl">
+  {{ markdown }}
+  <p class="not-prose">Some text</p>
+</article>
+```
+
+>>>>>>> origin/upstream
 :::
 
 ::: warning
@@ -78,7 +105,14 @@ export default defineConfig({
 
 ### 任意字号
 
+<<<<<<< HEAD
 对正文应用您喜欢的任意字号，`prose` 将为相应的 HTML 元素调整样式。例如，`prose text-lg` 的正文字号为 `1.125rem`，`h1` 的字号将是此大小的 2.25 倍。请参阅[所有支持的 HTML 元素](https://github.com/unocss/unocss/blob/main/packages/preset-typography/src/preflights/default.ts)。
+=======
+Apply any font size for body you like and `prose` will scale the styles for
+the respective HTML elements. For instance, `prose text-lg` has body font size
+`1.125rem` and `h1` will scale with that size 2.25 times. See [all the
+supported HTML elements](https://github.com/unocss/unocss/blob/main/packages-presets/preset-typography/src/preflights/default.ts).
+>>>>>>> origin/upstream
 
 ### 任意颜色
 
@@ -90,7 +124,12 @@ export default defineConfig({
 
 ### 您自己的样式
 
+<<<<<<< HEAD
 不在 `prose` 内的元素的样式保持不变。与 UnoCSS 一样，不会重置样式。
+=======
+Styles of elements not within `prose` will stay the same. No style resetting
+just like UnoCSS.
+>>>>>>> origin/upstream
 
 ### 使用 `not` 实用程序撤销
 
@@ -105,9 +144,15 @@ export default defineConfig({
 
 ## 实用程序
 
+<<<<<<< HEAD
 |  规则   |                                            此规则的样式                                                    |
 | :-----: | :--------------------------------------------------------------------------------------------------------: |
 | `prose` | 请参阅[GitHub](https://github.com/unocss/unocss/blob/main/packages/preset-typography/src/preflights/default.ts)。 |
+=======
+|  Rule   |                                                    Styles by this rule                                                    |
+| :-----: | :-----------------------------------------------------------------------------------------------------------------------: |
+| `prose` | See [on GitHub](https://github.com/unocss/unocss/blob/main/packages-presets/preset-typography/src/preflights/default.ts). |
+>>>>>>> origin/upstream
 
 ### 颜色
 
@@ -143,6 +188,7 @@ export default defineConfig({
 :::tip
 传递给 `cssExtend` 的 CSS 声明将
 
+<<<<<<< HEAD
 - **覆盖**内置样式 (如果值冲突)，否则
 - 与内置样式**深度合并**。
   :::
@@ -150,6 +196,16 @@ export default defineConfig({
 ### selectorName
 - **类型：**`string`
 - **默认值：**`prose`
+=======
+- **override** the built-in styles if the values are conflicting, else
+- **be merged** deeply with built-in styles.
+  :::
+
+### selectorName
+
+- **Type:** `string`
+- **Default:** `prose`
+>>>>>>> origin/upstream
 
 用于排版工具的类名。要将样式撤销到元素，请像 `not-${selectorName}` 一样使用。
 
@@ -158,14 +214,26 @@ export default defineConfig({
 :::
 
 ### cssExtend
+<<<<<<< HEAD
 - **类型：**`Record<string, CSSObject>`
 - **默认值：**`undefined`
+=======
+
+- **Type:** `Record<string, CSSObject>`
+- **Default:** `undefined`
+>>>>>>> origin/upstream
 
 使用 CSS 声明块扩展或覆盖 CSS 选择器。
 
 ### compatibility
+<<<<<<< HEAD
 - **类型：**`TypographyCompatibilityOptions`
 - **默认值：**`undefined`
+=======
+
+- **Type:** `TypographyCompatibilityOptions`
+- **Default:** `undefined`
+>>>>>>> origin/upstream
 
 请参阅 [兼容选项
 
@@ -173,6 +241,7 @@ export default defineConfig({
 :::warning
 请注意，它会影响某些功能。
 :::
+
 ```ts
 interface TypographyCompatibilityOptions {
   noColonWhere?: boolean
