@@ -85,4 +85,4 @@ import { presetUno } from 'unocss'
 该预设的选项继承自 [`@unocss/preset-mini`](/presets/mini#options)。
 :::
 
-有关默认预设的更多详细信息，您可以查看我们的 [游乐场](/play/) 并尝试它。同时，您也可以查看 [实现](https://github.com/unocss/unocss/tree/main/packages)。
+有关默认预设的更多详细信息，您可以查看我们的 [游乐场](/play/) 并尝试它。同时，您也可以查看 [实现](https://github.com/unocss/unocss/tree/main/packages-presets)。
