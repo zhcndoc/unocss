@@ -3,8 +3,8 @@
 提供统一的接口以变换源代码，以支持约定。
 
 ```ts [my-transformer.ts]
-import { createFilter } from '@rollup/pluginutils'
 import { SourceCodeTransformer } from 'unocss'
+import { createFilter } from 'unplugin-utils'
 
 export default function myTransformers(options: MyOptions = {}): SourceCodeTransformer {
   return {

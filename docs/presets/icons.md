@@ -544,6 +544,27 @@ interface IconMeta {
 
 阅读来自 [Iconify](https://iconify.design/) 的 [清理图标](https://iconify.design/docs/articles/cleaning-up-icons/) 文章以获取更多详细信息。
 
+## 可访问性问题
+
+在使用图标时，考虑到所有潜在用户是很重要的。部分用户可能会使用屏幕阅读器，他们需要替代文本来理解图标的含义。您可以使用 `aria-label` 属性来提供图标的描述：
+
+```html
+<a href="/profile" aria-label="Profile" class="i-ph:user-duotone"></a>
+```
+
+如果图标仅仅是装饰性的，并且不需要文本替代，您可以使用 `aria-hidden="true"` 将其隐藏，以防屏幕阅读器读取：
+
+```html
+<a href="/profile">
+  <span aria-hidden="true" class="i-ph:user-duotone"></span>
+  My Profile
+</a>
+```
+
+还有许多其他技术可以为屏幕阅读器提供提示文本，例如，[Uno 预设](./uno) 包含 [sr-only](/interactive/?s=sr-only)，可以在视觉上隐藏元素，但仍然使其对屏幕阅读器可访问。
+
+您可以在网上找到一些关于图标可访问性的良好资源，CSS 图标的行为类似于图标字体，因此您可以使用与图标字体相同的技术。
+
 ## 致谢
 
 - 该预设受到由 [@husayt](https://github.com/husayt) 创建的 [此问题](https://github.com/antfu/unplugin-icons/issues/88) 的启发。

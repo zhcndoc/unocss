@@ -71,26 +71,30 @@ import { presetMini } from 'unocss'
 }
 ```
 
-要选择基于媒体查询的黑暗模式，可以使用 `@dark:` 变体：
+#### 基于媒体查询的暗模式
 
-```html
-<div class="@dark:bg-red:10" />
-```
-
-```css
-@media (prefers-color-scheme: dark) {
-  .\@dark\:bg-red\:10 {
-    background-color: rgb(248 113 113 / 0.1);
-  }
-}
-```
-
-或通过配置全局设置 `dark:` 变体
+要在全局使用基于媒体查询的暗模式，可以更改 `dark:` 变体的配置：
 
 ```ts
 presetMini({
   dark: 'media'
 })
+```
+
+现在
+
+```html
+<div class="dark:bg-red:10" />
+```
+
+将生成：
+
+```css
+@media (prefers-color-scheme: dark) {
+  .dark\:bg-red\:10 {
+    background-color: rgb(248 113 113 / 0.1);
+  }
+}
 ```
 
 ### CSS @layer

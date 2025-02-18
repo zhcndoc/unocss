@@ -58,6 +58,66 @@ import { presetWind } from 'unocss'
 
 有关此预设中包含的所有规则和预设，请参考我们的 <a href="/interactive/" target="_blank">交互式文档</a> 或直接访问 [源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-wind)。
 
+## 特性
+
+### 暗黑模式
+
+默认情况下，此预设生成基于类的暗黑模式，使用 `dark:` 变体。
+
+```html
+<div class="dark:bg-red:10" />
+```
+
+将生成：
+
+```css
+.dark .dark\:bg-red\:10 {
+  background-color: rgb(248 113 113 / 0.1);
+}
+```
+
+#### 基于媒体查询的暗黑模式
+
+要全球使用基于媒体查询的暗黑模式，您可以更改 `dark:` 变体的配置：
+
+```ts
+presetWind({
+  dark: 'media'
+})
+```
+
+现在
+
+```html
+<div class="dark:bg-red:10" />
+```
+
+将生成：
+
+```css
+@media (prefers-color-scheme: dark) {
+  .dark\:bg-red\:10 {
+    background-color: rgb(248 113 113 / 0.1);
+  }
+}
+```
+
+#### 自选媒体查询基础的暗黑模式
+
+要使用自选媒体查询基础的暗黑模式，可以使用 `@dark:` 变体：
+
+```html
+<div class="@dark:bg-red:10" />
+```
+
+```css
+@media (prefers-color-scheme: dark) {
+  .\@dark\:bg-red\:10 {
+    background-color: rgb(248 113 113 / 0.1);
+  }
+}
+```
+
 ## 与 Tailwind CSS 的区别
 
 ### 引号

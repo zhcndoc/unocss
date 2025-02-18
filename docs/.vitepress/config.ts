@@ -141,7 +141,7 @@ const Nav: DefaultTheme.NavItem[] = [
       },
       {
         text: '社区预设',
-        link: '/presets/community',
+        link: 'https://github.com/unocss-community',
       },
       {
         text: '预设',
@@ -229,7 +229,7 @@ const SidebarPresets: DefaultTheme.SidebarItem[] = [
   },
   {
     text: '社区预设',
-    link: '/presets/community',
+    link: 'https://github.com/unocss-community',
   },
   {
     text: '转换器',

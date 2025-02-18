@@ -30,3 +30,11 @@
 | [@unocss/extractor-pug](/extractors/pug)                               | Pug 的提取器                 |
 | [@unocss/extractor-svelte](/extractors/svelte)                         | Svelte 的提取器              |
 | [@unocss/extractor-arbitrary-variants](/extractors/arbitrary-variants) | 提取器，支持工具类的任意变体 |
+
+# 社区
+
+<p align="center">
+  <img src="https://avatars.githubusercontent.com/unocss-community" width='150' />
+</p>
+
+我们热烈欢迎大家加入并帮助建立 [UnoCSS 社区](https://github.com/unocss-community)。您可以在 [Awesome UnoCSS](https://github.com/unocss-community/awesome-unocss) 中使用和分享与 UnoCSS 相关的资源。
