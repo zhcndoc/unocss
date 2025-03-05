@@ -1,11 +1,11 @@
 ---
 title: Attributify JSX 转换器
-description: 支持在 JSX/TSX 中使用无值属性的 Attributify (@unocss/transformer-attributify-jsx)
+description: 支持 JSX/TSX 中的无值属性化 (@unocss/transformer-attributify-jsx)
 ---
 
 # Attributify JSX 转换器
 
-支持 [无值属性的 Attributify](/presets/attributify#valueless-attributify) 在 JSX/TSX 中: `@unocss/transformer-attributify-jsx`.
+支持 [无值属性化](/presets/attributify#valueless-attributify) 在 JSX/TSX 中: `@unocss/transformer-attributify-jsx`。
 
 ## 介绍
 
@@ -21,7 +21,7 @@ export function Component() {
 }
 ```
 
-将会被转换为:
+将转换为：
 
 ```jsx
 export function Component() {
@@ -33,7 +33,7 @@ export function Component() {
 }
 ```
 
-::: details 没有这个转换器之前，JSX 将无值属性视为布尔属性。
+::: details 没有这个转换器时，JSX 将无值属性视为布尔属性。
 
 ```jsx
 export function Component() {
@@ -63,6 +63,10 @@ yarn add -D @unocss/transformer-attributify-jsx
 npm install -D @unocss/transformer-attributify-jsx
 ```
 
+```bash [bun]
+bun add -D @unocss/transformer-attributify-jsx
+```
+
 :::
 
 ```ts{11} [uno.config.ts]
@@ -82,7 +86,7 @@ export default defineConfig({
 ```
 
 ::: tip
-这个预设包含在 `unocss` 包中，你也可以从那里导入：
+此预设包含在 `unocss` 包中，您也可以直接从那里导入：
 
 ```ts
 import { transformerAttributifyJsx } from 'unocss'
@@ -93,7 +97,7 @@ import { transformerAttributifyJsx } from 'unocss'
 ## 注意事项
 
 ::: warning
-规则与 [Attributify 预设](/presets/attributify) 几乎相同，但有几个注意事项。
+规则几乎与 [Attributify 预设](/presets/attributify) 相同，但有一些注意事项。
 :::
 
 ```html
@@ -104,7 +108,7 @@ import { transformerAttributifyJsx } from 'unocss'
 <!-- 不能包含 `[` 或 `]` -->
 ```
 
-相反，你可能希望使用有值的属性：
+相反，您可能希望使用有值属性：
 
 ```html
 <div translate="x-100%" />
@@ -114,8 +118,8 @@ import { transformerAttributifyJsx } from 'unocss'
 
 ## 黑名单
 
-这个转换器只会转换有效的 UnoCSS 工具的属性。
-你也可以使用 `blocklist` 跳过一些属性的转换。
+此转换器将仅转换有效的 UnoCSS 实用工具属性。
+您还可以通过 `blocklist` 来排除某些属性不被转换。
 
 ```js
 transformerAttributifyJsx({
@@ -129,7 +133,7 @@ transformerAttributifyJsx({
 </div>
 ```
 
-将被编译为:
+将编译为：
 
 ```html
 <div text-red text-center text-5xl animate-bounce="">unocss</div>

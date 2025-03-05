@@ -1,11 +1,11 @@
 ---
-title: 预飞行
-description: 您可以从配置中注入原始 CSS 作为预飞行。已解析的主题可用于自定义 CSS。
+title: 预处理
+description: 你可以从配置中注入原始 CSS 作为预处理。已解析的主题可用于自定义 CSS。
 ---
 
-# 预飞行
+# 预处理
 
-您可以从配置中注入原始 CSS 作为预飞行。已解析的 `theme` 可用于自定义 CSS。
+你可以从配置中注入原始 CSS 作为预处理。已解析的 `theme` 可用于自定义 CSS。
 
 <!--eslint-skip-->
 

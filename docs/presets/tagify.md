@@ -6,7 +6,7 @@ outline: deep
 
 # Tagify 预设
 
-这使得其他预设可以启用 [tagify 模式](#tagify-mode)。
+这启用了其他预设的 [tagify 模式](#tagify-mode)。
 
 [源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-tagify)
 
@@ -26,6 +26,10 @@ yarn add -D @unocss/preset-tagify
 npm install -D @unocss/preset-tagify
 ```
 
+```bash [bun]
+bun add -D @unocss/preset-tagify
+```
+
 :::
 
 ```ts [uno.config.ts]
@@ -34,7 +38,7 @@ import { defineConfig } from 'unocss'
 
 export default defineConfig({
   presets: [
-    presetTagify({ /* 选项 */ }),
+    presetTagify({ /* options */ }),
     // ...其他预设
   ],
 })
@@ -42,23 +46,23 @@ export default defineConfig({
 
 ## Tagify 模式
 
-当您只需要将单个 unocss 规则应用于元素时，这个预设将非常方便。
+当你只需要将一个 unocss 规则应用到元素时，这个预设非常有用。
 
 ```html
-<span class="text-red"> red text </span>
-<div class="flex">flexbox</div>
-I'm feeling <span class="i-line-md-emoji-grin"></span> today!
+<span class="text-red"> 红色文本 </span>
+<div class="flex">弹性盒子</div>
+我今天感觉 <span class="i-line-md-emoji-grin"></span> 很好！
 ```
 
-使用 tagify 模式，您可以将 CSS 样式嵌入到 HTML 标签中：
+在 tagify 模式下，你可以将 CSS 样式嵌入到 HTML 标签中：
 
 ```html
-<text-red> red text </text-red>
-<flex> flexbox </flex>
-I'm feeling <i-line-md-emoji-grin /> today!
+<text-red> 红色文本 </text-red>
+<flex> 弹性盒子 </flex>
+我今天感觉 <i-line-md-emoji-grin /> 很好！
 ```
 
-上述 HTML 的工作方式与您预期的一致。
+上面的 HTML 会如你所预期的那样工作。
 
 ## 带前缀
 
@@ -75,9 +79,9 @@ presetTagify({
 <flex> </flex>
 ```
 
-## 附加属性
+## 额外属性
 
-您可以向匹配的规则注入额外的属性：
+你可以为匹配的规则注入额外的属性：
 
 ```js
 presetTagify({
@@ -99,26 +103,26 @@ presetTagify({
 
 ### prefix
 
-- **类型:** `string`
+- **类型：** `string`
 
-用于 tagify 变体的前缀。
+要使用的 tagify 变体的前缀。
 
 ### excludedTags
 
-- **类型:** `string[] | RegExp[]`
-- **默认值:** `['b', /^h\d+$/, 'table']`
+- **类型：** `string[] | RegExp[]`
+- **默认值：** `['b', /^h\d+$/, 'table']`
 
-被排除在处理之外的标签。
+排除处理的标签。
 
 ### extraProperties
 
-- **类型:** `Record<string, string> | ((matched: string) => Partial<Record<string, string>>)`
+- **类型：** `Record<string, string> | ((matched: string) => Partial<Record<string, string>>)`
 
 要应用于匹配规则的额外 CSS 属性。
 
 ### defaultExtractor
 
-- **类型:** `boolean`
-- **默认值:** `true`
+- **类型：** `boolean`
+- **默认值：** `true`
 
 启用默认提取器。

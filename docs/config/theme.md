@@ -1,14 +1,14 @@
 ---
 title: 主题
-description: UnoCSS 还支持您可能熟悉的主题系统，这个主题系统与 Tailwind CSS / Windi CSS 类似。
+description: UnoCSS 还支持您可能熟悉的主题系统，就像在 Tailwind CSS / Windi CSS 中一样。
 outline: deep
 ---
 
 # 主题
 
-UnoCSS 还支持您可能熟悉的主题系统，这个主题系统与 Tailwind CSS / Windi CSS 类似。在用户级别，您可以在配置中指定 `theme` 属性，它将与默认主题进行深度合并。
+UnoCSS 还支持您可能熟悉的主题系统，就像在 Tailwind CSS / Windi CSS 中一样。在用户级别，您可以在配置中指定 `theme` 属性，它将被深度合并到默认主题中。
 
-## 使用方法
+## 使用
 
 <!--eslint-skip-->
 
@@ -31,7 +31,7 @@ theme: {
 
 ### 在 `rules` 中使用
 
-在规则中使用主题：
+要在规则中使用主题：
 
 ```ts
 rules: [
@@ -44,7 +44,7 @@ rules: [
 
 ### 在 `variants` 中使用
 
-在变种中使用主题：
+要在变体中使用主题：
 
 ```ts
 variants: [
@@ -59,7 +59,7 @@ variants: [
 
 ### 在 `shortcuts` 中使用
 
-在动态快捷方式中使用主题：
+要在动态短语中使用主题：
 
 ```ts
 shortcuts: [
@@ -70,13 +70,13 @@ shortcuts: [
 ]
 ```
 
-## 断点
+## 窗口断点
 
 ::: warning
-当提供了自定义的 `breakpoints` 对象时，默认值将被覆盖而不是合并。
+当提供自定义 `breakpoints` 对象时，默认值将被覆盖，而不是合并。
 :::
 
-在以下示例中，您将只能使用 `sm:` 和 `md:` 断点变种：
+通过以下示例，您将只能使用 `sm:` 和 `md:` 断点变体：
 
 <!--eslint-skip-->
 
@@ -109,7 +109,7 @@ extendTheme: (theme) => {
 `verticalBreakpoints` 与 `breakpoints` 相同，但用于垂直布局。
 :::
 
-此外，我们将按大小（相同单位）对屏幕点进行排序。对于不同单位的屏幕点，为了避免错误，请在配置中使用统一的单位。
+另外，我们将按大小（相同单位）对屏幕点进行排序。对于不同单位的屏幕点，避免出现错误，请在配置中使用统一单位。
 
 <!--eslint-skip-->
 
@@ -128,7 +128,7 @@ theme: {
 
 ## ExtendTheme
 
-`ExtendTheme` 允许您编辑 **深度合并的主题**，以获取完整的主题对象。
+`ExtendTheme` 允许您编辑 **深度合并的主题** 来获取完整的主题对象。
 
 自定义函数会修改主题对象。
 
@@ -141,7 +141,7 @@ extendTheme: (theme) => {
 }
 ```
 
-您也可以返回一个新的主题对象，以完全替换原始的主题对象。
+也可以返回一个新的主题对象以完全替换原始对象。
 
 ```ts
 extendTheme: (theme) => {

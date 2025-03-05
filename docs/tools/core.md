@@ -1,6 +1,6 @@
 ---
 title: 核心
-description: UnoCSS 的核心引擎，没有任何预设。它可以作为您自己原子 CSS 框架的引擎。
+description: UnoCSS 的核心引擎，没有任何预设。它可以作为您自己的原子 CSS 框架的引擎。
 ---
 
 # 核心
@@ -23,6 +23,10 @@ yarn add -D @unocss/core
 npm install -D @unocss/core
 ```
 
+```bash [bun]
+bun add -D @unocss/core
+```
+
 :::
 
 ## 使用
@@ -38,6 +42,6 @@ const generator = await createGenerator(
 const { css } = await generator.generate(code)
 ```
 
-## 许可
+## 许可证
 
-- MIT 许可 &copy; 2021-现在 [Anthony Fu](https://github.com/antfu)
+- MIT 许可证 &copy; 2021-至今 [Anthony Fu](https://github.com/antfu)

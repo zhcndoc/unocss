@@ -1,13 +1,13 @@
 ---
 title: 指南
-description: 开始使用 UnoCSS
+description: 使用 UnoCSS 入门
 ---
 
 # 什么是 UnoCSS？
 
-UnoCSS 是一个即时原子 CSS 引擎，旨在提供灵活性和可扩展性。其核心设计是无偏见的，所有 CSS 工具类通过预设提供。
+UnoCSS 是一个即时原子 CSS 引擎，旨在灵活和可扩展。核心部分是无偏见的，所有的 CSS 工具通过预设提供。
 
-例如，您可以通过在本地 [配置文件](/guide/config-file) 中提供规则来定义自定义的 CSS 工具类。
+例如，你可以通过在本地的 [配置文件](/guide/config-file) 中提供规则来定义自定义的 CSS 工具。
 
 ```ts [uno.config.ts]
 import { defineConfig } from 'unocss'
@@ -19,13 +19,13 @@ export default defineConfig({
 })
 ```
 
-这将为您的项目添加一个新的 CSS 工具类 `m-1`。由于 UnoCSS 是按需生成的，直到您在代码库中使用它之前，什么都不会发生。假设我们有一个这样的组件：
+这将向你的项目添加一个新的 CSS 工具 `m-1`。由于 UnoCSS 是按需生成的，直到你在代码库中使用它之前，它不会执行任何操作。假设我们有一个这样的组件：
 
 ```html
-<div class="m-1">你好</div>
+<div class="m-1">Hello</div>
 ```
 
-`m-1` 将被检测到，生成以下 CSS：
+`m-1` 将被检测到，以下 CSS 将被生成：
 
 <!-- eslint-skip -->
 
@@ -33,7 +33,7 @@ export default defineConfig({
 .m-1 { margin: 1px; }
 ```
 
-为了使其更加灵活，您可以通过将规则的第一个参数（我们称之为匹配器）更改为 `RegExp`，并将主体改为一个函数，从而使您的规则动态化，例如：
+为了使其更灵活，你可以通过将规则中的第一个参数（我们称之为匹配器）更改为 `RegExp`，并将主体更改为一个函数，从而使你的规则动态化，例如：
 
 ```diff [uno.config.ts]
 export default defineConfig({
@@ -44,11 +44,11 @@ export default defineConfig({
 })
 ```
 
-通过这样做，现在您可以拥有任意的边距工具类，如 `m-1`、`m-100` 或 `m-52.43`。同样，UnoCSS 只会在您使用它们时生成它们。
+这样做后，你现在可以拥有任意的边距工具，例如 `m-1`、`m-100` 或 `m-52.43`。同样地，UnoCSS 仅在你使用它们时生成它们。
 
 ```html
-<div class="m-1">你好</div>
-<div class="m-7.5">世界</div>
+<div class="m-1">Hello</div>
+<div class="m-7.5">World</div>
 ```
 
 <!-- eslint-skip -->
@@ -60,7 +60,7 @@ export default defineConfig({
 
 ## 预设
 
-一旦您创建了几个规则，可以将它们提取到一个预设中，并与其他人分享。例如，您可以为公司的设计系统创建一个预设，并与团队分享。
+一旦你创建了一些规则，你可以将它们提取到一个预设中，并与其他人分享。例如，你可以为公司的设计系统创建一个预设，并与团队分享。
 
 ```ts [my-preset.ts]
 import { Preset } from 'unocss'
@@ -88,11 +88,11 @@ export default defineConfig({
 })
 ```
 
-因此，我们同样提供了一些 [官方预设](/presets/) 供您立即使用，您还可以找到许多有趣的 [社区预设](/presets/community)。
+因此，我们提供了一些 [官方预设](/presets/) 供你立即开始使用，你也可以找到许多有趣的 [社区预设](/presets/community)。
 
-## 玩耍
+## 演示
 
-您可以在浏览器中试用 UnoCSS，在 <a href="/play/" target="_blank">Playground</a> 中。或者在 <a href="/interactive/" target="_blank">互动文档</a> 中查找默认预设中的工具类。
+你可以在 <a href="/play/" target="_blank">游乐场</a> 中尝试 UnoCSS。或者在 <a href="/interactive/" target="_blank">互动文档</a> 中查找默认预设中的工具。
 
 ## 集成
 

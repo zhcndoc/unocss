@@ -1,6 +1,6 @@
 # 提取器
 
-提取器用于从您的源代码中提取工具的使用情况。
+提取器用于从源代码中提取工具的使用情况。
 
 ```ts [uno.config.ts]
 import { defineConfig } from 'unocss'
@@ -12,9 +12,9 @@ export default defineConfig({
 })
 ```
 
-默认情况下，[extractorSplit](https://github.com/unocss/unocss/blob/main/packages-engine/core/src/extractors/split.ts) 会始终被应用，它将源代码拆分为标记并直接提供给引擎。
+默认情况下，[extractorSplit](https://github.com/unocss/unocss/blob/main/packages-engine/core/src/extractors/split.ts) 将始终应用，它会将源代码拆分为标记并直接提供给引擎。
 
-要覆盖默认的提取器，您可以使用 `extractorDefault` 选项。
+要覆盖默认提取器，可以使用 `extractorDefault` 选项。
 
 ```ts [uno.config.ts]
 import { defineConfig } from 'unocss'

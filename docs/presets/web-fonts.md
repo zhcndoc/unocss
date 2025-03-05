@@ -1,14 +1,14 @@
 ---
-title: 网络字体预设
-description: UnoCSS 的网络字体支持（@unocss/preset-web-fonts）。
+title: Web 字体预设
+description: UnoCSS 的 Web 字体支持 (@unocss/preset-web-fonts)。
 outline: deep
 ---
 
-# 网络字体预设
+# Web 字体预设
 
-通过简单提供字体名称来使用来自 [Google Fonts](https://fonts.google.com/) 和 [FontShare](https://www.fontshare.com/) 的网络字体。
+通过简单地提供字体名称来使用来自 [Google Fonts](https://fonts.google.com/) 和 [FontShare](https://www.fontshare.com/) 的 Web 字体。
 
-查看 [所有支持的提供商](#providers)。
+查看 [所有支持的提供者](#providers)。
 
 [源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-web-fonts)
 
@@ -28,6 +28,10 @@ yarn add -D @unocss/preset-web-fonts
 npm install -D @unocss/preset-web-fonts
 ```
 
+```bash [bun]
+bun add -D @unocss/preset-web-fonts
+```
+
 :::
 
 ```ts [uno.config.ts]
@@ -44,7 +48,7 @@ export default defineConfig({
 ```
 
 ::: tip
-此预设已包含在 `unocss` 包中，您也可以从那里导入：
+此预设包含在 `unocss` 包中，您也可以从那里导入它：
 
 ```ts
 import { presetWebFonts } from 'unocss'
@@ -52,22 +56,22 @@ import { presetWebFonts } from 'unocss'
 
 :::
 
-## 提供商
+## 提供者
 
-当前支持的提供商：
+当前支持的提供者：
 
-- `none` - 不执行操作，将字体视为系统字体
+- `none` - 不执行任何操作，将字体视为系统字体
 - `google` - [Google Fonts](https://fonts.google.com/)
 - `bunny` - [隐私友好的 Google Fonts](https://fonts.bunny.net/)
-- `fontshare` - [ITF 提供的高质量字体服务](https://www.fontshare.com/)
+- `fontshare` - [ITF 提供的优质字体服务](https://www.fontshare.com/)
 
 ::: info
-欢迎提出 PR 以添加更多提供商。🙌
+欢迎提交 PR 以添加更多提供者。🙌
 :::
 
 ### 自定义获取函数
 
-使用您自己的函数来获取字体源。
+使用您自己的函数获取字体源。
 
 ```ts [uno.config.ts]
 import presetUno from '@unocss/preset-uno'
@@ -96,10 +100,10 @@ export default defineConfig({
 
 ### provider
 
-- **类型：** `WebFontsProviders`
-- **默认值：** `google`
+- **类型:** `WebFontsProviders`
+- **默认:** `google`
 
-网络字体的提供商服务。
+Web 字体的提供者服务。
 
 ```ts
 type WebFontsProviders = 'google' | 'bunny' | 'fontshare' | 'none'
@@ -107,7 +111,7 @@ type WebFontsProviders = 'google' | 'bunny' | 'fontshare' | 'none'
 
 ### fonts
 
-- **类型：** `Record<string, WebFontMeta | string | (WebFontMeta | string)[]>`
+- **类型:** `Record<string, WebFontMeta | string | (WebFontMeta | string)[]>`
 
 字体。有关更多详细信息，请参见 [示例](#example)。
 
@@ -117,7 +121,7 @@ interface WebFontMeta {
   weights?: (string | number)[]
   italic?: boolean
   /**
-   * 覆盖提供商
+   * 覆盖提供者
    * @default <匹配根配置>
    */
   provider?: WebFontsProviders
@@ -126,37 +130,37 @@ interface WebFontMeta {
 
 ### extendTheme
 
-- **类型：** `boolean`
-- **默认值：** `true`
+- **类型:** `boolean`
+- **默认:** `true`
 
 扩展主题对象。
 
 ### themeKey
 
-- **类型：** `string`
-- **默认值：** `fontFamily`
+- **类型:** `string`
+- **默认:** `fontFamily`
 
 主题对象的键。
 
 ### inlineImports
 
-- **类型：** `boolean`
-- **默认值：** `true`
+- **类型:** `boolean`
+- **默认:** `true`
 
 内联 CSS `@import()`。
 
 ### customFetch
 
-- **类型：** `(url: string) => Promise<string>`
-- **默认值：** `undefined`
+- **类型:** `(url: string) => Promise<string>`
+- **默认:** `undefined`
 
-使用您自己的函数获取字体源。请参见 [自定义获取函数](#custom-fetch-function)。
+使用您自己的函数获取字体源。有关更多信息，请参见 [自定义获取函数](#custom-fetch-function)。
 
 ## 示例
 
 ```ts
 presetWebFonts({
-  provider: 'google', // 默认提供商
+  provider: 'google', // 默认提供者
   fonts: {
     // 这些将扩展默认主题
     sans: 'Roboto',
@@ -204,9 +208,9 @@ presetWebFonts({
 }
 ```
 
-## 本地提供字体
+## 本地服务字体
 
-默认情况下，预设将从提供商的 CDN 中获取字体。如果您想本地提供字体，可以下载字体并使用来自 `@unocss/preset-web-fonts/local` 的处理器在自己的服务器上提供它们。
+默认情况下，预设将从提供者的 CDN 中获取字体。如果您想要在本地提供字体，可以下载字体并使用 `@unocss/preset-web-fonts/local` 中的处理器从您自己的服务器提供它们。
 
 ```ts
 import presetWebFonts from '@unocss/preset-web-fonts'
@@ -229,7 +233,7 @@ export default defineConfig({
         // 保存字体资产的目录
         fontAssetsDir: 'public/assets/fonts',
 
-        // 为客户端提供字体的基本 URL
+        // 客户端提供字体的基本 URL
         fontServeBaseUrl: '/assets/fonts'
       })
     }),
@@ -237,7 +241,7 @@ export default defineConfig({
 })
 ```
 
-这将把字体资产下载到 `public/assets/fonts` 并通过 `/assets/fonts` 从客户端提供它们。在这样做时，请确保字体的许可证允许您重新分发，因此该工具对此没有任何法律责任。
+这将把字体资产下载到 `public/assets/fonts` 并从客户端的 `/assets/fonts` 提供它们。在执行此操作时，请确保字体的许可证允许您如此重新分发，工具不对任何法律问题负责。
 
 ::: info
 

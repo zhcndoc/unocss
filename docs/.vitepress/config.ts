@@ -47,16 +47,16 @@ const Integrations: DefaultTheme.NavItemWithLink[] = [
 ]
 
 const Presets: DefaultTheme.NavItemWithLink[] = [
-  { text: 'Uno（默认）', link: '/presets/uno' },
+  { text: 'Mini', link: '/presets/mini' },
+  { text: 'Wind3', link: '/presets/wind3' },
+  { text: 'Wind4', link: '/presets/wind4' },
   { text: '图标', link: '/presets/icons' },
-  { text: 'Attributify', link: '/presets/attributify' },
+  { text: '属性化', link: '/presets/attributify' },
   { text: '排版', link: '/presets/typography' },
   { text: 'Web 字体', link: '/presets/web-fonts' },
-  { text: 'Wind', link: '/presets/wind' },
-  { text: 'Mini', link: '/presets/mini' },
   { text: 'Legacy 兼容', link: '/presets/legacy-compat' },
-  { text: 'Tagify', link: '/presets/tagify' },
-  { text: 'Rem to px', link: '/presets/rem-to-px' },
+  { text: '标签化', link: '/presets/tagify' },
+  { text: 'rem 转 px', link: '/presets/rem-to-px' },
 ]
 
 const Transformers: DefaultTheme.NavItemWithLink[] = [

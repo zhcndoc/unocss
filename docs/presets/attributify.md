@@ -1,12 +1,12 @@
 ---
 title: Attributify 预设
-description: 启用其他预设的 attributify 模式的 UnoCSS 预设。
+description: 启用属性模式的 UnoCSS 预设。
 outline: deep
 ---
 
 # Attributify 预设
 
-这启用了其他预设的 [attributify 模式](#attributify-mode)。
+这启用了其他预设的 [属性模式](#attributify-mode)。
 
 [源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-attributify)
 
@@ -26,6 +26,10 @@ yarn add -D @unocss/preset-attributify
 npm install -D @unocss/preset-attributify
 ```
 
+```bash [bun]
+bun add -D @unocss/preset-attributify
+```
+
 :::
 
 ```ts [uno.config.ts]
@@ -40,7 +44,7 @@ export default defineConfig({
 ```
 
 ::: tip
-此预设包含在 `unocss` 包中，您也可以从那里导入：
+该预设包含在 `unocss` 包中，您也可以从那里导入：
 
 ```ts
 import { presetAttributify } from 'unocss'
@@ -48,9 +52,9 @@ import { presetAttributify } from 'unocss'
 
 :::
 
-## Attributify 模式
+## 属性模式
 
-想象一下，您有一个使用 Tailwind CSS 的工具的按钮。当列表变得更长时，它变得真的很难阅读和维护。
+想象一下，您有一个使用 Tailwind CSS 工具的按钮。当列表变得更长时，阅读和维护变得非常困难。
 
 ```html
 <button
@@ -60,7 +64,7 @@ import { presetAttributify } from 'unocss'
 </button>
 ```
 
-通过 attributify 模式，您可以将工具分离为属性：
+使用属性模式，您可以将工具分离到属性中：
 
 ```html
 <button
@@ -74,11 +78,11 @@ import { presetAttributify } from 'unocss'
 </button>
 ```
 
-例如，`text-sm text-white` 可以组合成 `text="sm white"` 而不需重复相同的前缀。
+例如，`text-sm text-white` 可以被归纳为 `text="sm white"`，而无需重复相同的前缀。
 
-## 前缀自我引用
+## 前缀自引用
 
-对于像 `flex`、`grid`、`border` 这样的工具，具有与前缀相同的工具，提供了一个特殊的 `~` 值。
+对于 `flex`、`grid`、`border` 等工具，它们的工具与前缀相同，提供了一个特殊的 `~` 值。
 
 例如：
 
@@ -92,9 +96,9 @@ import { presetAttributify } from 'unocss'
 <button border="~ red">Button</button>
 ```
 
-## 无值的 attributify
+## 无值属性
 
-除了 Windi CSS 的 attributify 模式外，此预设还支持无值属性。
+除了 Windi CSS 的属性模式之外，该预设还支持无值属性。
 
 例如，
 
@@ -109,12 +113,12 @@ import { presetAttributify } from 'unocss'
 ```
 
 ::: info
-注意：如果您在使用 JSX，`<div foo>` 可能会被转换成 `<div foo={true}>`，这会导致从 UnoCSS 生成的 CSS 无法匹配属性。为了解决这个问题，您可以尝试与此预设一起使用 [`transformer-attributify-jsx`](/transformers/attributify-jsx)。
+注意：如果您正在使用 JSX，`<div foo>` 可能会被转换为 `<div foo={true}>`，这将使 UnoCSS 生成的 CSS 无法匹配属性。为了解决这个问题，您可能想要尝试 [`transformer-attributify-jsx`](/transformers/attributify-jsx) 以及该预设。
 :::
 
 ## 属性冲突
 
-如果属性模式的名称与元素或组件的属性发生冲突，您可以添加 `un-` 前缀以特定于 UnoCSS 的 attributify 模式。
+如果属性模式的名称与元素或组件的属性发生冲突，您可以添加 `un-` 前缀以特指 UnoCSS 的属性模式。
 
 例如：
 
@@ -124,7 +128,7 @@ import { presetAttributify } from 'unocss'
 <a un-text="red">文本颜色为红色</a>
 ```
 
-前缀默认是可选的，如果您想强制使用前缀，请设置
+前缀默认是可选的，如果您想强制使用前缀，可以设置
 
 ```ts
 presetAttributify({
@@ -133,7 +137,7 @@ presetAttributify({
 })
 ```
 
-您也可以通过以下方式禁用对某些属性的扫描：
+您还可以通过以下方式禁用对某些属性的扫描：
 
 ```ts
 presetAttributify({
@@ -148,11 +152,11 @@ presetAttributify({
 
 创建 `shims.d.ts`，内容如下：
 
-> 默认情况下，类型包括来自 `@unocss/preset-uno` 的常见属性。如果您需要自定义属性，请参考 [类型源](https://github.com/unocss/unocss/blob/main/packages-presets/preset-attributify/src/jsx.ts) 来实现您自己的类型。
+> 默认情况下，类型包含来自 `@unocss/preset-uno` 的常见属性。如果您需要自定义属性，请参考 [类型源](https://github.com/unocss/unocss/blob/main/packages-presets/preset-attributify/src/jsx.ts) 来实现您自己的类型。
 
 ### Vue
 
-自 Volar 0.36 起， [它现在严格对待未知属性](https://github.com/johnsoncodehk/volar/issues/1077#issuecomment-1145361472)。要选择退出，您可以在项目中添加以下文件：
+自 Volar 0.36 起，[它现在对未知属性是严格的](https://github.com/johnsoncodehk/volar/issues/1077#issuecomment-1145361472)。要取消严格，可以向项目中添加以下文件：
 
 ```ts [html.d.ts]
 declare module '@vue/runtime-dom' {
@@ -234,7 +238,7 @@ declare module 'preact' {
 }
 ```
 
-### 带前缀的 Attributify
+### 带前缀的属性
 
 ```ts
 import type { AttributifyNames } from '@unocss/preset-attributify'
@@ -251,14 +255,14 @@ interface HTMLAttributes extends Partial<Record<AttributifyNames<Prefix>, string
 - **类型:** `boolean`
 - **默认值:** `false`
 
-仅为 attributify 或类生成 CSS。
+仅为属性或类生成 CSS。
 
 ### prefix
 
 - **类型:** `string`
 - **默认值:** `'un-'`
 
-attributify 模式的前缀。
+属性模式的前缀。
 
 ### prefixedOnly
 
@@ -278,15 +282,15 @@ attributify 模式的前缀。
 
 - **类型:** `string[]`
 
-要忽略的属性列表。
+要在提取中忽略的属性列表。
 
 ### trueToNonValued
 
 - **类型:** `boolean`
 - **默认值:** `false`
 
-如果 DOM 中表示的实际值为 `true`，无值属性也将匹配。此选项存在是为了支持将无值属性编码为 `true` 的框架。启用此选项将破坏以 `true` 结尾的规则。
+如果在 DOM 中表示的实际值为 `true`，无值属性也将匹配。此选项存在是为了支持将无值属性编码为 `true` 的框架。启用此选项将打破以 `true` 结尾的规则。
 
-## 鸣谢
+## 致谢
 
-最初的想法来自 [@Tahul](https://github.com/Tahul) 和 [@antfu](https://github.com/antfu)。先前 [在 Windi CSS 的实现](https://windicss.org/posts/v30.html#attributify-mode) 由 [@voorjaar](https://github.com/voorjaar) 完成。
+最初的想法来自 [@Tahul](https://github.com/Tahul) 和 [@antfu](https://github.com/antfu)。之前的 [Windi CSS 实现](https://windicss.org/posts/v30.html#attributify-mode) 由 [@voorjaar](https://github.com/voorjaar) 完成。

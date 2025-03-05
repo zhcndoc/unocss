@@ -1,12 +1,12 @@
 ---
-title: Mini preset
+title: 迷你预设
 description: UnoCSS 的最小预设 (@unocss/preset-mini)。
 outline: deep
 ---
 
-# Mini preset
+# 迷你预设
 
-UnoCSS 的基本预设，仅包含最基本的工具。
+UnoCSS 的基本预设，仅包含最基本的实用工具。
 
 [源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-mini)
 
@@ -26,6 +26,10 @@ yarn add -D @unocss/preset-mini
 npm install -D @unocss/preset-mini
 ```
 
+```bash [bun]
+bun add -D @unocss/preset-mini
+```
+
 :::
 
 ```ts [uno.config.ts]
@@ -41,7 +45,7 @@ export default defineConfig({
 ```
 
 ::: tip
-此预设已包含在 `unocss` 包中，您也可以从那里导入它：
+该预设包含在 `unocss` 包中，你也可以从那里导入：
 
 ```ts
 import { presetMini } from 'unocss'
@@ -51,13 +55,13 @@ import { presetMini } from 'unocss'
 
 ## 规则
 
-此预设是 [`@unocss/preset-wind`](/presets/wind) 的一个子集，仅包含与 CSS 属性相对应的最基本的工具，但排除了 Tailwind CSS 中引入的有偏见或复杂的工具（`container`、`animation`、`gradient` 等等）。这可以是您基于 Tailwind CSS 或 Windi CSS 中熟悉的工具的自定义预设的良好起点。
+该预设是 [`@unocss/preset-wind3`](/presets/wind3) 的子集，仅包含与 CSS 属性对齐的最基本实用工具，排除了在 Tailwind CSS 中引入的有主观或复杂的实用工具（例如 `container`、`animation`、`gradient` 等）。这可以作为你在 Tailwind CSS 或 Windi CSS 基础上自定义预设的良好起点。
 
 ## 特性
 
-### 黑暗模式
+### 暗黑模式
 
-默认情况下，此预设生成基于类的黑暗模式，带有 `dark:` 变体。
+默认情况下，该预设生成基于类的暗黑模式，使用 `dark:` 变体。
 
 ```html
 <div class="dark:bg-red:10" />
@@ -71,9 +75,9 @@ import { presetMini } from 'unocss'
 }
 ```
 
-#### 基于媒体查询的暗模式
+#### 基于媒体查询的暗黑模式
 
-要在全局使用基于媒体查询的暗模式，可以更改 `dark:` 变体的配置：
+要全局使用基于媒体查询的暗黑模式，可以更改 `dark:` 变体的配置：
 
 ```ts
 presetMini({
@@ -99,7 +103,7 @@ presetMini({
 
 ### CSS @layer
 
-支持 [CSS 的原生 @layer](https://developer.mozilla.org/en-US/docs/Web/CSS/@layer)，带有变体 `layer-xx:`。
+支持 CSS 原生的 @layer 变体 `layer-xx:`：
 
 ```html
 <div class="layer-foo:p4" />
@@ -123,10 +127,10 @@ presetMini({
 
 ### 主题
 
-您可以在配置中完全自定义主题属性，UnoCSS 最终会将其深度合并到默认主题中。
+你可以在配置中完全自定义你的主题属性，UnoCSS 会最终将其深度合并到默认主题中。
 
 :::warning
-`breakpoints` 属性没有被深度合并，而是被覆盖，见 [断点](/config/theme#breakpoints)。
+`breakpoints` 属性不会深度合并，而是被覆盖，参见 [断点](/config/theme#breakpoints)。
 :::
 
 ```ts
@@ -134,9 +138,9 @@ presetMini({
   theme: {
     // ...
     colors: {
-      veryCool: '#0000ff', // 类名="text-very-cool"
+      veryCool: '#0000ff', // class="text-very-cool"
       brand: {
-        primary: 'hsl(var(--hue, 217) 78% 51%)', // 类名="bg-brand-primary"
+        primary: 'hsl(var(--hue, 217) 78% 51%)', // class="bg-brand-primary"
       }
     },
   }
@@ -148,21 +152,21 @@ presetMini({
 ### dark
 
 - **类型:** `class | media | DarkModeSelectors`
-- **默认值:** `class`
+- **默认:** `class`
 
-黑暗模式选项。可以是 `class`、`media` 或自定义选择器对象 (`DarkModeSelectors`)。
+暗黑模式选项。可以是 `class`、`media` 或自定义选择器对象（`DarkModeSelectors`）。
 
 ```ts
 interface DarkModeSelectors {
   /**
-   * 用于浅色变体的选择器。
+   * 光亮变体的选择器。
    *
    * @default '.light'
    */
   light?: string
 
   /**
-   * 用于黑暗变体的选择器。
+   * 暗黑变体的选择器。
    *
    * @default '.dark'
    */
@@ -173,31 +177,31 @@ interface DarkModeSelectors {
 ### attributifyPseudo
 
 - **类型:** `Boolean`
-- **默认值:** `false`
+- **默认:** `false`
 
-生成伪选择器，如 `[group=""]`，而不是 `.group`。
+生成伪选择器为 `[group=""]` 而不是 `.group`。
 
 ### variablePrefix
 
 - **类型:** `string`
-- **默认值:** `un-`
+- **默认:** `un-`
 
 CSS 自定义属性的前缀。
 
 ### prefix
 
 - **类型:** `string | string[]`
-- **默认值:** `undefined`
+- **默认:** `undefined`
 
-工具前缀。
+工具的前缀。
 
 ### preflight
 
-- **类型:** `boolean | on-demand`
-- **默认值:** `true`
+- **类型:** `boolean` | `on-demand`
+- **默认:** `true`
 
-生成预飞行 CSS。可以是：
+生成基础样式 CSS。可以是：
 
-- `true`: 总是生成预飞行。
-- `false`: 不生成预飞行。
-- `on-demand`: 仅为已使用的工具生成预飞行。
+- `true`: 始终生成基础样式。
+- `false`: 不生成基础样式。
+- `on-demand`: 仅为使用的工具生成基础样式。

@@ -1,11 +1,11 @@
 ---
 title: 变体组转换器
-description: 启用 Windi CSS 的变体组功能以支持 UnoCSS (@unocss/transformer-variant-group)
+description: 启用 UnoCSS 的 Windi CSS 的变体组功能 (@unocss/transformer-variant-group)
 ---
 
 # 变体组转换器
 
-启用 Windi CSS 的 [变体组功能](https://windicss.org/features/variant-groups.html) 以支持 UnoCSS。
+启用 [Windi CSS 的变体组功能](https://windicss.org/features/variant-groups.html) 供 UnoCSS 使用。
 
 ## 安装
 
@@ -23,6 +23,10 @@ yarn add -D @unocss/transformer-variant-group
 npm install -D @unocss/transformer-variant-group
 ```
 
+```bash [bun]
+bun add -D @unocss/transformer-variant-group
+```
+
 :::
 
 ```ts [uno.config.ts]
@@ -38,7 +42,7 @@ export default defineConfig({
 ```
 
 ::: tip
-此预设已包含在 `unocss` 包中，您也可以从那里导入它：
+此预设包含在 `unocss` 包中，你也可以从那里导入：
 
 ```ts
 import { transformerVariantGroup } from 'unocss'
@@ -46,7 +50,7 @@ import { transformerVariantGroup } from 'unocss'
 
 :::
 
-## 使用方法
+## 使用
 
 ```html
 <div class="hover:(bg-gray-400 font-medium) font-(light mono)" />
@@ -60,4 +64,4 @@ import { transformerVariantGroup } from 'unocss'
 
 ## 许可证
 
-- MIT 许可证 &copy; 2021-PRESENT [Anthony Fu](https://github.com/antfu)
+- MIT 许可证 &copy; 2021-至今 [Anthony Fu](https://github.com/antfu)

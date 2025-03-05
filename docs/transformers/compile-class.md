@@ -8,7 +8,7 @@ outline: deep
 
 <!-- @unocss-ignore -->
 
-将一组类编译成一个类。灵感来自于 Windi CSS 的 [编译模式](https://windicss.org/posts/modes.html#compilation-mode) 和 [@UltraCakeBakery](https://github.com/UltraCakeBakery) 的 [issue #948](https://github.com/unocss/unocss/issues/948)。
+将一组类编译成一个类。灵感来自 Windi CSS 的 [编译模式](https://windicss.org/posts/modes.html#compilation-mode) 和 [issue #948](https://github.com/unocss/unocss/issues/948) 提出的 [@UltraCakeBakery](https://github.com/UltraCakeBakery)。
 
 ## 安装
 
@@ -26,6 +26,10 @@ yarn add -D @unocss/transformer-compile-class
 npm install -D @unocss/transformer-compile-class
 ```
 
+```bash [bun]
+bun add -D @unocss/transformer-compile-class
+```
+
 :::
 
 ```ts [uno.config.ts]
@@ -41,7 +45,7 @@ export default defineConfig({
 ```
 
 ::: tip
-此预设包含在 `unocss` 包中，您也可以从那里导入：
+这个预设包含在 `unocss` 包中，你也可以从那里导入：
 
 ```ts
 import { transformerCompileClass } from 'unocss'
@@ -49,9 +53,9 @@ import { transformerCompileClass } from 'unocss'
 
 :::
 
-## 使用
+## 用法
 
-在类字符串的开头添加 `:uno:` 以标记它们进行编译。
+在类字符串的开头添加 `:uno:` 来标记它们进行编译。
 
 例如：
 
@@ -61,7 +65,7 @@ import { transformerCompileClass } from 'unocss'
 </div>
 ```
 
-将被编译为：
+将编译为：
 
 ```html
 <div class="uno-qlmcrp">
@@ -91,13 +95,13 @@ import { transformerCompileClass } from 'unocss'
 
 ## 选项
 
-您可以使用选项配置触发字符串和编译类的前缀。有关详细信息，请参阅 [类型](https://github.com/unocss/unocss/blob/main/packages-presets/transformer-compile-class/src/index.ts#L4)。
+你可以通过选项配置触发字符串和编译类的前缀。有关详细信息，请参考 [类型定义](https://github.com/unocss/unocss/blob/main/packages-presets/transformer-compile-class/src/index.ts#L4)。
 
-## 工具
+## 工具支持
 
 ### ESLint
 
-有一个 eslint 规则用于在整个项目中强制使用类编译转换器：[@unocss/enforce-class-compile](https://unocss.dev/integrations/eslint#unocss-enforce-class-compile)
+有一个 eslint 规则用于强制在整个项目中使用类编译转换器：[@unocss/enforce-class-compile](https://unocss.dev/integrations/eslint#unocss-enforce-class-compile)
 
 **用法：**
 
@@ -112,4 +116,4 @@ import { transformerCompileClass } from 'unocss'
 
 ## 许可证
 
-- MIT 许可证 &copy; 2021-至今 [Anthony Fu](https://github.com/antfu)
+- MIT 许可证 &copy; 2021-现在 [Anthony Fu](https://github.com/antfu)
