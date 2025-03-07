@@ -48,13 +48,13 @@ import {
   defineConfig,
   presetAttributify,
   presetTypography,
-  presetUno
+  presetWind3
 } from 'unocss'
 
 export default defineConfig({
   presets: [
     presetAttributify(), // 使用属性模式时必需
-    presetUno(), // 必需
+    presetWind3(), // 必需
     presetTypography(),
   ],
 })
@@ -195,12 +195,12 @@ interface TypographyCompatibilityOptions {
 
 ```ts [uno.config.ts]
 import { presetTypography } from '@unocss/preset-typography'
-import { defineConfig, presetAttributify, presetUno } from 'unocss'
+import { defineConfig, presetAttributify, presetWind3 } from 'unocss'
 
 export default defineConfig({
   presets: [
     presetAttributify(), // 使用属性模式时必需
-    presetUno(), // 必需
+    presetWind3(), // 必需
     presetTypography({
       selectorName: 'markdown', // 现在使用如 `markdown markdown-gray`，`not-markdown`
       // cssExtend 是一个对象，其 CSS 选择器作为键，

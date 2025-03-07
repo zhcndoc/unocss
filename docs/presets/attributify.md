@@ -152,7 +152,7 @@ presetAttributify({
 
 创建 `shims.d.ts`，内容如下：
 
-> 默认情况下，类型包含来自 `@unocss/preset-uno` 的常见属性。如果您需要自定义属性，请参考 [类型源](https://github.com/unocss/unocss/blob/main/packages-presets/preset-attributify/src/jsx.ts) 来实现您自己的类型。
+> 默认情况下，类型包含来自 `@unocss/preset-wind3` 的常见属性。如果您需要自定义属性，请参考 [类型源](https://github.com/unocss/unocss/blob/main/packages-presets/preset-attributify/src/jsx.ts) 来实现您自己的类型。
 
 ### Vue
 

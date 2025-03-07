@@ -51,7 +51,7 @@ UnoCSS 运行时提供一个 CDN 构建，可以直接在浏览器中运行 UnoC
 
 ### Uno（默认）
 
-使用 `@unocss/preset-uno` 预设：
+使用 `@unocss/preset-wind3` 预设：
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime/uno.global.js"></script>
@@ -59,7 +59,7 @@ UnoCSS 运行时提供一个 CDN 构建，可以直接在浏览器中运行 UnoC
 
 ### Attributify
 
-使用 `@unocss/preset-uno` 和 `@unocss/preset-attributify` 预设：
+使用 `@unocss/preset-wind3` 和 `@unocss/preset-attributify` 预设：
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime/attributify.global.js"></script>
@@ -119,10 +119,10 @@ initUnocssRuntime({ defaults: config })
 ```ts
 import { defineConfig } from '@unocss/runtime'
 import presetIcons from 'https://esm.sh/@unocss/preset-icons/browser'
-import presetUno from 'https://esm.sh/@unocss/preset-uno'
+import presetWind3 from 'https://esm.sh/@unocss/preset-wind3'
 
 export default defineConfig({
-  presets: [presetUno(), presetIcons({ cdn: 'https://esm.sh/' })],
+  presets: [presetWind3(), presetIcons({ cdn: 'https://esm.sh/' })],
 })
 ```
 

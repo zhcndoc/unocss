@@ -35,13 +35,13 @@ bun add -D @unocss/preset-web-fonts
 :::
 
 ```ts [uno.config.ts]
-import presetUno from '@unocss/preset-uno'
 import presetWebFonts from '@unocss/preset-web-fonts'
+import presetWind3 from '@unocss/preset-wind3'
 import { defineConfig } from 'unocss'
 
 export default defineConfig({
   presets: [
-    presetUno(),
+    presetWind3(),
     presetWebFonts({ /* options */ }),
   ],
 })
@@ -74,15 +74,15 @@ import { presetWebFonts } from 'unocss'
 使用您自己的函数获取字体源。
 
 ```ts [uno.config.ts]
-import presetUno from '@unocss/preset-uno'
 import presetWebFonts from '@unocss/preset-web-fonts'
+import presetWind3 from '@unocss/preset-wind3'
 import axios from 'axios'
 import ProxyAgent from 'proxy-agent'
 import { defineConfig } from 'unocss'
 
 export default defineConfig({
   presets: [
-    presetUno(),
+    presetWind3(),
     presetWebFonts({
       // 使用带有 https 代理的 axios
       customFetch: (url: string) => axios.get(url, { httpsAgent: new ProxyAgent('https://localhost:7890') }).then(it => it.data),

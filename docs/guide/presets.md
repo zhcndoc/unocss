@@ -13,12 +13,12 @@ outline: deep
 要将预设设置到您的项目中：
 
 ```ts twoslash [uno.config.ts]
-import { defineConfig, presetAttributify, presetUno } from 'unocss'
+import { defineConfig, presetAttributify, presetWind3 } from 'unocss'
 
 export default defineConfig({
   presets: [
     presetAttributify({ /* 预设选项 */}),
-    presetUno(),
+    presetWind3(),
     // ...自定义预设
   ],
 })
