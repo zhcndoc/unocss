@@ -2,53 +2,46 @@ import type { Preflight } from '@unocss/core'
 import type { PresetWind4Options } from '..'
 import type { Theme } from '../theme/types'
 import { alphaPlaceholdersRE } from '@unocss/rule-utils'
-import { camelToHyphen, compressCSS, passThemeKey } from '../utils'
+import { compressCSS, getThemeByKey, hyphenate, passThemeKey, PRESET_NAME } from '../utils'
 
-/** Output for CSS Variables */
-const DefaultCssVarKeys = [
-  'font',
-  'colors',
-  // 'spacing', // spacing is a special case
+/** Exclude output for CSS Variables */
+const ExcludeCssVarKeys = [
+  'spacing',
   'breakpoint',
   'verticalBreakpoint',
-  'container',
-  'text',
-  'fontWeight',
-  'tracking',
-  'leading',
-  'textStrokeWidth',
-  'radius',
   'shadow',
   'insetShadow',
   'dropShadow',
   'textShadow',
-  'ease',
-  'blur',
-  'perspective',
+  'animation',
   'property',
-  'defaults',
+  'aria',
+  'media',
+  'supports',
 ]
 
-function themeToCSSVars(theme: Theme, keys: string[]): string {
-  let cssVariables = ''
+function getThemeVarsMap(theme: Theme, keys: string[]): Map<string, string> {
+  const themeMap = new Map<string, string>([
+    ['--spacing', theme.spacing!.DEFAULT],
+  ])
 
   function process(obj: any, prefix: string) {
     for (const key in obj) {
       if (key === 'DEFAULT' && Object.keys(obj).length === 1) {
-        cssVariables += `${camelToHyphen(`--${prefix}`)}: ${obj[key].replace(alphaPlaceholdersRE, '1')};\n`
+        themeMap.set(hyphenate(`--${prefix}`), obj[key].replace(alphaPlaceholdersRE, '1'))
       }
 
       if (passThemeKey.includes(key))
         continue
 
       if (Array.isArray(obj[key])) {
-        cssVariables += `${camelToHyphen(`--${prefix}-${key}`)}: ${obj[key].join(',').replace(alphaPlaceholdersRE, '1')};\n`
+        themeMap.set(hyphenate(`--${prefix}-${key}`), obj[key].join(',').replace(alphaPlaceholdersRE, '1'))
       }
       else if (typeof obj[key] === 'object') {
         process(obj[key], `${prefix}-${key}`)
       }
       else {
-        cssVariables += `${camelToHyphen(`--${prefix}-${key}`)}: ${obj[key].replace(alphaPlaceholdersRE, '1')};\n`
+        themeMap.set(hyphenate(`--${prefix}-${key}`), obj[key].replace(alphaPlaceholdersRE, '1'))
       }
     }
   }
@@ -59,27 +52,60 @@ function themeToCSSVars(theme: Theme, keys: string[]): string {
     process((theme as any)[key], key)
   }
 
-  return cssVariables
+  return themeMap
 }
 
 export function theme(options: PresetWind4Options): Preflight<Theme> {
-  let themeKeys: string[]
-
-  if (typeof options.themeKeys === 'function') {
-    themeKeys = options.themeKeys(DefaultCssVarKeys)
-  }
-  else {
-    themeKeys = options.themeKeys ?? DefaultCssVarKeys
-  }
-
   return {
     layer: 'theme',
-    getCSS({ theme }) {
-      return compressCSS(`
-:root {
---spacing: ${theme.spacing!.DEFAULT};
-${themeToCSSVars(theme, themeKeys).trim()}
-}`)
+    getCSS(ctx) {
+      const { theme, generator } = ctx
+      if (options.themePreflight === false) {
+        return undefined
+      }
+
+      let deps
+      const generateCSS = (deps: [string, string][]) => {
+        if (options.processThemeVars) {
+          deps = options.processThemeVars(deps, ctx) ?? deps
+        }
+        if (deps.length === 0)
+          return undefined
+
+        const depCSS = deps.map(([key, value]) => `${key}: ${value};`).join('\n')
+
+        return compressCSS(`
+:root, :host {
+${depCSS}
+}`, generator.config.envMode === 'dev')
+      }
+
+      if (options.themePreflight === 'on-demand') {
+        const self = generator.config.presets.find(p => p.name === PRESET_NAME)
+        if (!self || (self.meta!.themeDeps as Set<string>).size === 0)
+          return undefined
+
+        deps = Array.from(self.meta!.themeDeps as Set<string>).map((k) => {
+          const [key, prop] = k.split(':') as [keyof Theme, string]
+          let v = getThemeByKey(theme, key, prop.split('-')) ?? getThemeByKey(theme, key, [prop])
+
+          if (typeof v === 'object') {
+            v = v.DEFAULT
+          }
+
+          if (v) {
+            return [`--${hyphenate(`${key}${prop !== 'DEFAULT' ? `-${prop}` : ''}`)}`, v]
+          }
+
+          return undefined
+        }).filter(Boolean) as [string, string][]
+      }
+      else {
+        const keys = Object.keys(theme).filter(k => !ExcludeCssVarKeys.includes(k))
+        deps = Array.from(getThemeVarsMap(theme, keys))
+      }
+
+      return generateCSS(deps)
     },
   }
 }

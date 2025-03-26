@@ -1,4 +1,4 @@
-import type { PresetOptions } from '@unocss/core'
+import type { PreflightContext, PresetOptions } from '@unocss/core'
 import type { Theme } from './theme'
 import { definePreset } from '@unocss/core'
 import { extractorArbitraryVariants } from '@unocss/extractor-arbitrary-variants'
@@ -8,6 +8,7 @@ import { rules } from './rules'
 import { shortcuts } from './shortcuts'
 import { shorthands } from './shorthands'
 import { theme } from './theme'
+import { PRESET_NAME, trackedTheme } from './utils'
 import { variants } from './variants'
 
 export { postprocessors, preflights, rules, shortcuts, shorthands, theme, variants }
@@ -69,11 +70,6 @@ export interface PresetWind4Options extends PresetOptions {
   arbitraryVariants?: boolean
 
   /**
-   * Choose which theme keys to export as CSS variables.
-   */
-  themeKeys?: string[] | ((keys: string[]) => string[])
-
-  /**
    * The important option lets you control whether UnoCSS’s utilities should be marked with `!important`.
    *
    * This can be really useful when using UnoCSS with existing CSS that has high specificity selectors.
@@ -92,6 +88,26 @@ export interface PresetWind4Options extends PresetOptions {
    * @default true
    */
   reset?: boolean
+
+  /**
+   * Generate theme keys as CSS variables.
+   *
+   * - `true`: Generate theme keys fully.
+   * - `false`: Disable theme keys. (Not recommended ⚠️)
+   * - `'on-demand'`: Generate theme keys only when used.
+   *
+   * @default 'on-demand'
+   */
+  themePreflight?: boolean | 'on-demand'
+
+  /**
+   * Process theme variables before generating CSS variables.
+   *
+   * @param vars [key, value][]
+   * @param ctx {@link PreflightContext}
+   * @returns
+   */
+  processThemeVars?: (vars: [string, string][], ctx: PreflightContext) => void | [string, string][]
 }
 
 export const presetWind4 = definePreset<PresetWind4Options, Theme>((options = {}) => {
@@ -99,9 +115,10 @@ export const presetWind4 = definePreset<PresetWind4Options, Theme>((options = {}
   options.attributifyPseudo = options.attributifyPseudo ?? false
   options.variablePrefix = options.variablePrefix ?? 'un-'
   options.important = options.important ?? false
+  options.themePreflight = options.themePreflight ?? 'on-demand'
 
   return {
-    name: '@unocss/preset-wind4',
+    name: PRESET_NAME,
     rules,
     shortcuts,
     theme,
@@ -119,6 +136,12 @@ export const presetWind4 = definePreset<PresetWind4Options, Theme>((options = {}
       shorthands,
     },
     options,
+    meta: {
+      themeDeps: trackedTheme,
+    },
+    configResolved() {
+      trackedTheme.clear()
+    },
   }
 })
 

@@ -177,7 +177,7 @@ outline: deep
 支持的来源：
 
 - `filesystem` - 从文件系统提取
-- `plain` - 从纯行内文本提取
+- `inline` - 从纯行内文本提取
 - `pipeline` - 从构建工具的转换管道提取，例如 Vite 和 Webpack
 
 从每个来源提取的用法将被 **合并** 在一起。
