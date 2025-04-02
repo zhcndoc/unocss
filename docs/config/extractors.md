@@ -30,4 +30,4 @@ export default defineConfig({
 })
 ```
 
-例如，请查看 [pug 提取器](https://github.com/unocss/unocss/tree/main/packages-integrations/extractor-pug) 或 [attributify 提取器](https://github.com/unocss/unocss/blob/main/packages-presets/preset-attributify/src/extractor.ts) 的实现。
+例如，请查看 [pug 提取器](https://github.com/unocss/unocss/blob/main/packages-presets/extractor-pug/src/index.ts) 或 [attributify 提取器](https://github.com/unocss/unocss/blob/main/packages-presets/preset-attributify/src/extractor.ts) 的实现。
