@@ -156,6 +156,7 @@ rules: [
 - `symbols.layer`：一个字符串/函数/正则表达式匹配，用于设置生成 CSS 规则的 UnoCSS 层
 - `symbols.variants`：应用于当前 CSS 对象的变体处理程序数组
 - `symbols.shortcutsNoMerge`：一个布尔值，用于禁用在快捷方式中合并当前规则
+- `symbols.noMerge`: 一个布尔值，用于禁用快速方式中当前规则的合并
 - `symbols.sort`：一个数字，用于覆盖当前 CSS 对象的排序顺序
 
 ## 多选择器规则

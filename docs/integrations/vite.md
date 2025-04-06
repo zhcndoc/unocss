@@ -233,9 +233,9 @@ export default {
 import { sveltekit } from '@sveltejs/kit/vite'
 import extractorSvelte from '@unocss/extractor-svelte'
 import UnoCSS from 'unocss/vite'
+import { defineConfig } from 'vite'
 
-/** @type {import('vite').UserConfig} */
-const config = {
+export default defineConfig({
   plugins: [
     UnoCSS({
       extractors: [
@@ -245,7 +245,7 @@ const config = {
     }),
     sveltekit(),
   ],
-}
+})
 ```
 
 <ContentExample :item="playgrounds['sveltekit']"  class="Link mb-4" integrations />
