@@ -326,6 +326,12 @@ export const presetWind4Targets: string[] = [
   'table-footer-group',
   'table-row-group',
 
+  // position
+  'top-1/2',
+
+  // translate
+  'translate-y-1/2',
+
   // touch-actions
   'touch-pan-left',
   'touch-pan-y',
@@ -420,6 +426,10 @@ export const presetWind4Targets: string[] = [
   'max-h-dvh',
   'max-h-svh',
   'max-h-lvh',
+
+  // translate
+  '-translate-y-50%',
+  'translate-y--50%',
 
   // outline
   'outline-hidden',
