@@ -237,6 +237,12 @@ export default defineConfig({
 })
 ```
 
+### presetLegacyCompat
+
+In `presetWind4`, we use the `oklch` color model to support better color contrast and color perception. Therefore, it is not compatible with `presetLegacyCompat` and is **not recommended** for use together.
+
+Please refer to the [Compatibility](#compatibility) section for more information.
+
 ### transformDirectives
 
 `transformDirectives` 与 `PresetWind4` 的兼容性不佳。存在一些已知问题，因此请谨慎使用。
