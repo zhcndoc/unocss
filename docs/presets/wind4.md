@@ -1,17 +1,17 @@
 ---
 title: Wind4 预设
-description: UnoCSS 的 Tailwind4 CSS 精简预设（@unocss/preset-wind4）。
+description: 用于 UnoCSS 的 Tailwind4 CSS 紧凑预设（@unocss/preset-wind4）。
 outline: deep
 ---
 
 # Wind4 预设
 
-UnoCSS 的 Tailwind4 CSS 精简预设。它与 PresetWind3 的所有功能兼容，并且进一步增强了它。
+用于 UnoCSS 的 Tailwind4 CSS 紧凑预设。它与 PresetWind3 的所有功能兼容，并进一步增强。
 
-[源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-wind4)
+[源码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-wind4)
 
 ::: tip
-您可以花一点时间阅读此文档以了解变更。
+您可以花一点时间阅读本文档以了解更改
 :::
 
 ## 安装
@@ -50,29 +50,29 @@ export default defineConfig({
 
 ## 兼容性
 
-请参考 [Tailwind 兼容性](https://tailwindcss.com/docs/compatibility) 以了解浏览器支持和兼容性。
+请参考 [Tailwind 兼容性](https://tailwindcss.com/docs/compatibility) 了解浏览器支持和兼容性。
 
 ## 主题
 
 `PresetWind4` 的主题几乎与 `PresetWind3` 的主题相同，但某些主题键已进行了调整。
 
 ::: warning
-请注意在切换到 PresetWind4 时，参考下表检查您的主题键配置并进行适当调整。
+请注意在切换到 PresetWind4 时，参阅下表检查您的主题键配置并进行适当的调整。
 :::
 
 |                                            PresetWind3                                            |                          PresetWind4                          |
 | :-----------------------------------------------------------------------------------------------: | :-----------------------------------------------------------: |
 |                                           `fontFamily`                                            |                            `font`                             |
-|                                            `fontSize`                                             |            移至 `text` 中的 `fontSize` 属性                  |
-|                                           `lineHeight`                                            |   移至 `text` 中的 `lineHeight` 属性或使用 `leading`      |
-|                                          `letterSpacing`                                          | 移至 `text` 中的 `letterSpacing` 属性或使用 `tracking`    |
+|                                            `fontSize`                                             |            移至 `text` 中的 `fontSize` 属性                    |
+|                                           `lineHeight`                                            |   移至 `text` 中的 `lineHeight` 属性或使用 `leading`         |
+|                                          `letterSpacing`                                          | 移至 `text` 中的 `letterSpacing` 属性或使用 `tracking`      |
 |                                          `borderRadius`                                           |                           `radius`                            |
 |                                             `easing`                                              |                            `ease`                             |
 |                                           `breakpoints`                                           |                         `breakpoint`                          |
 |                                       `verticalBreakpoints`                                       |                     `verticalBreakpoint`                      |
 |                                            `boxShadow`                                            |                           `shadow`                            |
 |                                                 -                                                 |                         `insetShadow`                         |
-|     像 `width`, `height`, `maxWidth`, `maxHeight`, `minWidth`, `minHeight` 这样的大小属性          |                   统一为使用 `spacing`                       |
+|     像 `width`, `height`, `maxWidth`, `maxHeight`, `minWidth`, `minHeight` 这样的尺寸属性      |                   统一为使用 `spacing`                        |
 |                                       `transitionProperty`                                        |                          `property`                           |
 | `gridAutoColumn`, `gridAutoRow`, `gridColumn`, `gridRow`, `gridTemplateColumn`, `gridTemplateRow` |                               -                               |
 |                                       `container.maxWidth`                                        |                     `containers.maxWidth`                     |
@@ -80,7 +80,7 @@ export default defineConfig({
 
 ### `Theme.defaults`
 
-`Theme.defaults` 是一个全局默认主题配置，将应用于 `reset` 样式或用作某些规则的默认值。
+`Theme.defaults` 是一个全局默认主题配置，将应用于 `reset` 样式或作为某些规则的默认值。
 
 以下是 `Theme.defaults` 的默认值，您可以在主题配置中覆盖它们。
 
@@ -112,18 +112,22 @@ export const defaults: Theme['defaults'] = {
 
 ## 选项
 
-PresetWind4 的基本配置与 [PresetWind3](/presets/wind3#options) 相似，具有以下重要变化。
+PresetWind4 的基本配置与 [PresetWind3](/presets/wind3#options) 类似，但有以下重要更改。
 
-### 重置样式
+### Preflights
 
-在 PresetWind4 中，我们将重置样式与 tailwind4 对齐并在内部集成。您无需安装任何额外的 CSS 重置包，如 `@unocss/reset` 或 `normalize.css`。
+我们在 `PresetWind4` 中添加了 `preflights` 配置选项，以控制是否启用预设样式。
+
+#### Reset
+
+在 PresetWind4 中，我们使重置样式与 tailwind4 对齐并进行了内部集成。您无需安装任何额外的 CSS 重置包，如 `@unocss/reset` 或 `normalize.css`。
 
 ```ts [main.ts]
 import '@unocss/reset/tailwind.css' // [!code --]
 import '@unocss/reset/tailwind-compact.css' // [!code --]
 ```
 
-您只需通过开关来控制是否启用重置样式：
+您只需通过开关控制是否启用重置样式：
 
 ```ts twoslash [uno.config.ts]
 import presetWind4 from '@unocss/preset-wind4'
@@ -132,60 +136,96 @@ import { defineConfig } from 'unocss'
 export default defineConfig({
   presets: [
     presetWind4({
-      reset: true, // [!code focus]
-      // ^?
+      preflights: { // [!code focus]
+        reset: true, // [!code focus]
+      } // [!code focus]
     }),
   ],
 })
 ```
 
-### 工具解析器
+#### 主题
 
-在 PresetWind4 中，我们升级了 `postProcess` 钩子，以提供更简洁的 API。现在您可以直接在预设中自定义 `utilities`。
+选择如何生成主题 CSS 变量。
 
-例如，如果您想使用 `presetRemToPx` 预设将 `rem` 转换为 `px`，您不再需要单独导入此预设，因为 `presetWind4` 在内部提供了此功能。
+##### 模式
+
+安装了 `presetWind4` 的 UnoCSS 引擎会在解析工具时自动收集主题的依赖关系，并在最后生成 CSS 变量。
+
+- `true`: 完全生成主题键。
+- `false`: 禁用主题键。 (不推荐 ⚠️)
+- `'on-demand'`: 仅在使用时生成主题键。-> ✅ **(默认)**
 
 ```ts twoslash [uno.config.ts]
-import { createRemToPxResolver } from '@unocss/preset-wind4/utils' // [!code focus]
 import { defineConfig, presetWind4 } from 'unocss'
 
 export default defineConfig({
   presets: [
     presetWind4({
-      utilityResolver: createRemToPxResolver() // [!code focus]
+      preflights: { // [!code focus]
+        theme: true, // [!code focus]
+      }, // [!code focus]
     }),
   ],
 })
 ```
 
-您可以自定义更多解析器集来处理 `utilities` 并输出所需的 CSS。
+##### 处理
 
-有关具体实现方法，请参考 `postProcess` 或 [presetWind4 测试用例](https://github.com/unocss/unocss/blob/60c15bb78d96704a4532e2bf502efa16125fdceb/test/preset-wind4.test.ts#L178-L232)
+您可以进一步控制主题变量的输出。例如，如果您想将 `rem` 转换为 `px` 的主题变量，我们提供了 `createRemToPxProcessor` 函数来处理您的主题变量。
 
-### 主题预览
+```ts twoslash [uno.config.ts]
+import { createRemToPxProcessor } from '@unocss/preset-wind4/utils' // [!code focus]
+import { defineConfig, presetWind4 } from 'unocss'
 
-选择如何生成主题 CSS 变量。
+export default defineConfig({
+  presets: [
+    presetWind4({
+      preflights: { // [!code focus]
+        theme: { // [!code focus]
+          mode: 'on-demand', // 默认为 'on-demand' // [!code focus]
+          process: createRemToPxProcessor(), // [!code focus]
+        } // [!code focus]
+      }, // [!code focus]
+    }),
+  ],
+})
+```
 
-安装了 `presetWind4` 的 UnoCSS 引擎将在解析工具时自动收集主题依赖项，并在最后生成 CSS 变量。
+顺便说一下，如果您想使用 `presetRemToPx` 预设将 `rem` 转换为 `px`，您不再需要单独导入这个预设，因为 `presetWind4` 已经在内部提供了这个功能。
 
-- `true`: 完全生成主题键。
-- `false`: 禁用主题键。（不推荐 ⚠️）
-- `'on-demand'`: 仅在使用时生成主题键。 -> ✅ **（默认）**
+```ts twoslash [uno.config.ts]
+import { createRemToPxProcessor } from '@unocss/preset-wind4/utils' // [!code focus]
+import { defineConfig, presetWind4 } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetWind4({
+      preflights: { // [!code focus]
+        theme: { // [!code focus]
+          process: createRemToPxProcessor(), // [!code focus]
+        } // [!code focus]
+      }, // [!code focus]
+    }),
+  ],
+  postprocess: [createRemToPxProcessor()], // [!code focus]
+})
+```
 
 ## 生成的 CSS
 
 在 PresetWind4 的输出中，添加了两个新层：`theme` 和 `cssvar-property`。
 
-|    层名称     |              描述              |  顺序  |
-| :-----------: | :-----------------------------: | :----: |
+|    层名称      |              描述              | order |
+| :------------: | :-----------------------------: | :---: |
 | `cssvar-property` | 通过 `@property` 定义的 CSS 属性 | -200  |
-|      `theme`      |        主题相关的 CSS 变量        | -150  |
+|      `theme`      |      与主题相关的 CSS 变量     | -150  |
 
 ### `cssvar-property` 层
 
-我们在许多规则中使用 `@property` 定义 CSS 属性，以实现更好的性能和更小的体积。
+我们在许多规则中使用 `@property` 来定义 CSS 属性，以实现更好的性能和更小的体积。
 
-例如，常用的工具如 `text-op-xx`、`bg-op-xx` 等。
+例如，常用的工具类如 `text-op-xx`、`bg-op-xx` 等。
 
 ```css
 @property --un-text-opacity {
@@ -197,8 +237,13 @@ export default defineConfig({
 
 ### `theme` 层
 
-我们把主题相关的 CSS 变量放在 `theme` 层，以便于您覆盖和直接使用。
-它可以是全面的或按需生成的，始终来源于您的主题配置。
+我们将与主题相关的 CSS 变量放在 `theme` 层中，以便您更容易覆盖和直接使用。
+它可以是全面的或按需的。它始终来自您的主题配置。
+
+::: info
+生成的键名称可能与 `Tailwind4` 的不完全相同。我们尽量避免在主题中对键名称进行重大更改，以尊重从 `presetWind3` 迁移的用户。
+您还可以在 [Preflights 主题处理](#process) 中自定义想要的输出。
+:::
 
 ```css
 :root,
@@ -216,12 +261,18 @@ export default defineConfig({
 
 ## 与其他预设的兼容性
 
-`PresetWind4` 增强并与 `PresetWind3` 兼容。由于其他包最初是为 `PresetWind3` 开发的，因此在一起使用时可能会出现一些问题。已知问题包括：
+`PresetWind4` 在增强和兼容 `PresetWind3` 的基础上进行。由于其他包最初是为 `PresetWind3` 开发的，在一起使用时可能会出现一些问题。已知问题包括：
+
+### presetRemToPx
+
+在 `PresetWind4` 中，不再需要 `presetRemToPx`，因为它已在内部包含。您可以将其从配置中删除。
+
+请参考选项中的 [`process`](#process)。
 
 ### presetWebFonts
 
-当与 `PresetWind4` 一起使用 `presetWebFonts` 时，`fontFamily` 主题键不再支持。
-请进行以下调整：
+当将 `presetWebFonts` 与 `PresetWind4` 一起使用时，不再支持 `fontFamily` 主题键。
+请做以下调整：
 
 ```ts twoslash [uno.config.ts]
 import { defineConfig, presetWebFonts, presetWind4 } from 'unocss'
@@ -239,16 +290,15 @@ export default defineConfig({
 
 ### presetLegacyCompat
 
-In `presetWind4`, we use the `oklch` color model to support better color contrast and color perception. Therefore, it is not compatible with `presetLegacyCompat` and is **not recommended** for use together.
+在 `presetWind4` 中，我们使用 `oklch` 颜色模型以支持更好的颜色对比和颜色感知。因此，它与 `presetLegacyCompat` 不兼容，不推荐一起使用。
 
-Please refer to the [Compatibility](#compatibility) section for more information.
+请参阅 [兼容性](#compatibility) 部分以获取更多信息。
 
 ### transformDirectives
 
-`transformDirectives` 与 `PresetWind4` 的兼容性不佳。存在一些已知问题，因此请谨慎使用。
+`transformDirectives` 在 `PresetWind4` 中效果不佳。有一些已知问题，因此请谨慎使用。
 
 ::: warning
 
-- 当使用 `@apply` 处理具有 `@property` 的规则时，不同层级之间可能会发生冲突。
-
-:::
+- 使用 `@apply` 处理带有 `@property` 的规则时，可能会出现不同层级之间的冲突。
+  :::
