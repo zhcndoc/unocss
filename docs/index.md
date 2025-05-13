@@ -1,6 +1,7 @@
 ---
 layout: home
-title: "UnoCSS：即需即用的原子 CSS 引擎"
+title: "UnoCSS 中文文档"
+titleTemplate: ":title - 即需即用的原子 CSS 引擎"
 
 hero:
   image:
