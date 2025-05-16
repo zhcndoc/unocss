@@ -3,7 +3,8 @@
 @property --un-leading{syntax:"*";inherits:false;}
 @property --un-text-stroke-opacity{syntax:"<percentage>";inherits:false;initial-value:100%;}
 @property --un-text-shadow-opacity{syntax:"<percentage>";inherits:false;initial-value:100%;}
-@property --un-outline-color-opacity{syntax:"<percentage>";inherits:false;initial-value:100%;}
+@property --un-outline-opacity{syntax:"<percentage>";inherits:false;initial-value:100%;}
+@property --un-outline-style{syntax:"*";inherits:false;initial-value:solid;}
 @property --un-accent-opacity{syntax:"<percentage>";inherits:false;initial-value:100%;}
 @property --un-caret-opacity{syntax:"<percentage>";inherits:false;initial-value:100%;}
 @property --un-border-opacity{syntax:"<percentage>";inherits:false;initial-value:100%;}
@@ -95,8 +96,6 @@
 @property --un-divide-x-reverse{syntax:"*";inherits:false;initial-value:0;}
 /* layer: theme */
 :root, :host {
---colors-gray-DEFAULT: oklch(0.707 0.022 261.325);
---colors-gray-400: oklch(0.707 0.022 261.325);
 --radius-md: 0.375rem;
 --radius-sm: 0.25rem;
 --radius-DEFAULT: 0.25rem;
@@ -124,6 +123,8 @@
 --colors-red-300: oklch(0.808 0.114 19.571);
 --colors-red-DEFAULT: oklch(0.704 0.191 22.216);
 --colors-sky-300: oklch(0.828 0.111 230.318);
+--colors-gray-DEFAULT: oklch(0.707 0.022 261.325);
+--colors-gray-400: oklch(0.707 0.022 261.325);
 --colors-black: #000;
 --colors-blue-DEFAULT: oklch(0.707 0.165 254.624);
 --colors-red-100: oklch(0.936 0.032 17.717);
@@ -147,6 +148,7 @@
 --colors-green-DEFAULT: oklch(0.792 0.209 151.711);
 --colors-violet-50: oklch(0.969 0.016 293.756);
 --colors-pink-100: oklch(0.948 0.028 342.258);
+--colors-yellow-DEFAULT: oklch(0.852 0.199 91.936);
 --colors-violet-200: oklch(0.894 0.057 293.283);
 --text-2xl-fontSize: 1.5rem;
 --text-2xl-lineHeight: 2rem;
@@ -221,6 +223,7 @@
 .next\:checked\:text-slate-200:checked+*{color:color-mix(in oklch, var(--colors-slate-200) var(--un-text-opacity), transparent) /* oklch(0.929 0.013 255.508) */;}
 .checked\:next\:hover\:text-slate-500:hover+*:checked{color:color-mix(in oklch, var(--colors-slate-500) var(--un-text-opacity), transparent) /* oklch(0.554 0.046 257.417) */;}
 .next\:checked\:children\:text-slate-600>*:checked+*{color:color-mix(in oklch, var(--colors-slate-600) var(--un-text-opacity), transparent) /* oklch(0.446 0.043 257.281) */;}
+.nth-\[2\]\:text-yellow:nth-child(2){color:color-mix(in oklch, var(--colors-yellow-DEFAULT) var(--un-text-opacity), transparent) /* oklch(0.852 0.199 91.936) */;}
 .c-\[\#157\],
 .c-\#157,
 .c-hex-157{color:color-mix(in oklch, #157 var(--un-text-opacity), transparent) /* #157 */;}
@@ -466,10 +469,10 @@
 .outline-width-10px{outline-style:var(--un-outline-style);outline-width:10px;}
 .outline-width-revert{outline-style:var(--un-outline-style);outline-width:revert;}
 .outline-\[calc\(1rem-1px\)\]{outline-style:var(--un-outline-style);outline-width:calc(1rem - 1px);}
-.outline-\[var\(--red\)\]{outline-color:color-mix(in oklch, var(--red) var(--un-outline-color-opacity), transparent) /* var(--red) */;}
-.outline-\$variable{outline-color:color-mix(in oklch, var(--variable) var(--un-outline-color-opacity), transparent) /* var(--variable) */;}
-.outline-gray{outline-color:color-mix(in oklch, var(--colors-gray-DEFAULT) var(--un-outline-color-opacity), transparent) /* oklch(0.707 0.022 261.325) */;}
-.outline-gray-400{outline-color:color-mix(in oklch, var(--colors-gray-400) var(--un-outline-color-opacity), transparent) /* oklch(0.707 0.022 261.325) */;}
+.outline-\[var\(--red\)\]{outline-color:color-mix(in oklch, var(--red) var(--un-outline-opacity), transparent) /* var(--red) */;}
+.outline-\$variable{outline-color:color-mix(in oklch, var(--variable) var(--un-outline-opacity), transparent) /* var(--variable) */;}
+.outline-gray{outline-color:color-mix(in oklch, var(--colors-gray-DEFAULT) var(--un-outline-opacity), transparent) /* oklch(0.707 0.022 261.325) */;}
+.outline-gray-400{outline-color:color-mix(in oklch, var(--colors-gray-400) var(--un-outline-opacity), transparent) /* oklch(0.707 0.022 261.325) */;}
 .outline-offset-\[var\(--offset\)\]{outline-offset:var(--offset);}
 .outline-offset-\$variable{outline-offset:var(--variable);}
 .outline-offset-4{outline-offset:4px;}

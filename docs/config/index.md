@@ -208,7 +208,7 @@ outline: deep
 ##### include
 
 - **类型:** `FilterPattern`
-- **默认:** `[/\.(vue|svelte|[jt]sx|mdx?|astro|elm|php|phtml|html)($|\?)/]`
+- **默认:** `[/\.(vue|svelte|[jt]sx|vine.ts|mdx?|astro|elm|php|phtml|html)($|\?)/]`
 
 过滤被提取文件的模式。支持正则表达式和 `picomatch` glob 模式。
 
