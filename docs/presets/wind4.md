@@ -90,7 +90,7 @@ export default defineConfig({
 ```ts twoslash [uno.config.ts]
 import type { Theme } from '@unocss/preset-wind4/theme'
 
-export const defaults: Theme['defaults'] = {
+export const defaults: Theme['default'] = {
   transition: {
     duration: '150ms',
     timingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
@@ -214,18 +214,19 @@ export default defineConfig({
 
 ## 生成的 CSS
 
-在 PresetWind4 的输出中，添加了两个新层：`theme` 和 `cssvar-property`。
+在 PresetWind4 的输出中，新增了三个层：`base`、`theme` 和 `properties`。
 
-|    层名称      |              描述              | order |
-| :------------: | :-----------------------------: | :---: |
-| `cssvar-property` | 通过 `@property` 定义的 CSS 属性 | -200  |
-|      `theme`      |      与主题相关的 CSS 变量     | -150  |
+| 层名称       | 描述                                   | 顺序   |
+| :----------: | :-------------------------------------: | :---: |
+| `properties` | 由`@property`定义的CSS属性            | -200  |
+| `theme`      | 与主题相关的CSS变量                   | -150  |
+| `base`       | 基础的预飞行/重置样式                | -100  |
 
-### `cssvar-property` 层
+### `properties` 层
 
 我们在许多规则中使用 `@property` 来定义 CSS 属性，以实现更好的性能和更小的体积。
 
-例如，常用的工具类如 `text-op-xx`、`bg-op-xx` 等。
+例如，常用的实用程序如 `text-op-xx`、`bg-op-xx` 等。
 
 ```css
 @property --un-text-opacity {
