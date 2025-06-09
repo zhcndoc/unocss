@@ -5,9 +5,7 @@ description: 开始使用 UnoCSS 和 Next.js。
 
 # Next.js
 
-// TODO: 链接到示例
-
-开始使用 UnoCSS 和 Next.js。
+开始使用 UnoCSS 和 Next.js。查看 [示例](https://github.com/unocss/unocss/tree/main/examples/next)。
 
 ## 设置
 

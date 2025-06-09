@@ -89,6 +89,12 @@ export default defineConfig({
 @unocss all;
 ```
 
+或者，如果您想排除特定层，可以使用 `@unocss !<layer>` 指令：
+
+```css
+@unocss !preflights, !<other-layer>;
+```
+
 ### `@apply`
 
 ```css
