@@ -14,26 +14,28 @@ description: 开始使用 UnoCSS 和 Next.js。
 ::: code-group
 
 ```bash [pnpm]
-pnpm add -D unocss @unocss/webpack
+pnpm add -D unocss @unocss/postcss @unocss/reset
 ```
 
 ```bash [yarn]
-yarn add -D unocss @unocss/webpack
+yarn add -D unocss @unocss/postcss @unocss/reset
 ```
 
 ```bash [npm]
-npm install -D unocss @unocss/webpack
+npm install -D unocss @unocss/postcss @unocss/reset
 ```
 
 ```bash [bun]
-bun add -D unocss @unocss/webpack
+bun add -D unocss @unocss/postcss @unocss/reset
 ```
 
 :::
 
 ### 配置
 
-在项目根目录下创建 `uno.config.ts`。
+在项目根目录下创建 `uno.config.ts` 或 `uno.config.js`。
+
+::: code-group
 
 ```ts [uno.config.ts]
 import {
@@ -52,93 +54,154 @@ export default defineConfig({
 })
 ```
 
-### 添加插件
+```js [uno.config.js]
+import {
+  defineConfig,
+  presetAttributify,
+  presetIcons,
+  presetWebFonts,
+  presetWind3
+} from 'unocss'
 
-然后通过 `next.config.js` 将 UnoCSS 添加为 webpack 插件。
+export default defineConfig({
+  presets: [
+    presetWind3(),
+    // ...
+  ],
+})
+```
 
-```js{9}
-// next.config.js
-const UnoCSS = require('@unocss/webpack').default
+:::
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  webpack: (config) => {
-    config.plugins.push(
-      UnoCSS(),
-    )
-    return config
+在项目根目录下创建 `postcss.config.mjs`。
+
+```js [postcss.config.mjs]
+export default {
+  plugins: {
+    '@unocss/postcss': {
+      content: ['./app/**/*.{html,js,ts,jsx,tsx}'],
+    },
   },
 }
-
-module.exports = nextConfig
 ```
 
 ### 导入样式表
 
-然后在 `_app.tsx` 中导入 `uno.css`。
+在 `globals.css` 中添加 `@unocss all;`。
 
-```tsx
-import type { AppProps } from 'next/app'
-// _app.tsx
-import '@unocss/reset/tailwind.css'
+```css [globals.css]
+@unocss all;
 
-import 'uno.css'
-
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
-}
-
-export default MyApp
+/* ... */
 ```
 
-## 用法
+然后在布局文件中导入 `@unocss/reset/tailwind.css`。
 
-使用 unocss 给你的组件添加样式！
+::: code-group
 
-```tsx
-/* index.tsx */
-const Home: NextPage = () => {
+```tsx [layout.tsx]
+import type { Metadata } from 'next'
+import { Geist, Geist_Mono } from 'next/font/google'
+import '@unocss/reset/tailwind.css'
+import './globals.css'
+
+const geistSans = Geist({
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
+})
+
+const geistMono = Geist_Mono({
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+})
+
+export const metadata: Metadata = {
+  title: '创建 Next 应用',
+  description: '由 create next app 生成',
+}
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
   return (
-    <>
-      <main className="py-20 px-12 text-center flex flex-col items-center gap-20px">
-        <span text="blue 5xl hover:red" cursor="default">Nextjs</span>
-        <div className="i-carbon-car inline-block" text="4xl" />
-        <button className="btn w-10rem">按钮</button>
-      </main>
-    </>
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        {children}
+      </body>
+    </html>
   )
 }
 ```
 
-## 热模块替换
+```js [layout.js]
+import { Geist, Geist_Mono } from 'next/font/google'
+import '@unocss/reset/tailwind.css'
+import './globals.css'
 
-为了支持 HMR，你需要退出 webpack 的缓存。
+const geistSans = Geist({
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
+})
 
-```js{5}
-// next.config.js
-const nextConfig = {
-  reactStrictMode: true,
-  webpack: (config) => {
-+   config.cache = false
-    config.plugins.push(UnoCSS())
-    return config
-  }
+const geistMono = Geist_Mono({
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+})
+
+export const metadata = {
+  title: '创建 Next 应用',
+  description: '由 create next app 生成',
+}
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        {children}
+      </body>
+    </html>
+  )
 }
 ```
 
-## 故障排除
+:::
 
-### 与虚拟模块相关的错误
+## 使用方法
 
-```bash
-Error: ENOENT: no such file or directory, open '.../_virtual_/__uno.css'
+使用 unocss 给你的组件添加样式！
+
+::: code-group
+
+```tsx [page.tsx]
+export default function Home() {
+  return (
+    <main className="py-20 px-12 text-center flex flex-col items-center gap-20px">
+      <span className="text-blue text-5xl text-hover:red cursor-default">Nextjs</span>
+      <div className="i-carbon-car inline-block text-4xl" />
+      <button className="btn w-10rem">按钮</button>
+    </main>
+  )
+}
 ```
 
-尝试删除 `.next` 目录并重新启动开发服务器。
+```js [page.js]
+export default function Home() {
+  return (
+    <main className="py-20 px-12 text-center flex flex-col items-center gap-20px">
+      <span className="text-blue text-5xl text-hover:red cursor-default">Nextjs</span>
+      <div className="i-carbon-car inline-block text-4xl" />
+      <button className="btn w-10rem">按钮</button>
+    </main>
+  )
+}
+```
 
-### 其他
+:::
 
-你可能需要将你的目标版本提升到至少 `es2015`，以便构建你的项目。
+## 许可证
 
-默认情况下不支持 `.js` 扩展名的文件。将你的文件扩展名更改为 `.jsx` 或尝试用 `include: /\.js$/` 将 js 文件包含在配置中。[了解更多](/guide/extracting#extracting-from-build-tools-pipeline)。
+- MIT 许可证 &copy; 2021-至今 [Anthony Fu](https://github.com/antfu)

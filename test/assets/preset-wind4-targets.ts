@@ -4,6 +4,14 @@ export const presetWind4Targets: string[] = [
   // Compatible with presetMiniTargets
   ...presetMiniTargets,
 
+  // colors
+  'text-red-500',
+  'text-[red]/50', // Not theme color
+  'text-[red]:50/display-p3',
+  'text-red/display-p3',
+  'text-red/$op-variable', // When the color components length = 2, the second variable is used as opacity
+  'text-red/$op-variable/$method-variable',
+
   // font family
   'font-sans',
   'font-[custom-family-name]',
@@ -284,6 +292,8 @@ export const presetWind4Targets: string[] = [
   'scroll-p-inline-none',
 
   // shadow, spacing
+  'shadow-2xs',
+  'inset-shadow-none',
   'mix-blend-normal',
   'mix-blend-hard-light',
   'mix-blend-plus-lighter',
@@ -382,7 +392,7 @@ export const presetWind4Targets: string[] = [
   'object-$fit',
 
   // text-shadow
-  'text-shadow-xl',
+  'text-shadow-lg',
   'text-shadow-sky-300',
   'text-shadow-color-sky-300',
   'text-shadow-op-50',
