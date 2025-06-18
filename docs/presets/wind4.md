@@ -268,38 +268,10 @@ export default defineConfig({
 
 在 `PresetWind4` 中，不再需要 `presetRemToPx`，因为它已在内部包含。您可以将其从配置中删除。
 
-请参考选项中的 [`process`](#process)。
-
-### presetWebFonts
-
-当将 `presetWebFonts` 与 `PresetWind4` 一起使用时，不再支持 `fontFamily` 主题键。
-请做以下调整：
-
-```ts twoslash [uno.config.ts]
-import { defineConfig, presetWebFonts, presetWind4 } from 'unocss'
-
-export default defineConfig({
-  presets: [
-    presetWind4(),
-    presetWebFonts({
-      themeKey: 'font', // [!code ++]
-      // ^?
-    }),
-  ],
-})
-```
+请参阅选项中的 [`process`](#process) 选项。
 
 ### presetLegacyCompat
 
 在 `presetWind4` 中，我们使用 `oklch` 颜色模型以支持更好的颜色对比和颜色感知。因此，它与 `presetLegacyCompat` 不兼容，不推荐一起使用。
 
 请参阅 [兼容性](#compatibility) 部分以获取更多信息。
-
-### transformDirectives
-
-`transformDirectives` 在 `PresetWind4` 中效果不佳。有一些已知问题，因此请谨慎使用。
-
-::: warning
-
-- 使用 `@apply` 处理带有 `@property` 的规则时，可能会出现不同层级之间的冲突。
-  :::

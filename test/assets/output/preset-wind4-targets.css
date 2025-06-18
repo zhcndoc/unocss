@@ -1,4 +1,5 @@
 /* layer: properties */
+@supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))){*, ::before, ::after, ::backdrop{--un-content:"";--un-bg-opacity:100%;--un-line-opacity:100%;--un-ring-opacity:100%;--un-shadow-opacity:100%;--un-fill-opacity:100%;--un-stroke-opacity:100%;--un-translate-x:0;--un-translate-y:0;--un-translate-z:0;--un-rotate-x:rotateX(0);--un-rotate-y:rotateY(0);--un-rotate-z:rotateZ(0);--un-skew-x:skewX(0);--un-skew-y:skewY(0);--un-text-stroke-opacity:100%;--un-text-shadow-opacity:100%;--un-scale-x:1;--un-scale-y:1;--un-scale-z:1;--un-accent-opacity:100%;--un-caret-opacity:100%;--un-drop-shadow-opacity:100%;--un-outline-opacity:100%;--un-outline-style:solid;--un-border-opacity:100%;--un-text-opacity:100%;--un-ring-offset-opacity:100%;--un-from-opacity:100%;--un-to-opacity:100%;--un-via-opacity:100%;--un-stops-opacity:100%;--un-divide-y-reverse:0;--un-border-style:solid;--un-divide-x-reverse:0;--un-divide-opacity:100%;--un-space-x-reverse:0;--un-space-y-reverse:0;--un-border-spacing-x:0;--un-border-spacing-y:0;--un-border-inline-start-opacity:100%;--un-border-inline-end-opacity:100%;--un-border-block-opacity:100%;--un-border-inline-opacity:100%;--un-border-top-opacity:100%;--un-border-bottom-opacity:100%;--un-placeholder-opacity:100%;}}
 @property --un-text-opacity{syntax:"<percentage>";inherits:false;initial-value:100%;}
 @property --un-leading{syntax:"*";inherits:false;}
 @property --un-text-stroke-opacity{syntax:"<percentage>";inherits:false;initial-value:100%;}
@@ -22,6 +23,7 @@
 @property --un-contain-style{syntax:"*";inherits:false;}
 @property --un-content{syntax:"*";inherits:false;initial-value:"";}
 @property --un-ring-opacity{syntax:"<percentage>";inherits:false;initial-value:100%;}
+@property --un-ring-offset-opacity{syntax:"<percentage>";inherits:false;initial-value:100%;}
 @property --un-shadow-opacity{syntax:"<percentage>";inherits:false;initial-value:100%;}
 @property --un-inset-ring-color{syntax:"*";inherits:false;}
 @property --un-inset-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000;}
@@ -88,6 +90,11 @@
 @property --un-pan-x{syntax:"*";inherits:false;}
 @property --un-pan-y{syntax:"*";inherits:false;}
 @property --un-pinch-zoom{syntax:"*";inherits:false;}
+@property --un-numeric-figure{syntax:"*";inherits:false;}
+@property --un-numeric-fraction{syntax:"*";inherits:false;}
+@property --un-numeric-spacing{syntax:"*";inherits:false;}
+@property --un-ordinal{syntax:"*";inherits:false;}
+@property --un-slashed-zero{syntax:"*";inherits:false;}
 @property --un-space-y-reverse{syntax:"*";inherits:false;initial-value:0;}
 @property --un-space-x-reverse{syntax:"*";inherits:false;initial-value:0;}
 @property --un-divide-opacity{syntax:"<percentage>";inherits:false;initial-value:100%;}
@@ -1006,12 +1013,12 @@ unocss .scope-\[unocss\]\:block{display:block;}
 .ring-op-\$opacity-variable{--un-ring-opacity:var(--opacity-variable);}
 .ring-op-5{--un-ring-opacity:5%;}
 .ring-offset{--un-ring-offset-width:1px;--un-ring-offset-shadow:var(--un-ring-inset,) 0 0 0 var(--un-ring-offset-width) var(--un-ring-offset-color);}
+.ring-offset-4{--un-ring-offset-width:4px;--un-ring-offset-shadow:var(--un-ring-inset,) 0 0 0 var(--un-ring-offset-width) var(--un-ring-offset-color);}
+.ring-offset-size-\$variable,
+.ring-offset-width-\$variable{--un-ring-offset-width:var(--variable);--un-ring-offset-shadow:var(--un-ring-inset,) 0 0 0 var(--un-ring-offset-width) var(--un-ring-offset-color);}
+.ring-offset-\$variable{--un-ring-offset-color:color-mix(in oklab, var(--variable) var(--un-ring-offset-opacity), transparent) /* var(--variable) */;}
 .ring-offset-op-\$opacity-variable{--un-ring-offset-opacity:var(--opacity-variable);}
 .ring-offset-op-5{--un-ring-offset-opacity:5%;}
-.ring-offset-\$variable,
-.ring-offset-size-\$variable,
-.ring-offset-width-\$variable{--un-ring-offset-width:var(--variable);}
-.ring-offset-4{--un-ring-offset-width:4px;}
 .ring-inset{--un-ring-inset:inset;}
 .shadow{--un-shadow:0 1px 3px 0 var(--un-shadow-color, rgb(0 0 0 / 0.1)),0 1px 2px -1px var(--un-shadow-color, rgb(0 0 0 / 0.1));box-shadow:var(--un-inset-shadow), var(--un-inset-ring-shadow), var(--un-ring-offset-shadow), var(--un-ring-shadow), var(--un-shadow);}
 .shadow-\[\#fff\]{--un-shadow-color:color-mix(in oklab, #fff var(--un-shadow-opacity), transparent) /* #fff */;}
@@ -1526,8 +1533,8 @@ unocss .scope-\[unocss\]\:block{display:block;}
 .placeholder-inherit::placeholder{color:inherit;}
 .placeholder-red-400::placeholder{color:color-mix(in srgb, var(--colors-red-400) var(--un-placeholder-opacity), transparent) /* oklch(70.4% 0.191 22.216) */;}
 .placeholder-opacity-60::placeholder{--un-placeholder-opacity:60%;}
-.snap-both{scroll-snap-type:both var(--un-scroll-snap-strictness);}
 .snap-y{scroll-snap-type:y var(--un-scroll-snap-strictness);}
+.snap-both{scroll-snap-type:both var(--un-scroll-snap-strictness);}
 .snap-mandatory{--un-scroll-snap-strictness:mandatory;}
 .snap-none{scroll-snap-type:none;}
 .snap-center{scroll-snap-align:center;}
@@ -1572,8 +1579,6 @@ unocss .scope-\[unocss\]\:block{display:block;}
 .touch-none{touch-action:none;}
 .touch-initial{touch-action:initial;}
 .lining-nums{--un-numeric-figure:lining-nums;font-variant-numeric:var(--un-ordinal) var(--un-slashed-zero) var(--un-numeric-figure) var(--un-numeric-spacing) var(--un-numeric-fraction);}
-.lining-nums,
-.tabular-nums{syntax:"*";inherits:false;}
 .tabular-nums{--un-numeric-spacing:tabular-nums;font-variant-numeric:var(--un-ordinal) var(--un-slashed-zero) var(--un-numeric-figure) var(--un-numeric-spacing) var(--un-numeric-fraction);}
 .normal-nums{font-variant-numeric:normal;}
 .view-transition-foo{view-transition-name:foo;}

@@ -64,6 +64,8 @@ import { presetWebFonts } from 'unocss'
 - `google` - [Google Fonts](https://fonts.google.com/)
 - `bunny` - [隐私友好的 Google Fonts](https://fonts.bunny.net/)
 - `fontshare` - [ITF 提供的优质字体服务](https://www.fontshare.com/)
+- `fontsource` - [自托管开源字体，整齐打包的 NPM 包](https://fontsource.org/)
+- `coollabs` - [隐私友好的 Google Fonts 替代品](https://fonts.coollabs.io/)
 
 ::: info
 欢迎提交 PR 以添加更多提供者。🙌
@@ -106,7 +108,7 @@ export default defineConfig({
 Web 字体的提供者服务。
 
 ```ts
-type WebFontsProviders = 'google' | 'bunny' | 'fontshare' | 'none'
+type WebFontsProviders = 'google' | 'bunny' | 'fontshare' | 'fontsource' | 'coollabs' | 'none'
 ```
 
 ### fonts
