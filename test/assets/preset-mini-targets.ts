@@ -1099,6 +1099,7 @@ export const presetMiniTargets: string[] = [
   '-!mb-safe',
   '!-ms-safe',
   '*:p-2',
+  '*:hover:p-2',
   '*-p-2',
 
   // variants class
@@ -1234,6 +1235,7 @@ export const presetMiniTargets: string[] = [
   'group-aria-[[data-attr]]/label:font-17',
   'group-aria-[.as-parent_&]/label:font-18',
   'group-aria-[.not-parent]/label:font-19',
+  'has-aria-[hidden=false]:font-20',
 
   // variants - variables
   'nth-[2]:text-yellow',
@@ -1270,6 +1272,7 @@ export const presetMiniTargets: string[] = [
   'group-data-[state=open]:font-bold',
   'group-data-[state=open]/named:font-medium',
   'peer-data-[state=closed]:border-3',
+  'has-data-[state=closed]:border-4',
 
   // variants - container parent
   '@container',

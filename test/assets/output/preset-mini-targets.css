@@ -484,7 +484,8 @@ unocss .scope-\[unocss\]\:block{display:block;}
 .b-2,
 .border-size-2{border-width:2px;}
 .border{border-width:1px;}
-.border-4{border-width:4px;}
+.border-4,
+.has-data-\[state\=closed\]\:border-4:has([data-state=closed]){border-width:4px;}
 .border-x{border-left-width:1px;border-right-width:1px;}
 .border-b{border-bottom-width:1px;}
 .border-e-4{border-inline-end-width:4px;}
@@ -696,6 +697,7 @@ unocss .scope-\[unocss\]\:block{display:block;}
 .p-none{padding:0;}
 .p-unset{padding:unset;}
 .pa{padding:auto;}
+.\*\:hover\:p-2 > *:hover{padding:0.5rem;}
 .hover\:\!p-1:hover{padding:0.25rem !important;}
 .hover\:p-5:hover{padding:1.25rem;}
 .p-xy,
@@ -893,6 +895,7 @@ unocss .scope-\[unocss\]\:block{display:block;}
 .fw-900{font-weight:900;}
 .font-thin{font-weight:100;}
 .fw-inherit{font-weight:inherit;}
+.has-aria-\[hidden\=false\]\:font-20:has([aria-hidden=false]){font-weight:20;}
 .group-aria:hover .group-aria-hover\:font-10,
 .group:hover .group-hover\:font-10{font-weight:10;}
 .group-aria\/label:hover .group-aria-hover\/label\:font-15,
