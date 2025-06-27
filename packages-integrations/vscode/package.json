@@ -3,14 +3,14 @@
   "name": "@unocss/vscode",
   "displayName": "UnoCSS",
   "type": "module",
-  "version": "66.2.2",
+  "version": "66.3.2",
   "private": true,
   "description": "UnoCSS for VS Code",
   "license": "MIT",
   "homepage": "https://unocss.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/unocss/unocss",
+    "url": "git+https://github.com/unocss/unocss.git",
     "directory": "packages-integrations/vscode"
   },
   "categories": [
@@ -162,6 +162,6 @@
     "prettier": "catalog:",
     "tsup": "catalog:",
     "unconfig": "catalog:",
-    "vscode-ext-gen": "^1.0.2"
+    "vscode-ext-gen": "^1.1.0"
   }
 }

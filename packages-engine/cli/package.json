@@ -1,7 +1,7 @@
 {
   "name": "@unocss/cli",
   "type": "module",
-  "version": "66.2.2",
+  "version": "66.3.2",
   "description": "CLI for UnoCSS",
   "author": {
     "name": "Johann Schopplich",
@@ -13,7 +13,7 @@
   "homepage": "https://unocss.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/unocss/unocss",
+    "url": "git+https://github.com/unocss/unocss.git",
     "directory": "packages-engine/cli"
   },
   "bugs": {
