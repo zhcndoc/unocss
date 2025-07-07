@@ -124,7 +124,7 @@ PresetWind4 的基本配置与 [PresetWind3](/presets/wind3#options) 类似，�
 
 ```ts [main.ts]
 import '@unocss/reset/tailwind.css' // [!code --]
-import '@unocss/reset/tailwind-compact.css' // [!code --]
+import '@unocss/reset/tailwind-compat.css' // [!code --]
 ```
 
 您只需通过开关控制是否启用重置样式：
@@ -136,9 +136,9 @@ import { defineConfig } from 'unocss'
 export default defineConfig({
   presets: [
     presetWind4({
-      preflights: { // [!code focus]
-        reset: true, // [!code focus]
-      } // [!code focus]
+      preflights: { // [!code ++]
+        reset: true, // [!code ++]
+      } // [!code ++]
     }),
   ],
 })
@@ -162,9 +162,9 @@ import { defineConfig, presetWind4 } from 'unocss'
 export default defineConfig({
   presets: [
     presetWind4({
-      preflights: { // [!code focus]
-        theme: true, // [!code focus]
-      }, // [!code focus]
+      preflights: { // [!code ++]
+        theme: true, // [!code ++]
+      }, // [!code ++]
     }),
   ],
 })
@@ -175,18 +175,18 @@ export default defineConfig({
 您可以进一步控制主题变量的输出。例如，如果您想将 `rem` 转换为 `px` 的主题变量，我们提供了 `createRemToPxProcessor` 函数来处理您的主题变量。
 
 ```ts twoslash [uno.config.ts]
-import { createRemToPxProcessor } from '@unocss/preset-wind4/utils' // [!code focus]
+import { createRemToPxProcessor } from '@unocss/preset-wind4/utils' // [!code ++]
 import { defineConfig, presetWind4 } from 'unocss'
 
 export default defineConfig({
   presets: [
     presetWind4({
-      preflights: { // [!code focus]
-        theme: { // [!code focus]
-          mode: 'on-demand', // 默认为 'on-demand' // [!code focus]
-          process: createRemToPxProcessor(), // [!code focus]
-        } // [!code focus]
-      }, // [!code focus]
+      preflights: { // [!code ++]
+        theme: { // [!code ++]
+          mode: 'on-demand', // 默认为 'on-demand' // [!code ++]
+          process: createRemToPxProcessor(), // [!code ++]
+        } // [!code ++]
+      }, // [!code ++]
     }),
   ],
 })
@@ -195,20 +195,20 @@ export default defineConfig({
 顺便说一下，如果您想使用 `presetRemToPx` 预设将 `rem` 转换为 `px`，您不再需要单独导入这个预设，因为 `presetWind4` 已经在内部提供了这个功能。
 
 ```ts twoslash [uno.config.ts]
-import { createRemToPxProcessor } from '@unocss/preset-wind4/utils' // [!code focus]
+import { createRemToPxProcessor } from '@unocss/preset-wind4/utils' // [!code ++]
 import { defineConfig, presetWind4 } from 'unocss'
 
 export default defineConfig({
   presets: [
     presetWind4({
-      preflights: { // [!code focus]
-        theme: { // [!code focus]
-          process: createRemToPxProcessor(), // [!code focus]
-        } // [!code focus]
-      }, // [!code focus]
+      preflights: { // [!code ++]
+        theme: { // [!code ++]
+          process: createRemToPxProcessor(), // [!code ++]
+        } // [!code ++]
+      }, // [!code ++]
     }),
   ],
-  postprocess: [createRemToPxProcessor()], // [!code focus]
+  postprocess: [createRemToPxProcessor()], // [!code ++]
 })
 ```
 

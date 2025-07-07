@@ -60,7 +60,7 @@ import { presetWind3 } from 'unocss'
 
 该预设的主要目标是提供与 [Tailwind CSS](https://tailwindcss.com/) 和 [Windi CSS](https://windicss.org/) 的兼容性。需要注意的是，无法保证完全兼容。请参考他们的 [文档](https://tailwindcss.com/docs) 以获取详细用法。
 
-有关该预设中包含的所有规则和预设，请参阅我们的 <a href="/interactive/" target="_blank">交互式文档</a> 或直接查看 [源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-wind)。
+有关该预设中包含的所有规则和预设，请参阅我们的 <a href="/interactive/" target="_blank">交互式文档</a> 或直接查看 [源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-wind3)。
 
 ## 特性
 
