@@ -109,7 +109,7 @@ presetTagify({
 
 ### excludedTags
 
-- **类型：** `string[] | RegExp[]`
+- **类型：** `(string | RegExp)[]`
 - **默认值：** `['b', /^h\d+$/, 'table']`
 
 排除处理的标签。

@@ -52,14 +52,21 @@ export default [
 
 ## 规则
 
-- `@unocss/order` - 强制类选择器的特定顺序。
-- `@unocss/order-attributify` - 强制 attributify 选择器的特定顺序。
-- `@unocss/blocklist` - 禁止使用特定的类选择器 [可选]。
+- `@unocss/order` - 强制规定类选择器的特定顺序。
+- `@unocss/order-attributify` - 强制规定属性化选择器的特定顺序。
+- `@unocss/blocklist` - 不允许特定类选择器 [可选]。
 - `@unocss/enforce-class-compile` - 强制类编译 [可选]。
+
+### 规则选项
+
+#### `@unocss/order`
+
+- `unoFunctions` (string[]) - 标记匹配名称的函数调用以强制执行此规则。这些是普通名称，而不是模式，不区分大小写。默认值：`['clsx', 'classnames']`。
+- `unoVariables` (string[]) - 标记匹配名称的变量声明以强制执行此规则。这些是带有标志 `i` 的正则表达式模式。默认值：`['^cls', 'classNames?$']`。例如，将匹配变量名称 `clsButton` 和 `buttonClassNames`。
 
 ### 可选规则
 
-这些规则默认情况下未启用。要启用它，请将以下内容添加到您的 `.eslintrc` 文件中：
+这些规则默认情况下未启用。要启用它，请将以下内容添加到您的 `.eslintrc`：
 
 ```json [.eslintrc]
 {
