@@ -1,7 +1,7 @@
 {
   "name": "@unocss/webpack",
   "type": "module",
-  "version": "66.4.1",
+  "version": "66.4.2",
   "description": "The Webpack plugin for UnoCSS",
   "author": "Anthony Fu <anthonyfu117@hotmail.com>",
   "license": "MIT",
@@ -65,7 +65,7 @@
     "webpack": "^4 || ^5"
   },
   "dependencies": {
-    "@ampproject/remapping": "catalog:build",
+    "@jridgewell/remapping": "catalog:build",
     "@unocss/config": "workspace:*",
     "@unocss/core": "workspace:*",
     "chokidar": "catalog:utils",
