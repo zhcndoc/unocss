@@ -1492,6 +1492,28 @@ describe('wind4', () => {
         `)
     })
 
+    it('grouping selectors', async () => {
+      const result = await transform(
+        `.btn:focus-visible, .btn:hover {
+          @apply outline;
+        }`,
+      )
+      await expect(result)
+        .toMatchInlineSnapshot(`
+          ".btn:focus-visible,
+          .btn:hover {
+            outline-style: var(--un-outline-style);
+            outline-width: 1px;
+          }
+          @property --un-outline-style {
+            syntax: "*";
+            inherits: false;
+            initial-value: solid;
+          }
+          "
+        `)
+    })
+
     it('theme()', async () => {
       const result = await transform(
         `.btn {
@@ -1577,6 +1599,25 @@ describe('wind4', () => {
           }
           "
         `)
+    })
+
+    it('implicitly :where() selector in apply', async () => {
+      const result = await transform(`.foo { @apply space-y-reverse divide-dotted; }`)
+
+      await expect(result).toMatchInlineSnapshot(`
+        ".foo {
+          :where(& > :not(:last-child)) {
+            --un-space-y-reverse: 1;
+            border-style: dotted;
+          }
+        }
+        @property --un-space-y-reverse {
+          syntax: "*";
+          inherits: false;
+          initial-value: 0;
+        }
+        "
+      `)
     })
   })
 

@@ -17,12 +17,12 @@ rules: [
 ]
 ```
 
-每当在用户代码库中检测到 `m-1` 时，将生成以下 CSS：
-
-<!-- eslint-skip -->
+只要在用户代码库中检测到 `m-1`，就会生成以下 CSS：
 
 ```css
-.m-1 { margin: 0.25rem; }
+.m-1 {
+  margin: 0.25rem;
+}
 ```
 
 > **注意**：主体语法遵循 CSS 属性语法，例如 `font-weight` 而不是 `fontWeight`。如果属性名中有连字符 `-`，则应被引号括起来。
@@ -40,7 +40,8 @@ rules: [
 ```ts
 rules: [
   [/^m-(\d+)$/, ([, d]) => ({ margin: `${d / 4}rem` })],
-  [/^p-(\d+)$/, match => ({ padding: `${match[1] / 4}rem` })],
+  // 你可以从第二个参数中获取丰富的上下文信息，如 `theme`、`symbols` 等。
+  [/^p-(\d+)$/, (match, ctx) => ({ padding: `${match[1] / 4}rem` })],
 ]
 ```
 
@@ -92,43 +93,26 @@ rules: [
 .h-100dvh { height: 100vh; height: 100dvh; }
 ```
 
-## 排序
-
-UnoCSS 会尊重你在生成 CSS 中定义的规则的顺序。后面的规则具有更高的优先级。
-
-使用动态规则时，可能会匹配多个令牌。默认情况下，在单个动态规则下匹配的输出将在组内按字母顺序排序。
-
-## 规则合并
-
-默认情况下，UnoCSS 将合并具有相同主体的 CSS 规则，以最小化 CSS 大小。
-
-例如，`<div class="m-2 hover:m2">` 将生成：
-
-```css
-.hover\:m2:hover,
-.m-2 {
-  margin: 0.5rem;
-}
-```
-
-而不是两个单独的规则：
-
-```css
-.hover\:m2:hover {
-  margin: 0.5rem;
-}
-.m-2 {
-  margin: 0.5rem;
-}
-```
-
 ## 特殊符号
 
-自 v0.61 起，UnoCSS 支持特殊符号来定义生成 CSS 的附加元信息。你可以从动态规则匹配函数的第二个参数访问符号。
+自 v0.61 起，UnoCSS 支持特殊符号来定义生成 CSS 的附加元信息。你可以通过 `@unocss/core` 的 `symbols` 对象或动态规则主体函数的第二个参数访问这些符号。
 
 例如：
 
-```ts
+::: code-group
+
+```ts [Static Rules]
+import { symbols } from '@unocss/core'
+
+rules: [
+  ['grid', {
+    [symbols.parent]: '@supports (display: grid)',
+    display: 'grid',
+  }],
+]
+```
+
+```ts [Dynamic Rules]
 rules: [
   [/^grid$/, ([, d], { symbols }) => {
     return {
@@ -138,6 +122,8 @@ rules: [
   }],
 ]
 ```
+
+:::
 
 将生成：
 
@@ -149,23 +135,45 @@ rules: [
 }
 ```
 
+:::tip
+如果你明确知道一个规则是如何生成的，建议使用**静态规则**以提升 UnoCSS 性能。
+:::
+
 ### 可用符号
 
-- `symbols.parent`：生成 CSS 规则的父包装器（例如 `@supports`、`@media` 等）
-- `symbols.selector`：一个函数，用于修改生成的 CSS 规则的选择器（见下面示例）
-- `symbols.layer`：一个字符串/函数/正则表达式匹配，用于设置生成 CSS 规则的 UnoCSS 层
-- `symbols.variants`：应用于当前 CSS 对象的变体处理程序数组
-- `symbols.shortcutsNoMerge`：一个布尔值，用于禁用在快捷方式中合并当前规则
-- `symbols.noMerge`: 一个布尔值，用于禁用快速方式中当前规则的合并
-- `symbols.sort`：一个数字，用于覆盖当前 CSS 对象的排序顺序
+| 符号                       | 描述                                                                                                     |
+| -------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `symbols.parent`           | 生成 CSS 规则的父包装器（例如 `@supports`、`@media` 等）                                               |
+| `symbols.selector`         | 用于修改生成 CSS 规则选择器的函数（见下面示例）                                                       |
+| `symbols.layer`            | 设置生成 CSS 规则的 UnoCSS 层级（可以是字符串、函数或正则匹配）                                        |
+| `symbols.variants`         | 应用于当前 CSS 对象的变体处理器数组                                                                    |
+| `symbols.shortcutsNoMerge` | 布尔值，禁用当前规则在快捷方式中的合并                                                                 |
+| `symbols.noMerge`          | 布尔值，禁用当前规则的合并                                                                              |
+| `symbols.sort`             | 数值，用于覆盖当前 CSS 对象的排序顺序                                                                  |
+| `symbols.body`             | 完全控制生成 CSS 规则的主体（详情见 [#4889](https://github.com/unocss/unocss/pull/4889)）               |
 
 ## 多选择器规则
 
-自 v0.61 起，UnoCSS 支持通过 [JavaScript 生成器函数](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) 进行多选择器。
+自 v0.61 起，UnoCSS 支持通过 [JavaScript Generator 函数](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator)实现多选择器，并从单一规则生成多个 CSS 规则。
 
 例如：
 
-```ts
+::: code-group
+
+```ts [Static Rules]
+rules: [
+  ['button-red', [
+    { background: 'red' },
+    {
+      [symbols.selector]: selector => `${selector}:hover`,
+      // https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix
+      background: `color-mix(in srgb, red 90%, black)`
+    },
+  ]],
+]
+```
+
+```ts [Dynamic Rules]
 rules: [
   [/^button-(.*)$/, function* ([, color], { symbols }) {
     yield {
@@ -179,6 +187,8 @@ rules: [
   }],
 ]
 ```
+
+:::
 
 将生成多个 CSS 规则：
 
@@ -237,4 +247,99 @@ ${selector}::after {
     }],
   ],
 })
+```
+
+::: warning
+上述方法可以完全控制生成的 CSS，但无法通过 `variants` 扩展，失去变体所带来的灵活性。
+
+例如 `hover:custom-xxx` -> `hover` 变体将不起作用。
+:::
+
+因此，如果你希望完全自定义输出且仍享受变体的便利，可以考虑使用 `symbols.body` 来实现。
+
+::: code-group
+
+```ts [Static Rules]
+import { symbols } from '@unocss/core'
+
+rules: [
+  ['custom-red', {
+    // symbols.body 不需要用 `{}` 包裹样式
+    [symbols.body]: `
+      font-size: 1rem;
+      &::after {
+        content: 'after';
+      }
+      & > .bar {
+        color: red;
+      }
+    `,
+    [symbols.selector]: selector => `:is(${selector})`,
+  }]
+]
+```
+
+```ts [Dynamic Rules]
+rules: [
+  [/^custom-(.+)$/, ([_, c], { symbols }) => {
+    return {
+      [symbols.body]: `
+        font-size: 1rem;
+        &::after {
+          content: 'after';
+        }
+        & > .bar {
+          color: ${c};
+        }
+      `,
+      [symbols.selector]: selector => `:is(${selector})`,
+    }
+  }]
+]
+```
+
+:::
+
+将从 `hover:custom-red` 生成完整的 CSS 规则：
+
+```css
+:is(.hover\:custom-red):hover {
+  font-size: 1rem;
+  &::after {
+    content: 'after';
+  }
+  & > .bar {
+    color: red;
+  }
+}
+```
+
+## 排序
+
+UnoCSS 在生成的 CSS 中会遵循你定义规则的顺序，后定义的规则优先级更高。
+
+使用动态规则时，可能会匹配多个 token。默认情况下，同一动态规则匹配的输出在该组内会按字母顺序排序。
+
+## 规则合并
+
+默认情况下，UnoCSS 会合并具有相同样式的 CSS 规则，以减少 CSS 大小。
+
+例如，`<div class="m-2 hover:m2">` 会生成：
+
+```css
+.hover\:m2:hover,
+.m-2 {
+  margin: 0.5rem;
+}
+```
+
+而不是两个分开的规则：
+
+```css
+.hover\:m2:hover {
+  margin: 0.5rem;
+}
+.m-2 {
+  margin: 0.5rem;
+}
 ```

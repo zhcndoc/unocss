@@ -21,15 +21,16 @@ const Guides: DefaultTheme.NavItemWithLink[] = [
 const Configs: DefaultTheme.NavItemWithLink[] = [
   { text: '概述', link: '/config/' },
   { text: '规则', link: '/config/rules' },
+  { text: '变体', link: '/config/variants' },
   { text: '快捷方式', link: '/config/shortcuts' },
   { text: '主题', link: '/config/theme' },
-  { text: '变体', link: '/config/variants' },
   { text: '提取器', link: '/config/extractors' },
-  { text: '转换器', link: '/config/transformers' },
-  { text: '预处理', link: '/config/preflights' },
+  { text: '预检', link: '/config/preflights' },
+  { text: '安全列表', link: '/config/safelist' },
   { text: '层', link: '/config/layers' },
-  { text: '自动完成', link: '/config/autocomplete' },
   { text: '预设', link: '/config/presets' },
+  { text: '转换器', link: '/config/transformers' },
+  { text: '自动完成', link: '/config/autocomplete' },
 ]
 
 const Integrations: DefaultTheme.NavItemWithLink[] = [

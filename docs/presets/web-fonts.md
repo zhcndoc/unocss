@@ -236,7 +236,10 @@ export default defineConfig({
         fontAssetsDir: 'public/assets/fonts',
 
         // 客户端提供字体的基本 URL
-        fontServeBaseUrl: '/assets/fonts'
+        fontServeBaseUrl: '/assets/fonts',
+
+        // Custom fetch function to download the fonts
+        fetch: async url => axios.get(url)
       })
     }),
   ],

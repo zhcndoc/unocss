@@ -1,10 +1,10 @@
 ---
-title: UnoCSS Svelte Scoped
-description: Svelte Scoped Vite 插件和 UnoCSS 的 Svelte 预处理器。
+title: UnoCSS Svelte 作用域
+description: Svelte 作用域 Vite 插件和 UnoCSS 的 Svelte 预处理器。
 outline: deep
 ---
 
-# Svelte Scoped
+# Svelte 作用域
 
 为每个 Svelte 组件的工具类生成的 CSS 会直接放入 Svelte 组件的 `<style>` 块中，而非置于全局 CSS 文件中。
 
@@ -31,16 +31,16 @@ outline: deep
 | 使用场景   |     | 描述                                                                                                                                 | 使用的包                                                 |
 | ---------- | --- | ------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------- |
 | 较小的应用 | :x: | 只有 1 个全局 CSS 文件会更方便。为 [Svelte](/integrations/vite#svelte)/[SvelteKit](/integrations/vite#sveltekit) 使用常规 Vite 插件。 | [unocss/vite](/integrations/vite#svelte)                 |
-| 较大的应用 | ✅  | Svelte Scoped 可以帮助你避免全局 CSS 文件不断增长。                                                                                | [@unocss/svelte-scoped/vite](#vite-plugin)               |
+| 较大的应用 | ✅  | Svelte 作用域可以帮助你避免全局 CSS 文件不断增长。                                                                                | [@unocss/svelte-scoped/vite](#vite-plugin)               |
 | 组件库     | ✅  | 生成的样式直接嵌入构建的组件中，无需在消费应用的构建流程中使用 UnoCSS。                                                              | [@unocss/svelte-scoped/preprocess](#svelte-preprocessor) |
 
 ## 工作原理
 
-常规 UnoCSS/Tailwind CSS 配置将工具类样式放入全局 CSS 文件，并保持正确的顺序。相比之下，Svelte Scoped 将样式分散至多个无序的 Svelte 组件 CSS 文件中。但是，它必须保持工具类样式为全局样式，以便根据需要支持如从右到左等上下文感知功能以及下文所述的其他[用例](#context-aware)。这一挑战通过使用 Svelte 的 `:global()` 包裹器得以解决，放弃默认的 Svelte CSS 哈希方法，改为基于文件名 + 类名(s) 生成哈希，编译出唯一的类名，这样可以全局使用且避免样式冲突。
+常规 UnoCSS/Tailwind CSS 配置将工具类样式放入全局 CSS 文件，并保持正确的顺序。相比之下，Svelte 作用域将样式分散至多个无序的 Svelte 组件 CSS 文件中。但是，它必须保持工具类样式为全局样式，以便根据需要支持如从右到左等上下文感知功能以及下文所述的其他[用例](#context-aware)。这一挑战通过使用 Svelte 的 `:global()` 包裹器得以解决，放弃默认的 Svelte CSS 哈希方法，改为基于文件名 + 类名(s) 生成哈希，编译出唯一的类名，这样可以全局使用且避免样式冲突。
 
 ## 用法
 
-由于 Svelte Scoped 会重写你的工具类名，所以你只能在以下位置编写它们：
+由于 Svelte 作用域会重写你的工具类名，所以你只能在以下位置编写它们：
 
 | 支持的语法               | 示例                                                                                                                       |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
@@ -50,7 +50,7 @@ outline: deep
 | 类属性（Prop）           | `<Button class="mb-1" />`                                                                                                  |
 | 类似 `clsx` 的写法      | `<div class={["mb-1", { logo, 'font-bold': isBold() }, isUnderlined() && 'underline' ]} />`                                  |
 
-Svelte Scoped 设计成可无缝替代你当前使用工具样式的项目，因此类属性中的表达式也被支持（例如 `<div class="mb-1 {foo ? 'mr-1' : 'mr-2'}" />`），但我们建议你以后使用 `clsx` 语法。注意，如果你以其他方式使用类名，比如放在 `<script>` 块内或启用了 attributify 模式，则在使用 Svelte Scoped 前需采取额外措施。你可以使用 `safelist` 选项，也可以查看下面的[预设](#presets-support)部分了解更多技巧。
+Svelte 作用域设计成可无缝替代你当前使用工具样式的项目，因此类属性中的表达式也被支持（例如 `<div class="mb-1 {foo ? 'mr-1' : 'mr-2'}" />`），但我们建议你以后使用 `clsx` 语法。注意，如果你以其他方式使用类名，比如放在 `<script>` 块内或启用了 attributify 模式，则在使用 Svelte 作用域前需采取额外措施。你可以使用 `safelist` 选项，也可以查看下面的[预设](#presets-support)部分了解更多技巧。
 
 ### 上下文感知
 
@@ -138,7 +138,7 @@ Svelte Scoped 设计成可无缝替代你当前使用工具样式的项目，因
 
 你可以在 `<style>` 块中使用应用指令，支持 `--at-apply` 或 `@apply`，或者通过 `applyVariables` 选项传入自定义值。
 
-Svelte Scoped 甚至能够正确处理上下文相关类如 `dark:text-white`，而普通的 [`@unocss/transformer-directives`](/transformers/directives) 包处理不了，因为它不是专门为 Svelte 样式块设计的。例如，使用 Svelte Scoped，这个组件：
+Svelte 作用域甚至能够正确处理上下文相关类如 `dark:text-white`，而普通的 [`@unocss/transformer-directives`](/transformers/directives) 包处理不了，因为它不是专门为 Svelte 样式块设计的。例如，使用 Svelte 作用域，这个组件：
 
 ```svelte
 <div />
@@ -209,7 +209,7 @@ export default defineConfig({
   plugins: [
     UnoCSS({
       // injectReset: '@unocss/reset/normalize.css', // 查看类型定义了解所有支持的重置选项或如何传入自定义重置
-      // ...其他 Svelte Scoped 选项
+      // ...其他 Svelte 作用域选项
     }),
     sveltekit(),
   ],
@@ -231,7 +231,7 @@ export default defineConfig({
 ```html [index.html]
 <head>
   <!-- ... -->
-  <title>使用 UnoCSS Svelte Scoped 的 SvelteKit</title>
+  <title>使用 UnoCSS Svelte 作用域的 SvelteKit</title>
   %unocss-svelte-scoped.global%
   %sveltekit.head%
 </head>
@@ -307,7 +307,7 @@ const config = {
 
 #### 开发环境中禁用类合并
 
-使用 Svelte Scoped 的 Vite 插件时，它会自动区分 `dev` 与 `build` 环境。开发时，类名保持区分度并且会根据位置哈希，方便在浏览器开发工具中启用或禁用。举例，`class="mb-1 mr-1"` 会变成类似 `class="_mb-1_9hwi32 _mr-1_84jfy4"`。生产环境中，这些会被编译成一个单一的哈希类名，默认前缀为 `uno-`，根据文件名+类名生成，例如 `class="uno-84dke3"`。
+使用 Svelte 作用域的 Vite 插件时，它会自动区分 `dev` 与 `build` 环境。开发时，类名保持区分度并且会根据位置哈希，方便在浏览器开发工具中启用或禁用。举例，`class="mb-1 mr-1"` 会变成类似 `class="_mb-1_9hwi32 _mr-1_84jfy4"`。生产环境中，这些会被编译成一个单一的哈希类名，默认前缀为 `uno-`，根据文件名+类名生成，例如 `class="uno-84dke3"`。
 
 如果你希望预处理器在开发时也保持此行为，必须显式根据环境设置 `combine` 选项。一个做法是安装 [cross-env](https://www.npmjs.com/package/cross-env)，并将开发脚本改为：
 
@@ -367,25 +367,25 @@ export default defineConfig({
 })
 ```
 
-提取器不被支持，这是因常规 UnoCSS 全局用法和 Svelte Scoped 使用方式不同所致。预设和转换器支持情况如下节所述。更多详细信息请参见 [配置文件](/guide/config-file) 和 [配置参考](/config/)。
+Extractors 不被支持，因为常规 UnoCSS 全局用法和 Svelte 作用域用法存在差异。Presets 和 Transformers 会按下述章节支持。欲了解全部详情，请查看 [配置文件](/guide/config-file) 和 [配置参考](/config/)。
 
 ### 预设支持
 
-由于部分必须样式放在全局样式表，而其他样式放于组件内，预设须分开处理：
+鉴于全局样式表中仅有少量必要样式，其他样式均分布在各组件中，预设需逐案处理：
 
-| 预设                                                                                                                                                                                                                                                                                                                                                                         | 支持 | 说明                                                                                                                                                                                                                 |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ~~[@unocss/preset-uno](https://unocss.dev/presets/uno)~~、[@unocss/preset-mini](https://unocss.dev/presets/mini)、[@unocss/preset-wind3](https://unocss.dev/presets/wind3)、[@unocss/preset-icons](https://github.com/unocss/unocss/tree/main/packages-presets/preset-icons)、[@unocss/web-fonts](https://github.com/unocss/unocss/tree/main/packages-presets/preset-icons) | ✅   | 这些及所有社区插件，如 [unocss-preset-forms](https://github.com/Julien-R44/unocss-preset-forms)，只要它们仅依赖规则、变体和预飞行均可正常工作。                                                                                       |
-| [@unocss/preset-typography](https://github.com/unocss/unocss/tree/main/packages-presets/preset-typography)                                                                                                                                                                                                                                                                    | ✅   | 由于此预设将规则集添加至预飞行，使用时必须将 `prose` 类加入安全列表，否则预飞行不会生效。此预设的其他类，如 `prose-pink` 等都可以被组件作用域化。                                                                                     |
-| [@unocss/preset-rem-to-px](https://github.com/unocss/unocss/tree/main/packages-presets/preset-rem-to-px)                                                                                                                                                                                                                                                                      | ✅   | 该类和所有仅对样式输出做修改的预设可正常工作。                                                                                                                                                                       |
-| [@unocss/preset-attributify](https://github.com/unocss/unocss/tree/main/packages-presets/preset-attributify)                                                                                                                                                                                                                                                                  | -    | 该预设无法配合使用。建议改用 [unplugin-attributify-to-class](https://github.com/MellowCo/unplugin-attributify-to-class) Vite 插件（`attributifyToClass({ include: [/\.svelte$/]})`），并确保该插件在 Svelte Scoped Vite 插件之前执行。 |
-| [@unocss/preset-tagify](https://github.com/unocss/unocss/tree/main/packages-presets/preset-tagify)                                                                                                                                                                                                                                                                            | -    | 添加自定义提取器的预设不支持。你可以制作预处理器，将 `<text-red>Hi</text-red>` 转为 `<span class="text-red">Hi</span>`，并创建 PR 将其链接添加至此。                                                                               |
+| 预设                                                                                                                                                                                                                                                                                                                                                                      | 支持 | 备注                                                                                                                                                                                                                                                                                                                                                                                                  |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ~~[@unocss/preset-uno](https://unocss.dev/presets/uno)~~, [@unocss/preset-mini](https://unocss.dev/presets/mini), [@unocss/preset-wind3](https://unocss.dev/presets/wind3), [@unocss/preset-icons](https://github.com/unocss/unocss/tree/main/packages-presets/preset-icons), [@unocss/web-fonts](https://github.com/unocss/unocss/tree/main/packages-presets/preset-icons) | ✅  | 这些预设和所有社区插件（例如 [unocss-preset-forms](https://github.com/Julien-R44/unocss-preset-forms)）仅依赖规则/变体/预飞行样式，因此可以正常工作。                                                                                                                                                                                                                                               |
+| [@unocss/preset-typography](https://github.com/unocss/unocss/tree/main/packages-presets/preset-typography)                                                                                                                                                                                                                                                                  | ✅  | 由于该预设通过预飞行样式添加规则集，使用时必须将 `prose` 类加入安全列表，否则预飞行样式不会被触发。来自该预设的其他类，如 `prose-pink`，可以被组件作用域。<hr/> 从 `v66.5.0` 起，`prose` 样式被重构为规则，不再需要将其类加入安全列表。                                                                                                                     |
+| [@unocss/preset-rem-to-px](https://github.com/unocss/unocss/tree/main/packages-presets/preset-rem-to-px)                                                                                                                                                                                                                                                                    | ✅  | 该预设和所有仅修改样式输出的预设均支持。                                                                                                                                                                                                                                                                                                                                                             |
+| [@unocss/preset-attributify](https://github.com/unocss/unocss/tree/main/packages-presets/preset-attributify)                                                                                                                                                                                                                                                                | -   | 该预设不支持。请改用 [unplugin-attributify-to-class](https://github.com/MellowCo/unplugin-attributify-to-class) Vite 插件，并在 Svelte 作用域插件前使用：`attributifyToClass({ include: [/\.svelte$/]})`。                                                                                                                                                                           |
+| [@unocss/preset-tagify](https://github.com/unocss/unocss/tree/main/packages-presets/preset-tagify)                                                                                                                                                                                                                                                                          | -   | 添加了自定义解析器的预设不支持。请先创建预处理器将 `<text-red>Hi</text-red>` 转换为 `<span class="text-red">Hi</span>`，然后可考虑提交 PR 添加对应支持。                                                                                                                                                                                                                                         |
 
-其他预设如果不依赖常规的 `class="..."` 使用，需先将类名转换到 `class="..."` 属性中；如果预设添加了如 `.prose` 的类，则需将触发预设的类加到安全列表中。
+其他预设如果不依赖传统的 `class="..."` 用法，需要先将类名预处理成 `class="..."` 属性。如果它们添加了类似 typography 的 `.prose` 类等需要预设触发的元素，则需要将触发预设的类放在安全列表中。
 
 ### 转换器支持
 
-转换器支持 `.css`、`.postcss`、`.sass`、`.scss`、`.less`、`.stylus`、`.styl` 等 CSS 文件。使用时，在你的 `vite.config.ts` 里 `cssFileTransformers` 选项添加转换器：
+转换器支持用于 CSS 文件（css|postcss|sass|scss|less|stylus|styl），使用时，可在 `vite.config.ts` 中将转换器加入 `cssFileTransformers` 配置项：
 
 ```ts [vite.config.ts]
 import transformerDirectives from '@unocss/transformer-directives'
@@ -401,7 +401,7 @@ export default defineConfig({
 ```
 
 ::: info
-由于 Svelte Scoped 工作机制，转换器在 Svelte 组件中不被支持。
+由于 Svelte 作用域的工作机制，转换器不支持在 Svelte 组件中使用。
 :::
 
 ## 作用域工具类激发创造力
