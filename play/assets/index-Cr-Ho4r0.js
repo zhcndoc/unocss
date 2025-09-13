@@ -1,0 +1,1 @@
+import{p as n}from"./index-n2-Sybnc.js";import"./tailwind-B5Hl0jz9.js";function p(r={}){return{name:"@unocss/transformer-variant-group",enforce:"pre",transform(t){const a=n(t,r.separators);return{get highlightAnnotations(){return[...a.groupsByOffset.values()].flatMap(e=>e.items)}}}}}export{p as default};
