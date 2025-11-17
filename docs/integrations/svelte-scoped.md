@@ -237,26 +237,6 @@ export default defineConfig({
 </head>
 ```
 
-若是使用 SvelteKit，则必须在 `src/hooks.server.js` 文件中的 `transformPageChunk` 钩子添加如下内容：
-
-```js [src/hooks.server.js]
-/** @type {import('@sveltejs/kit').Handle} */
-export async function handle({ event, resolve }) {
-  const response = await resolve(event, {
-    transformPageChunk: ({ html }) =>
-      html.replace(
-        '%unocss-svelte-scoped.global%',
-        'unocss_svelte_scoped_global_styles'
-      ),
-  })
-  return response
-}
-```
-
-此转换必须在路径含有 hooks 和 server 的文件内（例如 `src/hooks.server.js`、`src/hooks.server.ts`），因为 `svelte-scoped` 会在你的服务器钩子文件中查找，将 `unocss_svelte_scoped_global_styles` 替换为你的全局样式。确保不要将此转换从其他文件导入，比如在使用 [sequence](https://kit.svelte.dev/docs/modules#sveltejs-kit-hooks-sequence) 组合多个钩子时不要混用。
-
-_在普通 Svelte 项目中，Vite 的 `transformIndexHtml` 钩子会自动处理此事。_
-
 ## Svelte 预处理器
 
 使用工具类构建一个不依赖外部 CSS 文件的组件库，通过预处理器将生成样式直接嵌入构建组件中。查看 Stackblitz 中的 [SvelteKit Library 示例](https://github.com/unocss/unocss/tree/main/examples/sveltekit-preprocess)：

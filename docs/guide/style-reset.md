@@ -63,8 +63,18 @@ import '@unocss/reset/eric-meyer.css'
 
 ### Tailwind
 
+基于较早的 [Preflight](https://github.com/tailwindlabs/tailwindcss/blob/v3.4.18/src/css/preflight.css)，并包含部分近期变更
+
 ```ts
 import '@unocss/reset/tailwind.css'
+```
+
+### Tailwind v4
+
+基于 [Preflight](https://github.com/tailwindlabs/tailwindcss/blob/main/packages/tailwindcss/preflight.css)
+
+```ts
+import '@unocss/reset/tailwind-v4.css'
 ```
 
 ### Tailwind 兼容
@@ -73,7 +83,7 @@ import '@unocss/reset/tailwind.css'
 import '@unocss/reset/tailwind-compat.css'
 ```
 
-该重置基于 [Tailwind reset](#tailwind)，去掉了按钮的背景颜色重写，以避免与 UI 框架冲突。请参见 [链接的问题](https://github.com/unocss/unocss/issues/2127)。
+该重置基于 [Tailwind reset](#tailwind)，去掉了按钮的背景颜色重写，以避免与 UI 框架冲突。请参见 [相关问题](https://github.com/unocss/unocss/issues/2127)。
 
 ::: code-group
 

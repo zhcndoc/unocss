@@ -1,6 +1,6 @@
 import type { CSSEntries, CSSObject, CSSObjectInput, CSSValueInput, DynamicMatcher, RuleContext, StaticRule, VariantContext } from '@unocss/core'
 import type { Theme } from '../theme'
-import { symbols, toArray } from '@unocss/core'
+import { escapeSelector, symbols, toArray } from '@unocss/core'
 import { colorToString, getStringComponent, getStringComponents, isInterpolatedMethod, parseCssColor } from '@unocss/rule-utils'
 import { SpecialColorKey } from './constant'
 import { h } from './handlers'
@@ -36,7 +36,7 @@ export function directionSize(
   map: Record<string, string[]> = directionMap,
   formatter: (p: string, d: string) => string = (p, d) => `${p}${d}`,
 ): DynamicMatcher<Theme> {
-  return (([_, direction, size]: (string | undefined)[], { theme }): CSSEntries | undefined => {
+  return (([_, direction, size = '4']: (string | undefined)[], { theme }): CSSEntries | undefined => {
     if (size != null && direction != null) {
       let v: string | number | undefined
 
@@ -52,10 +52,10 @@ export function directionSize(
       }
       else if (theme.spacing && size in theme.spacing) {
         themeTracking('spacing', size)
-        return map[direction].map(i => [formatter(property, i), isNegative ? `calc(var(--spacing-${size}) * -1)` : `var(--spacing-${size})`])
+        return map[direction].map(i => [formatter(property, i), isNegative ? `calc(var(--${escapeSelector(`spacing-${size}`)}) * -1)` : `var(--${escapeSelector(`spacing-${size}`)})`])
       }
 
-      v = h.bracket.cssvar.global.auto.fraction.rem(isNegative ? `-${size}` : size)
+      v = h.bracket.cssvar.global.auto.fraction.rem(isNegative ? `-${size}` : size, theme)
 
       if (v != null) {
         return map[direction].map(i => [formatter(property, i), v])
@@ -147,7 +147,7 @@ export function parseColor(body: string, theme: Theme) {
   let { no, keys, color } = parsed ?? {}
 
   if (!color) {
-    const bracket = h.bracketOfColor(main)
+    const bracket = h.bracketOfColor(main, theme)
     const bracketOrMain = bracket || main
 
     if (h.numberWithUnit(bracketOrMain))
@@ -213,10 +213,10 @@ export function parseThemeColor(theme: Theme, keys: string[]) {
 export function getThemeByKey(theme: Theme, themeKey: keyof Theme, keys: string[]) {
   const obj = theme[themeKey]
   function deepGet(current: any, path: string[]): any {
-    if (!current || typeof current !== 'object')
-      return undefined
     if (path.length === 0)
       return current
+    if (!current || typeof current !== 'object')
+      return undefined
     // First, check if the path is a flat key (e.g., foo-bar)
     for (let i = path.length; i > 0; i--) {
       const flatKey = path.slice(0, i).join('-')
@@ -276,7 +276,6 @@ export function colorCSSGenerator(
           result.push({
             [symbols.parent]: '@supports (color: color-mix(in lab, red, red))',
             [symbols.noMerge]: true,
-            [symbols.shortcutsNoMerge]: true,
             [property]: `color-mix(in oklab, ${colorValue}, transparent)${rawColorComment}`,
           })
         }

@@ -212,15 +212,103 @@ export default defineConfig({
 })
 ```
 
+#### 属性
+
+控制在 `properties` 层中生成 `@property` CSS 规则。
+
+默认情况下，PresetWind4 使用 `@property` 来定义 CSS 自定义属性，以实现更好的浏览器优化。这些属性会根据你对工具类的使用自动生成，并包裹在 `@supports` 查询中，以实现渐进增强。
+
+```ts twoslash [uno.config.ts]
+import { defineConfig, presetWind4 } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetWind4({
+      preflights: {
+        property: true, // Enable (default) | `false` to disable [!code ++]
+      },
+    }),
+  ],
+})
+```
+
+##### 父级和选择器
+
+您可以自定义父级包装器和选择器：
+
+```ts twoslash [uno.config.ts]
+import { defineConfig, presetWind4 } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetWind4({
+      preflights: {
+        property: {
+          // Custom parent selector (e.g., use @layer instead of @supports)
+          parent: '@layer custom-properties',
+          // Custom selector for applying properties
+          selector: ':where(*, ::before, ::after)',
+        },
+      },
+    }),
+  ],
+})
+```
+
+如果你不想要 `@supports` 包裹，并希望属性被直接应用：
+
+```ts twoslash [uno.config.ts]
+import { defineConfig, presetWind4 } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetWind4({
+      preflights: {
+        property: {
+          parent: false, // No parent wrapper
+        },
+      },
+    }),
+  ],
+})
+```
+
+**默认输出：**
+
+```css
+@supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or
+  ((-moz-orient: inline) and (not (color: rgb(from red r g b)))) {
+  *,
+  ::before,
+  ::after,
+  ::backdrop {
+    --un-text-opacity: 100%;
+    /* ... */
+  }
+}
+```
+
+**使用 `parent: false`：**
+
+```css
+*,
+::before,
+::after,
+::backdrop {
+  --un-text-opacity: 100%;
+  /* ... */
+}
+```
+
 ## 生成的 CSS
 
 在 PresetWind4 的输出中，新增了三个层：`base`、`theme` 和 `properties`。
 
-| 层名称       | 描述                                   | 顺序   |
-| :----------: | :-------------------------------------: | :---: |
-| `properties` | 由`@property`定义的CSS属性            | -200  |
-| `theme`      | 与主题相关的CSS变量                   | -150  |
-| `base`       | 基础的预飞行/重置样式                | -100  |
+|  层名称  |              描述              | 顺序 |
+| :----------: | :-----------------------------------: | :---: |
+| `properties` | 由 `@property` 定义的 CSS 属性 | -200  |
+|   `theme`    |      主题相关的 CSS 变量      | -150  |
+|    `base`    |      基础预设/重置样式       | -100  |
 
 ### `properties` 层
 

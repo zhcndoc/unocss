@@ -141,7 +141,7 @@ export default {
 
 如果你正在使用 `@unocss/preset-attributify`，你应该从 `build` 脚本中删除 `tsc`。
 
-如果你与 `@unocss/preset-attributify` 一起使用 `@vitejs/plugin-react`，你必须将插件添加到 `@vitejs/plugin-react` 之前。
+如果你正在使用 `babel-plugin-react-compiler`，或者在使用 `@vitejs/plugin-react` 搭配 `@unocss/preset-attributify`，你必须在 `@vitejs/plugin-react` 之前添加该插件。
 
 ```ts [vite.config.ts]
 import React from '@vitejs/plugin-react'
