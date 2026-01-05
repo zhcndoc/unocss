@@ -22,7 +22,7 @@ UnoCSS 支持从多个来源提取工具的使用：
 
 UnoCSS 将读取经过构建工具管道的内容，并从中提取工具的使用。这是提取的最有效和准确的方法，因为我们仅智能地提取在你的应用中实际使用的工具，且提取过程中不进行额外的文件 I/O 操作。
 
-默认情况下，UnoCSS 将从构建管道中的扩展名为 `.jsx`、`.tsx`、`.vue`、`.md`、`.html`、`.svelte`、`.astro` 的文件中提取工具使用，并按需生成适当的 CSS。`.js` 和 `.ts` 文件默认为 **不包括**。
+默认情况下，UnoCSS 会从构建流程中的 `.jsx`、`.tsx`、`.vue`、`.md`、`.html`、`.svelte`、`.astro`、`.marko` 等扩展名的文件中提取工具类的使用，并按需生成相应的 CSS。`.js` 和 `.ts` 文件**默认不包含**。
 
 要配置它们，你可以更新你的 `uno.config.ts`：
 
@@ -32,7 +32,7 @@ export default defineConfig({
     pipeline: {
       include: [
         // 默认
-        /\.(vue|svelte|[jt]sx|vine.ts|mdx?|astro|elm|php|phtml|html)($|\?)/,
+        /\.(vue|svelte|[jt]sx|vine.ts|mdx?|astro|elm|php|phtml|marko|html)($|\?)/,
         // 包括 js/ts 文件
         'src/**/*.{js,ts}',
       ],

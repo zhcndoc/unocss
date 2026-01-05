@@ -37,8 +37,7 @@ bun add -D @unocss/preset-wind4
 :::
 
 ```ts twoslash [uno.config.ts]
-import presetWind4 from '@unocss/preset-wind4'
-import { defineConfig } from 'unocss'
+import { defineConfig, presetWind4 } from 'unocss'
 
 export default defineConfig({
   presets: [
@@ -130,8 +129,7 @@ import '@unocss/reset/tailwind-compat.css' // [!code --]
 您只需通过开关控制是否启用重置样式：
 
 ```ts twoslash [uno.config.ts]
-import presetWind4 from '@unocss/preset-wind4'
-import { defineConfig } from 'unocss'
+import { defineConfig, presetWind4 } from 'unocss'
 
 export default defineConfig({
   presets: [

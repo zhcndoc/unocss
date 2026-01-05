@@ -396,9 +396,28 @@ export default defineConfig({
 
 <ContentExample :item="playgrounds['vite-elm']"  class="Link" integrations />
 
+### Marko
+
+你需要在 UnoCSS 的插件之前添加 `@marko/vite` 或 `@marko/run/vite`。
+
+```ts [vite.config.ts]
+import marko from '@marko/run/vite'
+import UnoCSS from 'unocss/vite'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [
+    marko(),
+    UnoCSS(),
+  ],
+})
+```
+
+<ContentExample :item="playgrounds['marko-run']"  class="Link" integrations />
+
 ## 传统
 
-如果 `@vitejs/plugin-legacy` 的 `renderModernChunks: false`，你需要将其添加到 `unocss` 选项中。
+如果 `@vitejs/plugin-legacy` 的 `renderModernChunks` 设置为 `false`，你需要将其添加到 `unocss` 选项中。
 
 ```ts
 import legacy from '@vitejs/plugin-legacy'

@@ -97,6 +97,8 @@ export const presetWind4Targets: string[] = [
   'bg-repeat-revert',
   'bg-right-bottom',
   'bg-scroll',
+  'bg-current',
+  'bg-current/10',
 
   // bg gradient
   'from-current',
@@ -178,7 +180,8 @@ export const presetWind4Targets: string[] = [
   'columns-[3_auto]',
   'columns-[auto_13em]',
   'columns-[auto_auto]',
-  'columns-unset',
+  'columns-sm',
+  'columns-$variable',
   'break-before-avoid-page',
   'break-inside-avoid-column',
   'break-after-column',

@@ -46,6 +46,7 @@ const Integrations: DefaultTheme.NavItemWithLink[] = [
   { text: 'ESLint', link: '/integrations/eslint' },
   { text: 'VS Code 扩展', link: '/integrations/vscode' },
   { text: 'JetBrains IDE 插件', link: '/integrations/jetbrains' },
+  { text: 'LSP 支持', link: '/integrations/lsp' },
 ]
 
 const Presets: DefaultTheme.NavItemWithLink[] = [
@@ -400,8 +401,7 @@ export default defineConfig({
       { icon: 'discord', link: 'https://chat.antfu.me' },
     ],
     footer: {
-      message: `<a target="_blank" href="https://www.zhcndoc.com">简中文档</a>`,
-      copyright: '<a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn">沪ICP备2024070610号-3</a>',
+      copyright: `<p id="zhcndoc-copyright"><a target="_blank" href="https://www.zhcndoc.com">简中文档</a></p>`,
     },
   },
 })
