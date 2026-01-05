@@ -401,7 +401,7 @@ export default defineConfig({
       { icon: 'discord', link: 'https://chat.antfu.me' },
     ],
     footer: {
-      copyright: `<p id="zhcndoc-copyright"><a target="_blank" href="https://www.zhcndoc.com">简中文档</a></p>`,
+      message: `<p id="zhcndoc-copyright"><a target="_blank" href="https://www.zhcndoc.com">简中文档</a></p>`,
     },
   },
 })
