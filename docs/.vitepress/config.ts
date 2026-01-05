@@ -401,7 +401,8 @@ export default defineConfig({
       { icon: 'discord', link: 'https://chat.antfu.me' },
     ],
     footer: {
-      message: `<p id="zhcndoc-copyright"><a target="_blank" href="https://www.zhcndoc.com">简中文档</a></p>`,
+      message: `<a style="text-decoration: none;" target="_blank" href="https://www.zhcndoc.com">简中文档</a>`,
+      copyright: '<a style="text-decoration: none;" rel="nofollow" target="_blank" href="https://beian.miit.gov.cn">沪ICP备2024070610号-3</a>',
     },
   },
 })
