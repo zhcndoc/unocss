@@ -575,6 +575,7 @@ export const presetMiniTargets: string[] = [
   'w-none',
   'w-auto',
   'w-unset',
+  'w-stretch',
   'w-1',
   'w-21',
   'w-1/4',
@@ -588,6 +589,7 @@ export const presetMiniTargets: string[] = [
   'max-w-20',
   'max-w-lg',
   'max-w-full',
+  'max-w-stretch',
   'max-w-$var',
   'max-w-screen-lg',
   'max-w-revert',
@@ -785,6 +787,10 @@ export const presetMiniTargets: string[] = [
   'intrinsic-size-200px',
   'intrinsic-size-1/2',
   'intrinsic-size-unset',
+  'intrinsic-w-200px',
+  'intrinsic-h-size-1/2',
+  'intrinsic-block-unset',
+  'intrinsic-inline-size-[auto 300px]',
 
   // svg
   'fill-none',
