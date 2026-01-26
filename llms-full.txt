@@ -1,0 +1,8126 @@
+---
+url: 'https://unocss.zhcndoc.com/transformers/attributify-jsx.md'
+description: 支持 JSX/TSX 中的无值属性化 (@unocss/transformer-attributify-jsx)
+---
+
+# Attributify JSX 转换器
+
+支持 [无值属性化](/presets/attributify#valueless-attributify) 在 JSX/TSX 中: `@unocss/transformer-attributify-jsx`。
+
+## 介绍
+
+```jsx
+export function Component() {
+  return (
+    <div text-red text-center text-5xl animate-bounce>
+      unocss
+    </div>
+  )
+}
+```
+
+将转换为：
+
+```jsx
+export function Component() {
+  return (
+    <div text-red="" text-center="" text-5xl="" animate-bounce="">
+      unocss
+    </div>
+  )
+}
+```
+
+::: details 没有这个转换器时，JSX 将无值属性视为布尔属性。
+
+```jsx
+export function Component() {
+  return (
+    <div text-red={true} text-center={true} text-5xl={true} animate-bounce={true}>
+      unocss
+    </div>
+  )
+}
+```
+
+:::
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/transformer-attributify-jsx
+```
+
+```bash [yarn]
+yarn add -D @unocss/transformer-attributify-jsx
+```
+
+```bash [npm]
+npm install -D @unocss/transformer-attributify-jsx
+```
+
+```bash [bun]
+bun add -D @unocss/transformer-attributify-jsx
+```
+
+:::
+
+```ts{11} [uno.config.ts]
+import { defineConfig, presetAttributify } from 'unocss'
+import transformerAttributifyJsx from '@unocss/transformer-attributify-jsx'
+
+export default defineConfig({
+  // ...
+  presets: [
+    // ...
+    presetAttributify(),
+  ],
+  transformers: [
+    transformerAttributifyJsx(), // <--
+  ],
+})
+```
+
+::: tip
+此预设包含在 `unocss` 包中，您也可以直接从那里导入：
+
+```ts
+import { transformerAttributifyJsx } from 'unocss'
+```
+
+:::
+
+## 注意事项
+
+::: warning
+规则几乎与 [Attributify 预设](/presets/attributify) 相同，但有一些注意事项。
+:::
+
+```html
+<div translate-x-100% />
+<!-- 不能以 `%` 结尾 -->
+
+<div translate-x-[100px] />
+<!-- 不能包含 `[` 或 `]` -->
+```
+
+相反，您可能希望使用有值属性：
+
+```html
+<div translate="x-100%" />
+
+<div translate="x-[100px]" />
+```
+
+## 黑名单
+
+此转换器将仅转换有效的 UnoCSS 实用工具属性。
+您还可以通过 `blocklist` 来排除某些属性不被转换。
+
+```js
+transformerAttributifyJsx({
+  blocklist: [/text-[a-zA-Z]*/, 'text-5xl']
+})
+```
+
+```jsx
+<div text-red text-center text-5xl animate-bounce>
+  unocss
+</div>
+```
+
+将编译为：
+
+```html
+<div text-red text-center text-5xl animate-bounce="">unocss</div>
+```
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/presets/attributify.md'
+description: 启用属性模式的 UnoCSS 预设。
+---
+
+# Attributify 预设
+
+这启用了其他预设的 [属性模式](#attributify-mode)。
+
+[源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-attributify)
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/preset-attributify
+```
+
+```bash [yarn]
+yarn add -D @unocss/preset-attributify
+```
+
+```bash [npm]
+npm install -D @unocss/preset-attributify
+```
+
+```bash [bun]
+bun add -D @unocss/preset-attributify
+```
+
+:::
+
+```ts [uno.config.ts]
+import presetAttributify from '@unocss/preset-attributify'
+
+export default defineConfig({
+  presets: [
+    presetAttributify({ /* 预设选项 */ }),
+    // ...
+  ],
+})
+```
+
+::: tip
+该预设包含在 `unocss` 包中，您也可以从那里导入：
+
+```ts
+import { presetAttributify } from 'unocss'
+```
+
+:::
+
+## 属性模式
+
+想象一下，您有一个使用 Tailwind CSS 工具的按钮。当列表变得更长时，阅读和维护变得非常困难。
+
+```html
+<button
+  class="bg-blue-400 hover:bg-blue-500 text-sm text-white font-mono font-light py-2 px-4 rounded border-2 border-blue-200 dark:bg-blue-500 dark:hover:bg-blue-600"
+>
+  Button
+</button>
+```
+
+使用属性模式，您可以将工具分离到属性中：
+
+```html
+<button
+  bg="blue-400 hover:blue-500 dark:blue-500 dark:hover:blue-600"
+  text="sm white"
+  font="mono light"
+  p="y-2 x-4"
+  border="2 rounded blue-200"
+>
+  Button
+</button>
+```
+
+例如，`text-sm text-white` 可以被归纳为 `text="sm white"`，而无需重复相同的前缀。
+
+## 前缀自引用
+
+对于 `flex`、`grid`、`border` 等工具，它们的工具与前缀相同，提供了一个特殊的 `~` 值。
+
+例如：
+
+```html
+<button class="border border-red">Button</button>
+```
+
+可以写成：
+
+```html
+<button border="~ red">Button</button>
+```
+
+## 无值属性
+
+除了 Windi CSS 的属性模式之外，该预设还支持无值属性。
+
+例如，
+
+```html
+<div class="m-2 rounded text-teal-400" />
+```
+
+现在可以是
+
+```html
+<div m-2 rounded text-teal-400 />
+```
+
+::: info
+注意：如果您正在使用 JSX，`<div foo>` 可能会被转换为 `<div foo={true}>`，这将使 UnoCSS 生成的 CSS 无法匹配属性。为了解决这个问题，您可能想要尝试 [`transformer-attributify-jsx`](/transformers/attributify-jsx) 以及该预设。
+:::
+
+## 属性冲突
+
+如果属性模式的名称与元素或组件的属性发生冲突，您可以添加 `un-` 前缀以特指 UnoCSS 的属性模式。
+
+例如：
+
+```html
+<a text="red">这与链接的 `text` 属性冲突</a>
+<!-- 改为 -->
+<a un-text="red">文本颜色为红色</a>
+```
+
+前缀默认是可选的，如果您想强制使用前缀，可以设置
+
+```ts
+presetAttributify({
+  prefix: 'un-',
+  prefixedOnly: true, // <--
+})
+```
+
+您还可以通过以下方式禁用对某些属性的扫描：
+
+```ts
+presetAttributify({
+  ignoreAttributes: [
+    'text'
+    // ...
+  ]
+})
+```
+
+## TypeScript 支持 (JSX/TSX)
+
+创建 `shims.d.ts`，内容如下：
+
+> 默认情况下，类型包含来自 `@unocss/preset-wind3` 的常见属性。如果您需要自定义属性，请参考 [类型源](https://github.com/unocss/unocss/blob/main/packages-presets/preset-attributify/src/jsx.ts) 来实现您自己的类型。
+
+### Vue
+
+自 Volar 0.36 起，[它现在对未知属性是严格的](https://github.com/johnsoncodehk/volar/issues/1077#issuecomment-1145361472)。要取消严格，可以向项目中添加以下文件：
+
+```ts [html.d.ts]
+declare module '@vue/runtime-dom' {
+  interface HTMLAttributes {
+    [key: string]: any
+  }
+}
+declare module '@vue/runtime-core' {
+  interface AllowedComponentProps {
+    [key: string]: any
+  }
+}
+export {}
+```
+
+### React
+
+```ts
+import type { AttributifyAttributes } from '@unocss/preset-attributify'
+
+declare module 'react' {
+  interface HTMLAttributes<T> extends AttributifyAttributes {}
+}
+```
+
+### Vue 3
+
+```ts
+import type { AttributifyAttributes } from '@unocss/preset-attributify'
+
+declare module '@vue/runtime-dom' {
+  interface HTMLAttributes extends AttributifyAttributes {}
+}
+```
+
+### SolidJS
+
+```ts
+import type { AttributifyAttributes } from '@unocss/preset-attributify'
+
+declare module 'solid-js' {
+  namespace JSX {
+    interface HTMLAttributes<T> extends AttributifyAttributes {}
+  }
+}
+```
+
+### Svelte & SvelteKit
+
+```ts
+declare namespace svelteHTML {
+  import type { AttributifyAttributes } from '@unocss/preset-attributify'
+
+  type HTMLAttributes = AttributifyAttributes
+}
+```
+
+### Astro
+
+```ts
+import type { AttributifyAttributes } from '@unocss/preset-attributify'
+
+declare global {
+  namespace astroHTML.JSX {
+    interface HTMLAttributes extends AttributifyAttributes { }
+  }
+}
+```
+
+### Preact
+
+```ts
+import type { AttributifyAttributes } from '@unocss/preset-attributify'
+
+declare module 'preact' {
+  namespace JSX {
+    interface HTMLAttributes extends AttributifyAttributes {}
+  }
+}
+```
+
+### Marko
+
+```ts
+import type { AttributifyAttributes } from '@unocss/preset-attributify'
+
+declare global {
+  namespace Marko {
+    interface HTMLAttributes extends AttributifyAttributes {}
+  }
+}
+```
+
+### 带前缀的属性
+
+```ts
+import type { AttributifyNames } from '@unocss/preset-attributify'
+
+type Prefix = 'uno:' // 将其更改为您的前缀
+
+interface HTMLAttributes extends Partial<Record<AttributifyNames<Prefix>, string>> {}
+```
+
+## 选项
+
+### strict
+
+* **类型:** `boolean`
+* **默认值:** `false`
+
+仅为属性或类生成 CSS。
+
+### prefix
+
+* **类型:** `string`
+* **默认值:** `'un-'`
+
+属性模式的前缀。
+
+### prefixedOnly
+
+* **类型:** `boolean`
+* **默认值:** `false`
+
+仅匹配带前缀的属性。
+
+### nonValuedAttribute
+
+* **类型:** `boolean`
+* **默认值:** `true`
+
+支持匹配无值属性。
+
+### ignoreAttributes
+
+* **类型:** `string[]`
+
+要在提取中忽略的属性列表。
+
+### trueToNonValued
+
+* **类型:** `boolean`
+* **默认值:** `false`
+
+如果在 DOM 中表示的实际值为 `true`，无值属性也将匹配。此选项存在是为了支持将无值属性编码为 `true` 的框架。启用此选项将打破以 `true` 结尾的规则。
+
+## 致谢
+
+最初的想法来自 [@Tahul](https://github.com/Tahul) 和 [@antfu](https://github.com/antfu)。之前的 [Windi CSS 实现](https://windicss.org/posts/v30.html#attributify-mode) 由 [@voorjaar](https://github.com/voorjaar) 完成。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/extractors/mdc.md'
+description: 用于 UnoCSS 的 MDC 提取器 (@unocss/extractor-mdc)
+---
+
+# MDC 提取器
+
+支持从 [MDC（Markdown 组件）](https://content.nuxtjs.org/guide/writing/mdc) 语法中提取类。
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/extractor-mdc
+```
+
+```bash [yarn]
+yarn add -D @unocss/extractor-mdc
+```
+
+```bash [npm]
+npm install -D @unocss/extractor-mdc
+```
+
+```bash [bun]
+bun add -D @unocss/extractor-mdc
+```
+
+:::
+
+```ts [uno.config.ts]
+import extractorMdc from '@unocss/extractor-mdc'
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  extractors: [
+    extractorMdc(),
+  ],
+})
+```
+
+它将在 `.md`、`.mdc` 和 `.markdown` 文件上应用提取，以提取类的内联属性使用。例如：
+
+```md
+# 标题{.text-2xl.font-bold}
+
+你好 [世界]{.text-blue-500}
+
+![图片](/image.png){.w-32.h-32}
+```
+
+`text-2xl`、`font-bold`、`text-blue-500`、`w-32`、`h-32` 类将会被提取。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/integrations/next.md'
+description: 开始使用 UnoCSS 和 Next.js。
+---
+
+# Next.js
+
+开始使用 UnoCSS 和 Next.js。查看 [示例](https://github.com/unocss/unocss/tree/main/examples/next)。
+
+## 设置
+
+### 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D unocss @unocss/postcss @unocss/reset
+```
+
+```bash [yarn]
+yarn add -D unocss @unocss/postcss @unocss/reset
+```
+
+```bash [npm]
+npm install -D unocss @unocss/postcss @unocss/reset
+```
+
+```bash [bun]
+bun add -D unocss @unocss/postcss @unocss/reset
+```
+
+:::
+
+### 配置
+
+在项目根目录下创建 `uno.config.ts` 或 `uno.config.js`。
+
+::: code-group
+
+```ts [uno.config.ts]
+import {
+  defineConfig,
+  presetAttributify,
+  presetIcons,
+  presetWebFonts,
+  presetWind3
+} from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetWind3(),
+    // ...
+  ],
+})
+```
+
+```js [uno.config.js]
+import {
+  defineConfig,
+  presetAttributify,
+  presetIcons,
+  presetWebFonts,
+  presetWind3
+} from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetWind3(),
+    // ...
+  ],
+})
+```
+
+:::
+
+在项目根目录下创建 `postcss.config.mjs`。
+
+```js [postcss.config.mjs]
+export default {
+  plugins: {
+    '@unocss/postcss': {
+      content: ['./app/**/*.{html,js,ts,jsx,tsx}'],
+    },
+  },
+}
+```
+
+### 导入样式表
+
+在 `globals.css` 中添加 `@unocss all;`。
+
+```css [globals.css]
+@unocss all;
+
+/* ... */
+```
+
+然后在布局文件中导入 `@unocss/reset/tailwind.css`。
+
+::: code-group
+
+```tsx [layout.tsx]
+import type { Metadata } from 'next'
+import { Geist, Geist_Mono } from 'next/font/google'
+import '@unocss/reset/tailwind.css'
+import './globals.css'
+
+const geistSans = Geist({
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
+})
+
+const geistMono = Geist_Mono({
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+})
+
+export const metadata: Metadata = {
+  title: '创建 Next 应用',
+  description: '由 create next app 生成',
+}
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        {children}
+      </body>
+    </html>
+  )
+}
+```
+
+```js [layout.js]
+import { Geist, Geist_Mono } from 'next/font/google'
+import '@unocss/reset/tailwind.css'
+import './globals.css'
+
+const geistSans = Geist({
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
+})
+
+const geistMono = Geist_Mono({
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+})
+
+export const metadata = {
+  title: '创建 Next 应用',
+  description: '由 create next app 生成',
+}
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        {children}
+      </body>
+    </html>
+  )
+}
+```
+
+:::
+
+## 使用方法
+
+使用 unocss 给你的组件添加样式！
+
+::: code-group
+
+```tsx [page.tsx]
+export default function Home() {
+  return (
+    <main className="py-20 px-12 text-center flex flex-col items-center gap-20px">
+      <span className="text-blue text-5xl text-hover:red cursor-default">Nextjs</span>
+      <div className="i-carbon-car inline-block text-4xl" />
+      <button className="btn w-10rem">按钮</button>
+    </main>
+  )
+}
+```
+
+```js [page.js]
+export default function Home() {
+  return (
+    <main className="py-20 px-12 text-center flex flex-col items-center gap-20px">
+      <span className="text-blue text-5xl text-hover:red cursor-default">Nextjs</span>
+      <div className="i-carbon-car inline-block text-4xl" />
+      <button className="btn w-10rem">按钮</button>
+    </main>
+  )
+}
+```
+
+:::
+
+## 许可证
+
+* MIT 许可证 © 2021-至今 [Anthony Fu](https://github.com/antfu)
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/extractors/pug.md'
+description: UnoCSS 的 Pug 提取器 (@unocss/extractor-pug)
+---
+
+# Pug 提取器
+
+支持从 Pug 模板中提取类。
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/extractor-pug
+```
+
+```bash [yarn]
+yarn add -D @unocss/extractor-pug
+```
+
+```bash [npm]
+npm install -D @unocss/extractor-pug
+```
+
+```bash [bun]
+bun add -D @unocss/extractor-pug
+```
+
+:::
+
+```ts [uno.config.ts]
+import extractorPug from '@unocss/extractor-pug'
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  extractors: [
+    extractorPug(),
+  ],
+})
+```
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/presets/rem-to-px.md'
+description: 为工具转换 rem 到 px（@unocss/preset-rem-to-px）。
+---
+
+# Rem 转 px 预设
+
+为所有工具将 rem 转换为 px。
+
+[源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-rem-to-px)
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/preset-rem-to-px
+```
+
+```bash [yarn]
+yarn add -D @unocss/preset-rem-to-px
+```
+
+```bash [npm]
+npm install -D @unocss/preset-rem-to-px
+```
+
+```bash [bun]
+bun add -D @unocss/preset-rem-to-px
+```
+
+:::
+
+```ts [uno.config.ts]
+import presetRemToPx from '@unocss/preset-rem-to-px'
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetRemToPx(),
+    // ...其他预设
+  ],
+})
+```
+
+## 用法
+
+```html
+<div class="m-2"></div>
+```
+
+::: code-group
+
+```css [无]
+.m-2 {
+  margin: 0.5rem;
+}
+```
+
+```css [有]
+.m-2 {
+  margin: 8px;
+}
+```
+
+:::
+
+## 选项
+
+### baseFontSize
+
+* **类型:** `number`
+* **默认:** `16`
+
+用于将 rem 转换为 px 的基本字体大小（`1rem = n px`）。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/config/safelist.md'
+---
+# Safelist
+
+Safelist 是 UnoCSS 配置中的一个重要选项，允许你指定一组实用类，这些类无论在你的源代码中是否被检测到，都应始终包含在生成的 CSS 中。
+
+## 基本用法
+
+### 字符串数组
+
+最简单的用法是提供一个包含你想保留的类名的字符串数组：
+
+```ts
+// uno.config.ts
+export default defineConfig({
+  safelist: [
+    'p-1',
+    'p-2',
+    'p-3',
+    'text-center',
+    'bg-red-500'
+  ]
+})
+```
+
+### 函数形式
+
+Safelist 也可以包含在构建时调用的函数，这些函数能够动态返回类名：
+
+```ts
+// uno.config.ts
+export default defineConfig({
+  safelist: [
+    // 静态类名
+    'p-1',
+    'p-2',
+    // 动态函数
+    context => ['m-1', 'm-2', 'm-3'],
+    (context) => {
+      // 基于主题生成类名
+      const colors = Object.keys(context.theme.colors || {})
+      return colors.map(color => `bg-${color}-500`)
+    }
+  ]
+})
+```
+
+### 混合使用
+
+你可以在同一个 safelist 配置中混合使用字符串和函数：
+
+```ts
+// uno.config.ts
+export default defineConfig({
+  safelist: [
+    // 静态类名
+    'prose',
+    'bg-orange-300',
+    // 动态生成
+    () => ['flex', 'grid', 'block'],
+    // 条件动态生成
+    (context) => {
+      if (process.env.NODE_ENV === 'development') {
+        return ['debug-border', 'debug-grid']
+      }
+      return []
+    }
+  ]
+})
+```
+
+## 返回值类型
+
+Safelist 函数可以返回以下类型的值：
+
+* `Arrayable<string>` - 字符串或字符串数组
+
+```ts
+safelist: [
+  // 返回字符串数组
+  () => ['class1', 'class2', 'class3'],
+
+  // 返回单个字符串
+  () => 'single-class',
+
+  // 返回嵌套数组（会被拍平）
+  () => [['nested1', 'nested2'], 'normal3']
+]
+```
+
+## 实际应用场景
+
+### 动态生成的类名
+
+当你有动态生成的类名，可能无法被静态分析检测到时：
+
+```ts
+safelist: [
+  // 动态颜色类
+  () => {
+    const dynamicColors = ['primary', 'secondary', 'accent']
+    return dynamicColors.flatMap(color => [
+      `bg-${color}`,
+      `text-${color}`,
+      `border-${color}`
+    ])
+  },
+
+  // 动态尺寸类
+  () => {
+    return Array.from({ length: 12 }, (_, i) => `gap-${i + 1}`)
+  }
+]
+```
+
+### 第三方组件库支持
+
+为第三方组件库提供必要的类名：
+
+```ts
+safelist: [
+  // 组件库保留类名
+  'prose',
+  'prose-sm',
+  'prose-lg',
+
+  // 动态生成组件变体
+  () => {
+    const variants = ['primary', 'secondary', 'danger', 'success']
+    const sizes = ['sm', 'md', 'lg']
+
+    return variants.flatMap(variant =>
+      sizes.map(size => `btn-${variant}-${size}`)
+    )
+  }
+]
+```
+
+## 与其他配置的关系
+
+### 与 blocklist 的区别
+
+* **safelist**: 确保指定的类名始终被包含
+* **blocklist**: 确保指定的类名始终被排除
+
+```ts
+export default defineConfig({
+  safelist: ['always-include'],
+  blocklist: ['never-include']
+})
+```
+
+### 与生成选项的关系
+
+生成 CSS 时，可以通过 `GenerateOptions` 控制是否包含 safelist：
+
+```ts
+const { css } = await uno.generate('', {
+  safelist: true // 包含来自 safelist 的类名
+})
+```
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/extractors/svelte.md'
+---
+
+# Svelte 提取器
+
+支持从 `class:` 指令中提取类。
+
+```svelte
+<div class:text-orange-400={foo} />
+```
+
+将被提取为 `text-orange-400` 并生成：
+
+```css
+.text-orange-400 {
+  color: #f6993f;
+}
+```
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/extractor-svelte
+```
+
+```bash [yarn]
+yarn add -D @unocss/extractor-svelte
+```
+
+```bash [npm]
+npm install -D @unocss/extractor-svelte
+```
+
+```bash [bun]
+bun add -D @unocss/extractor-svelte
+```
+
+:::
+
+```ts [uno.config.ts]
+import extractorSvelte from '@unocss/extractor-svelte'
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  extractors: [
+    extractorSvelte(),
+  ],
+})
+```
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/presets/tagify.md'
+description: UnoCSS 的 Tagify 模式 (@unocss/preset-tagify)。
+---
+
+# Tagify 预设
+
+这启用了其他预设的 [tagify 模式](#tagify-mode)。
+
+[源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-tagify)
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/preset-tagify
+```
+
+```bash [yarn]
+yarn add -D @unocss/preset-tagify
+```
+
+```bash [npm]
+npm install -D @unocss/preset-tagify
+```
+
+```bash [bun]
+bun add -D @unocss/preset-tagify
+```
+
+:::
+
+```ts [uno.config.ts]
+import presetTagify from '@unocss/preset-tagify'
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetTagify({ /* options */ }),
+    // ...其他预设
+  ],
+})
+```
+
+## Tagify 模式
+
+当你只需要将一个 unocss 规则应用到元素时，这个预设非常有用。
+
+```html
+<span class="text-red"> 红色文本 </span>
+<div class="flex">弹性盒子</div>
+我今天感觉 <span class="i-line-md-emoji-grin"></span> 很好！
+```
+
+在 tagify 模式下，你可以将 CSS 样式嵌入到 HTML 标签中：
+
+```html
+<text-red> 红色文本 </text-red>
+<flex> 弹性盒子 </flex>
+我今天感觉 <i-line-md-emoji-grin /> 很好！
+```
+
+上面的 HTML 会如你所预期的那样工作。
+
+## 带前缀
+
+```js
+presetTagify({
+  prefix: 'un-'
+})
+```
+
+```html
+<!-- 这将被匹配 -->
+<un-flex> </un-flex>
+<!-- 这将不会被匹配 -->
+<flex> </flex>
+```
+
+## 额外属性
+
+你可以为匹配的规则注入额外的属性：
+
+```js
+presetTagify({
+  // 为匹配的图标添加 display: inline-block
+  extraProperties: matched => matched.startsWith('i-')
+    ? { display: 'inline-block' }
+    : { }
+})
+```
+
+```js
+presetTagify({
+  // extraProperties 也可以是一个普通对象
+  extraProperties: { display: 'block' }
+})
+```
+
+## 选项
+
+### prefix
+
+* **类型：** `string`
+
+要使用的 tagify 变体的前缀。
+
+### excludedTags
+
+* **类型：** `(string | RegExp)[]`
+* **默认值：** `['b', /^h\d+$/, 'table']`
+
+排除处理的标签。
+
+### extraProperties
+
+* **类型：** `Record<string, string> | ((matched: string) => Partial<Record<string, string>>)`
+
+要应用于匹配规则的额外 CSS 属性。
+
+### defaultExtractor
+
+* **类型：** `boolean`
+* **默认值：** `true`
+
+启用默认提取器。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/integrations/astro.md'
+description: UnoCSS 在 Astro 中的集成（@unocss/astro）。
+---
+
+# Astro 集成
+
+UnoCSS 在 [Astro](https://astro.build/) 中的集成：`@unocss/astro`。查看 [示例](https://github.com/unocss/unocss/tree/main/examples/astro)。
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D unocss
+```
+
+```bash [yarn]
+yarn add -D unocss
+```
+
+```bash [npm]
+npm install -D unocss
+```
+
+```bash [bun]
+bun add -D unocss
+```
+
+:::
+
+```ts [astro.config.ts]
+import { defineConfig } from 'astro/config'
+import UnoCSS from 'unocss/astro'
+
+export default defineConfig({
+  integrations: [
+    UnoCSS(),
+  ],
+})
+```
+
+创建一个 `uno.config.ts` 文件：
+
+```ts [uno.config.ts]
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  // ...UnoCSS 选项
+})
+```
+
+### 样式重置
+
+默认情况下，[浏览器样式重置](/guide/style-reset) 不会被注入。要启用它，请安装 `@unocss/reset` 包：
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/reset
+```
+
+```bash [yarn]
+yarn add -D @unocss/reset
+```
+
+```bash [npm]
+npm install -D @unocss/reset
+```
+
+```bash [bun]
+bun add -D @unocss/reset
+```
+
+:::
+
+并更新您的 `astro.config.ts`：
+
+```ts [astro.config.ts]
+import { defineConfig } from 'astro/config'
+import UnoCSS from 'unocss/astro'
+
+export default defineConfig({
+  integrations: [
+    UnoCSS({
+      injectReset: true // 或重置文件的路径
+    }),
+  ],
+})
+```
+
+### 无预设的使用
+
+该插件不带任何默认的预设。
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/astro
+```
+
+```bash [yarn]
+yarn add -D @unocss/astro
+```
+
+```bash [npm]
+npm install -D @unocss/astro
+```
+
+```bash [bun]
+bun add -D @unocss/astro
+```
+
+:::
+
+```ts [astro.config.mjs]
+import UnoCSS from '@unocss/astro'
+
+export default {
+  integrations: [
+    UnoCSS(),
+  ],
+}
+```
+
+有关更多详细信息，请参阅 [Vite 插件](/integrations/vite)。
+
+::: info
+如果您正在 UnoCSS 上构建一个元框架，请查看 [这个文件](https://github.com/unocss/unocss/blob/main/packages-presets/unocss/src/astro.ts) 以获取如何绑定默认预设的示例。
+:::
+
+## 注意事项
+
+[`client:only`](https://docs.astro.build/en/reference/directives-reference/#clientonly) 组件必须放在 [`components`](https://docs.astro.build/en/core-concepts/project-structure/#srccomponents) 文件夹中或添加到 UnoCSS 的 `content` 配置中，以便进行处理。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/integrations/runtime.md'
+description: UnoCSS 的 CSS-in-JS 运行时（@unocss/runtime）。
+---
+
+# 运行时
+
+UnoCSS 运行时提供一个 CDN 构建，可以直接在浏览器中运行 UnoCSS。它会检测 DOM 更改并动态生成样式。
+
+## 用法
+
+在你的 `index.html` 中添加以下一行：
+
+```html [index.html]
+<script src="https://cdn.jsdelivr.net/npm/@unocss/runtime"></script>
+```
+
+运行时可以通过在加载运行时之前定义配置进行配置：
+
+```html
+<!-- 定义 unocss 选项... -->
+<script>
+  window.__unocss = {
+    rules: [
+      // 自定义规则...
+    ],
+    presets: [
+      // 自定义预设...
+    ],
+    // ...
+  }
+</script>
+<!-- ... 然后加载运行时 -->
+<script src="https://cdn.jsdelivr.net/npm/@unocss/runtime"></script>
+```
+
+默认情况下，会应用 [Wind3 预设](/presets/wind3)。
+
+运行时不包含预设样式，如果你想要样式重置，可以选择添加自己的样式，或者使用 [重置包](/guide/style-reset) 中的样式。
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@unocss/reset/normalize.min.css" />
+<!-- 或者 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind.min.css" />
+```
+
+## 构建
+
+根据不同的使用场景，提供了几种构建方式。
+
+### Uno（默认）
+
+使用 `@unocss/preset-wind3` 预设：
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@unocss/runtime/uno.global.js"></script>
+```
+
+### Attributify
+
+使用 `@unocss/preset-wind3` 和 `@unocss/preset-attributify` 预设：
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@unocss/runtime/attributify.global.js"></script>
+```
+
+### Mini
+
+使用 `@unocss/preset-mini` 和 `@unocss/preset-attributify` 预设：
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@unocss/runtime/mini.global.js"></script>
+```
+
+### 核心
+
+如果你需要混合使用预设，可以只加载核心运行时，并手动分配预设。从 UnoCSS 中可以使用所有 [官方预设](/presets/#presets)。在初始化核心运行时之前加载你需要的预设。
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@unocss/runtime/preset-icons.global.js"></script>
+<script>
+  window.__unocss = {
+    presets: [
+      () =>
+        window.__unocss_runtime.presets.presetIcons({
+          scale: 1.2,
+          cdn: 'https://esm.sh/',
+        }),
+    ],
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@unocss/runtime/core.global.js"></script>
+```
+
+## 打包器用法
+
+```bash
+npm i @unocss/runtime
+```
+
+```ts
+import initUnocssRuntime from '@unocss/runtime'
+
+initUnocssRuntime({ /* 选项 */ })
+```
+
+可以使用 `defaults` 属性提供 UnoCSS 配置：
+
+```ts
+import initUnocssRuntime from '@unocss/runtime'
+import config from './uno.config'
+
+initUnocssRuntime({ defaults: config })
+```
+
+可以从 `esm.sh` 导入预设：
+
+```ts
+import { defineConfig } from '@unocss/runtime'
+import presetIcons from 'https://esm.sh/@unocss/preset-icons/browser'
+import presetWind3 from 'https://esm.sh/@unocss/preset-wind3'
+
+export default defineConfig({
+  presets: [presetWind3(), presetIcons({ cdn: 'https://esm.sh/' })],
+})
+```
+
+## 防止 FOUC
+
+由于 UnoCSS 在 DOM 就绪后运行，因此可能会出现“未样式内容闪烁”（FOUC），用户可能会看到页面未应用样式。
+
+使用 `un-cloak` 属性与 CSS 规则，例如 `[un-cloak] { display: none }`，以在 UnoCSS 为其应用样式之前隐藏未样式的元素。
+
+::: code-group
+
+```css
+[un-cloak] {
+  display: none;
+}
+```
+
+```html
+<div class="text-blue-500" un-cloak>这段文本在蓝色下才可见。</div>
+```
+
+:::
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/integrations/cli.md'
+description: UnoCSS 的 CLI (@unocss/cli).
+---
+
+# CLI
+
+UnoCSS 的命令行接口：`@unocss/cli`。
+
+* 🍱 从作用域文件中提取工具类
+* 👀 包含 [观察模式](#development)
+* 🔌 通过 [`uno.config.ts`](#configurations) 支持自定义配置
+* ⚙️ 多种[选项](#options)以定制输出结果
+* 🚀 支持多个[入口模式](#usage)
+
+## 安装
+
+该包与 `unocss` 一起发布：
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D unocss
+```
+
+```bash [yarn]
+yarn add -D unocss
+```
+
+```bash [npm]
+npm install -D unocss
+```
+
+```bash [bun]
+bun add -D unocss
+```
+
+:::
+
+您也可以安装独立包：
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/cli
+```
+
+```bash [yarn]
+yarn add -D @unocss/cli
+```
+
+```bash [npm]
+npm install -D @unocss/cli
+```
+
+```bash [bun]
+bun add -D @unocss/cli
+```
+
+:::
+
+::: info
+如果您无法找到二进制文件（例如使用 `pnpm` 而只安装了 `unocss`），您需要显式安装 `@unocss/cli` 独立包。
+:::
+
+## 用法
+
+您也可以将多个 glob 模式传递给 `@unocss/cli`：
+
+```bash
+unocss "site/snippets/**/*.php" "site/templates/**/*.php"
+```
+
+示例包配置：
+
+::: info
+确保在您的 npm 脚本 glob 模式中添加转义引号。
+:::
+
+```json [package.json]
+{
+  "scripts": {
+    "dev": "unocss \"site/{snippets,templates}/**/*.php\" --watch",
+    "build": "unocss \"site/{snippets,templates}/**/*.php\""
+  },
+  "devDependencies": {
+    "@unocss/cli": "latest"
+  }
+}
+```
+
+### 开发
+
+添加 `--watch`（或 `-w`）标志以启用文件更改的监听：
+
+```bash
+unocss "site/{snippets,templates}/**/*.php" --watch
+```
+
+### 生产
+
+```bash
+unocss "site/{snippets,templates}/**/*.php"
+```
+
+最终的 `uno.css` 默认将生成到当前目录。
+
+## 内置功能
+
+### 配置
+
+在项目根目录创建 `uno.config.js` 或 `uno.config.ts` 配置文件以自定义 UnoCSS。
+
+::: tip
+为了实现更细粒度的配置管理，我们推荐使用配置文件。它还支持对扫描的文件进行不同层级的打包和重写。
+:::
+
+```ts [uno.config.ts]
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  cli: {
+    entry: {}, // CliEntryItem | CliEntryItem[]
+  },
+  // ...
+})
+
+interface CliEntryItem {
+  /**
+   * 匹配文件的 glob 模式
+   */
+  patterns: string[]
+  /**
+   * 生成的 UnoCSS 文件的输出文件名
+   */
+  outFile: string
+  /**
+   * 是否重写转换后的工具类。
+   *
+   * - 对于 CSS：如果 rewrite 为 true，将不生成新文件，而是直接修改原文件内容。
+   * - 对于其他文件：如果 rewrite 为 true，则用转换后的内容替换原文件。
+   *
+   * @default false
+   */
+  rewrite?: boolean
+
+  /**
+   * 是否将从模式扫描到的 CSS 文件输出到 outFile
+   *
+   * - false：不输出 CSS 文件
+   * - true：转换并输出扫描的 CSS 文件内容到 outFile
+   * - 'multi'：分别输出每个 CSS 文件，文件名格式为 `${originFile}-[hash]`
+   * - 'single'：将多个 CSS 文件合并成一个，输出文件名为 `outFile-merged.css`
+   *
+   * @default true
+   */
+  splitCss?: boolean | 'multi' | 'single'
+}
+```
+
+### 重写源文件
+
+使用 `--rewrite` 标志可使用转换后的工具类更新源文件。当您希望直接在代码上应用诸如[变体组](/transformers/variant-group)或[编译类](/transformers/compile-class)等转换器时，这很有用。
+
+```bash
+unocss "src/**/*.vue" --rewrite
+```
+
+### CSS 拆分
+
+当定义的模式中包含 CSS 文件时，可以使用 `--split-css` 标志控制 CSS 的输出。
+
+* false：不输出 CSS 文件
+* true：转换并输出扫描的 CSS 文件内容到 outFile
+* 'multi'：分别输出每个 CSS 文件，文件名格式为 `${originFile}-[hash]`
+* 'single'：将多个 CSS 文件合并成一个，输出文件名为 `outFile-merged.css`
+
+```bash
+unocss "src/**/*.vue" --split-css true|false|multi|single
+```
+
+### 默认预设
+
+如果未找到 `uno.config.ts` 文件，CLI 会使用默认预设。您可以通过 `--preset` 标志指定使用哪个版本的默认预设。
+
+* `wind4`：使用 `preset-wind4`
+* `wind3`：使用 `preset-wind3`
+
+```bash
+unocss "src/**/*.vue" --preset wind3|wind4
+```
+
+> 注意：如果存在配置文件，该选项将被忽略。
+
+::: warning
+从版本 `v66.6.0` 起，`@unocss/cli` 不再提供默认预设。用户需要显式指定 `--preset` 选项或在配置文件中配置预设。
+:::
+
+有关选项的列表，请查看 [UnoCSS 配置](/config/) 文档。
+
+## 选项
+
+| 选项                        |                                                                                         |
+| --------------------------- | --------------------------------------------------------------------------------------- |
+| `-v, --version`             | 显示当前版本的 UnoCSS                                                                   |
+| `-c, --config [file]`       | 配置文件                                                                                |
+| `-o, --out-file <file>`     | 生成的 UnoCSS 文件的输出文件名。默认为当前工作目录中的 `uno.css`                        |
+| `--stdout`                  | 将生成的 UnoCSS 文件写入标准输出。将导致 `--watch` 和 `--out-file` 被忽略               |
+| `-w, --watch`               | 指示是否应监听 glob 模式找到的文件                                                      |
+| `--preflights`              | 启用预检样式                                                                            |
+| `--rewrite`                 | 使用转换后的工具类更新源文件                                                            |
+| `--write-transformed`       | 使用转换后的工具类更新源文件（已弃用，请使用 `--rewrite`）                              |
+| `-m, --minify`              | 压缩生成的 CSS                                                                          |
+| `--debug`                   | 启用调试模式                                                                            |
+| `--split-css [mode]`        | 是否将从模式中扫描到的 CSS 文件输出到 outFile。选项：`true`、`false`、`multi`、`single` |
+| `--preset [default-preset]` | 选择 `wind3` 或 `wind4` 作为默认预设。如果已经配置了 `uno.config`，该选项将被忽略。     |
+| `-h, --help`                | 显示可用的 CLI 选项                                                                     |
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/integrations/eslint.md'
+description: UnoCSS 的 ESLint 配置 (@unocss/eslint-config)。
+---
+
+# ESLint 配置
+
+UnoCSS 的 ESLint 配置：`@unocss/eslint-config`。
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/eslint-config
+```
+
+```bash [yarn]
+yarn add -D @unocss/eslint-config
+```
+
+```bash [npm]
+npm install -D @unocss/eslint-config
+```
+
+```bash [bun]
+bun add -D @unocss/eslint-config
+```
+
+:::
+
+在 [扁平配置样式](https://eslint.org/docs/latest/use/configure/configuration-files-new) 中：
+
+```js [eslint.config.js]
+import unocss from '@unocss/eslint-config/flat'
+
+export default [
+  unocss,
+  // 其他配置
+]
+```
+
+在传统 `.eslintrc` 样式中：
+
+```json [.eslintrc]
+{
+  "extends": [
+    "@unocss"
+  ]
+}
+```
+
+## 规则
+
+* `@unocss/order` - 强制规定类选择器的特定顺序。
+* `@unocss/order-attributify` - 强制规定属性化选择器的特定顺序。
+* `@unocss/blocklist` - 不允许特定类选择器 \[可选]。
+* `@unocss/enforce-class-compile` - 强制类编译 \[可选]。
+
+### 规则选项
+
+#### `@unocss/order`
+
+* `unoFunctions` (string\[]) - 标记匹配名称的函数调用以强制执行此规则。这些是普通名称，而不是模式，不区分大小写。默认值：`['clsx', 'classnames']`。
+* `unoVariables` (string\[]) - 标记匹配名称的变量声明以强制执行此规则。这些是带有标志 `i` 的正则表达式模式。默认值：`['^cls', 'classNames?$']`。例如，将匹配变量名称 `clsButton` 和 `buttonClassNames`。
+
+### 可选规则
+
+这些规则默认情况下未启用。要启用它，请将以下内容添加到您的 `.eslintrc`：
+
+```json [.eslintrc]
+{
+  "extends": [
+    "@unocss"
+  ],
+  "rules": {
+    "@unocss/<rule-name>": "warn", // 或 "error",
+    "@unocss/<another-rule-name>": ["warn" /* 或 "error" */, { /* 选项 */ }]
+  }
+}
+```
+
+#### `@unocss/blocklist`
+
+当使用 `blocklist` 中列出的工具类匹配时，将抛出警告或错误。
+
+您可以通过使用元对象的 `message` 属性自定义被阻止规则的消息，使其更具信息性和上下文特异性：
+
+```ts [unocss.config.ts]
+export default defineConfig({
+  blocklist: [
+    ['bg-red-500', { message: '请改用 bg-red-600' }],
+    [/-auto$/, { message: s => `请改用 ${s.replace(/-auto$/, '-a')} 代替` }], // -> "my-auto" 在阻止列表中: 请改用 "my-a" 代替
+  ],
+})
+```
+
+#### `@unocss/enforce-class-compile` :wrench:
+
+*此规则旨在与 [编译类转换器](https://unocss.dev/transformers/compile-class) 配合使用。*
+
+当类属性或指令未以 `:uno:` 开头时，将抛出警告或错误。
+
+:wrench: 将自动为所有类属性和指令添加前缀 `:uno:`。
+
+选项：
+
+* `prefix` (string) - 可与 [自定义前缀](https://github.com/unocss/unocss/blob/main/packages-presets/transformer-compile-class/src/index.ts#L34) 配合使用。默认值：`:uno:`
+* `enableFix` (boolean) - 在 `false` 时可用于渐进迁移。默认值：`true`
+
+**注意**：目前仅支持 Vue。*如果您希望在 JSX 中使用，请贡献一个 PR。* 如果您在寻找 Svelte 中的此功能，您可能需要 [`svelte-scoped`](https://unocss.dev/integrations/svelte-scoped) 模式。
+
+## 相关工作
+
+感谢 [@devunt](https://github.com/devunt) 提供的 [eslint-plugin-unocss](https://github.com/devunt/eslint-plugin-unocss)。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/integrations/lsp.md'
+---
+
+# LSP Support for UnoCSS
+
+UnoCSS Language Server provides IDE-like support for UnoCSS in any editor that supports LSP (Neovim, VS Code, Emacs, etc).
+
+:::info
+Note: This is a **community-maintained language server, not officially maintained by the UnoCSS team**. Use at your own discretion. Report issues at [xna00/unocss-language-server](https://github.com/xna00/unocss-language-server).
+:::
+
+## Installation
+
+```bash
+npm install -g unocss-language-server
+```
+
+## Features
+
+* Auto-completion for UnoCSS utilities
+* Hover documentation with CSS previews
+
+## Usage
+
+Start the language server with:
+
+```bash
+unocss-language-server --stdio
+```
+
+Configure your editor’s LSP client to connect to it.
+
+## Bug Reports / Feature Requests
+
+Report it at [Issue Tracker](https://github.com/xna00/unocss-language-server/issues)
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/integrations/nuxt.md'
+description: 用于 UnoCSS 的 Nuxt 模块。
+---
+
+# Nuxt 模块
+
+UnoCSS 的 Nuxt 模块。
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D unocss @unocss/nuxt
+```
+
+```bash [yarn]
+yarn add -D unocss @unocss/nuxt
+```
+
+```bash [npm]
+npm install -D unocss @unocss/nuxt
+```
+
+```bash [bun]
+bun add -D unocss @unocss/nuxt
+```
+
+:::
+
+将 `@unocss/nuxt` 添加到您的 Nuxt 配置文件中：
+
+```ts [nuxt.config.ts]
+export default defineNuxtConfig({
+  modules: [
+    '@unocss/nuxt',
+  ],
+})
+```
+
+创建一个 `uno.config.ts` 文件：
+
+```ts [uno.config.ts]
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  // ...UnoCSS 选项
+})
+```
+
+`uno.css` 入口将由模块自动注入。
+
+## 支持状态
+
+|              | Nuxt 2 | Nuxt Bridge | Nuxt 3 |
+| ------------ | :----- | :---------- | :----- |
+| Webpack 开发 | ✅     | ✅          | 🚧     |
+| Webpack 构建 | ✅     | ✅          | ✅     |
+| Vite 开发    | -      | ✅          | ✅     |
+| Vite 构建    | -      | ✅          | ✅     |
+
+## 配置
+
+我们建议使用专用的 `uno.config.ts` 文件进行配置。有关更多细节，请参见 [配置文件](/guide/config-file)。
+
+您可以启用 `nuxtLayers` 选项，这样 Nuxt 将自动合并每个 Nuxt 层的 `uno.config` 文件：
+
+```ts [nuxt.config.ts]
+export default defineNuxtConfig({
+  // ...
+  unocss: {
+    nuxtLayers: true,
+  },
+})
+```
+
+然后您可以在根配置文件中重新导出生成的配置：
+
+```ts [uno.config.ts]
+import config from './.nuxt/uno.config.mjs'
+
+export default config
+```
+
+或者修改/扩展它：
+
+```ts
+import { mergeConfigs } from '@unocss/core'
+import config from './.nuxt/uno.config.mjs'
+
+export default mergeConfigs([config, {
+  // 你的覆盖
+}])
+```
+
+## 许可证
+
+* MIT 许可证 © 2021-至今 [Anthony Fu](https://github.com/antfu)
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/integrations/postcss.md'
+---
+
+# PostCSS 插件
+
+UnoCSS 的 PostCSS 插件。支持 `@apply`、`@screen` 和 `theme()` 指令。
+
+[源代码](https://github.com/unocss/unocss/tree/main/packages-integrations/postcss)
+
+::: warning
+此包目前处于实验状态。它不遵循语义版本控制，并且可能在补丁版本中引入破坏性更改。
+:::
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D unocss @unocss/postcss
+```
+
+```bash [yarn]
+yarn add -D unocss @unocss/postcss
+```
+
+```bash [npm]
+npm install -D unocss @unocss/postcss
+```
+
+```bash [bun]
+bun add -D unocss @unocss/postcss
+```
+
+:::
+
+```ts [postcss.config.mjs]
+import UnoCSS from '@unocss/postcss'
+
+export default {
+  plugins: [
+    UnoCSS(),
+  ],
+}
+```
+
+```ts [uno.config.ts]
+import { defineConfig, presetWind3 } from 'unocss'
+
+export default defineConfig({
+  content: {
+    filesystem: [
+      '**/*.{html,js,ts,jsx,tsx,vue,svelte,astro,marko}',
+    ],
+  },
+  presets: [
+    presetWind3(),
+  ],
+})
+```
+
+```css [style.css]
+@unocss;
+```
+
+## 使用
+
+### `@unocss`
+
+`@unocss` 属性是一个占位符。它将被生成的 CSS 替换。
+
+您也可以单独注入每一层：
+
+```css [style.css]
+@unocss preflights;
+@unocss default;
+
+/*
+  回退层。建议始终包括。
+  只有未使用的层会在这里注入。
+*/
+@unocss;
+```
+
+如果您想要包含所有层，无论它们之前是否被包含过，可以使用 `@unocss all`。如果您想在多个文件中包含生成的 CSS，这很有用。
+
+```css
+@unocss all;
+```
+
+或者，如果您想排除特定层，可以使用 `@unocss !<layer>` 指令：
+
+```css
+@unocss !preflights, !<other-layer>;
+```
+
+### `@apply`
+
+```css
+.custom-div {
+  @apply text-center my-0 font-medium;
+}
+```
+
+将被转换为：
+
+```css
+.custom-div {
+  margin-top: 0rem;
+  margin-bottom: 0rem;
+  text-align: center;
+  font-weight: 500;
+}
+```
+
+### `@screen`
+
+`@screen` 指令允许您创建媒体查询，按名称引用您的断点，这些名称来自 [`theme.breakpoints`](https://github.com/unocss/unocss/blob/main/README.md#extend-theme)。
+
+```css
+.grid {
+  @apply grid grid-cols-2;
+}
+@screen xs {
+  .grid {
+    @apply grid-cols-1;
+  }
+}
+@screen sm {
+  .grid {
+    @apply grid-cols-3;
+  }
+}
+/* ... */
+```
+
+将被转换为：
+
+```css
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (min-width: 320px) {
+  .grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+/* ... */
+```
+
+#### 断点变体支持
+
+`@screen` 还支持 `lt`、`at` 变体
+
+##### `@screen lt`
+
+```css
+.grid {
+  @apply grid grid-cols-2;
+}
+@screen lt-xs {
+  .grid {
+    @apply grid-cols-1;
+  }
+}
+@screen lt-sm {
+  .grid {
+    @apply grid-cols-3;
+  }
+}
+/* ... */
+```
+
+将被转换为：
+
+```css
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (max-width: 319.9px) {
+  .grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+@media (max-width: 639.9px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+/* ... */
+```
+
+##### `@screen at`
+
+```css
+.grid {
+  @apply grid grid-cols-2;
+}
+@screen at-xs {
+  .grid {
+    @apply grid-cols-1;
+  }
+}
+@screen at-xl {
+  .grid {
+    @apply grid-cols-3;
+  }
+}
+@screen at-xxl {
+  .grid {
+    @apply grid-cols-4;
+  }
+}
+/* ... */
+```
+
+将被转换为：
+
+```css
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (min-width: 320px) and (max-width: 639.9px) {
+  .grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1280px) and (max-width: 1535.9px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1536px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+/* ... */
+```
+
+### `theme()`
+
+使用 `theme()` 函数通过点号访问您的主题配置值。
+
+```css
+.btn-blue {
+  background-color: theme('colors.blue.500');
+}
+```
+
+将被编译为：
+
+```css
+.btn-blue {
+  background-color: #3b82f6;
+}
+```
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/integrations/svelte-scoped.md'
+description: Svelte 作用域 Vite 插件和 UnoCSS 的 Svelte 预处理器。
+---
+
+# Svelte 作用域
+
+为每个 Svelte 组件的工具类生成的 CSS 会直接放入 Svelte 组件的 `<style>` 块中，而非置于全局 CSS 文件中。
+
+这个组件：
+
+```svelte
+<div class="mb-1" />
+```
+
+会被转化为：
+
+```svelte
+<div class="uno-ei382o" />
+
+<style>
+  :global(.uno-ei382o) {
+    margin-bottom: 0.25rem;
+  }
+</style>
+```
+
+## 何时使用
+
+| 使用场景   |     | 描述                                                                                                                                 | 使用的包                                                 |
+| ---------- | --- | ------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------- |
+| 较小的应用 | :x: | 只有 1 个全局 CSS 文件会更方便。为 [Svelte](/integrations/vite#svelte)/[SvelteKit](/integrations/vite#sveltekit) 使用常规 Vite 插件。 | [unocss/vite](/integrations/vite#svelte)                 |
+| 较大的应用 | ✅  | Svelte 作用域可以帮助你避免全局 CSS 文件不断增长。                                                                                | [@unocss/svelte-scoped/vite](#vite-plugin)               |
+| 组件库     | ✅  | 生成的样式直接嵌入构建的组件中，无需在消费应用的构建流程中使用 UnoCSS。                                                              | [@unocss/svelte-scoped/preprocess](#svelte-preprocessor) |
+
+## 工作原理
+
+常规 UnoCSS/Tailwind CSS 配置将工具类样式放入全局 CSS 文件，并保持正确的顺序。相比之下，Svelte 作用域将样式分散至多个无序的 Svelte 组件 CSS 文件中。但是，它必须保持工具类样式为全局样式，以便根据需要支持如从右到左等上下文感知功能以及下文所述的其他[用例](#context-aware)。这一挑战通过使用 Svelte 的 `:global()` 包裹器得以解决，放弃默认的 Svelte CSS 哈希方法，改为基于文件名 + 类名(s) 生成哈希，编译出唯一的类名，这样可以全局使用且避免样式冲突。
+
+## 用法
+
+由于 Svelte 作用域会重写你的工具类名，所以你只能在以下位置编写它们：
+
+| 支持的语法               | 示例                                                                                                                       |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| 类属性                  | `<div class="mb-1" />`                                                                                                     |
+| 类指令                  | `<div class:mb-1={condition} />`                                                                                           |
+| 类指令简写              | `<div class:logo />`                                                                                                        |
+| 类属性（Prop）           | `<Button class="mb-1" />`                                                                                                  |
+| 类似 `clsx` 的写法      | `<div class={["mb-1", { logo, 'font-bold': isBold() }, isUnderlined() && 'underline' ]} />`                                  |
+
+Svelte 作用域设计成可无缝替代你当前使用工具样式的项目，因此类属性中的表达式也被支持（例如 `<div class="mb-1 {foo ? 'mr-1' : 'mr-2'}" />`），但我们建议你以后使用 `clsx` 语法。注意，如果你以其他方式使用类名，比如放在 `<script>` 块内或启用了 attributify 模式，则在使用 Svelte 作用域前需采取额外措施。你可以使用 `safelist` 选项，也可以查看下面的[预设](#presets-support)部分了解更多技巧。
+
+### 上下文感知
+
+尽管样式分布在应用中不同的 Svelte 组件，但它们仍是全局类，并能相互作用于组件外的元素。示例如下：
+
+#### 依赖父元素
+
+依赖父组件属性的类：
+
+```svelte
+<div class="dark:mb-2 rtl:right-0"></div>
+```
+
+转化为：
+
+```svelte
+<div class="uno-3hashz"></div>
+
+<style>
+  :global(.dark .uno-3hashz) {
+    margin-bottom: 0.5rem;
+  }
+  :global([dir="rtl"] .uno-3hashz) {
+    right: 0rem;
+  }
+</style>
+```
+
+#### 影响子组件
+
+你可以让三个子元素之间有水平间距，其中有些子元素在不同组件中：
+
+```svelte
+<div class="space-x-1">
+  <div>Status: online</div>
+  <Button>FAQ</Button>
+  <Button>Login</Button>
+</div>
+```
+
+转化为：
+
+```svelte
+<div class="uno-7haszz">
+  <div>Status: online</div>
+  <Button>FAQ</Button>
+  <Button>Login</Button>
+</div>
+
+<style>
+  :global(.uno-7haszz > :not([hidden]) ~ :not([hidden])) {
+    --un-space-x-reverse: 0;
+    margin-left: calc(0.25rem * calc(1 - var(--un-space-x-reverse)));
+    margin-right: calc(0.25rem * var(--un-space-x-reverse));
+  }
+</style>
+```
+
+#### 向子组件传递类
+
+你可以给组件添加 `class` 属性，从而在使用组件处传递自定义类。
+
+```svelte
+<Button class="px-2 py-1">Login</Button>
+```
+
+转化为：
+
+```svelte
+<Button class="uno-4hshza">Login</Button>
+
+<style>
+  :global(.uno-4hshza) {
+    padding-left:0.5rem;
+    padding-right:0.5rem;
+    padding-top:0.25rem;
+    padding-bottom:0.25rem;
+  }
+</style>
+```
+
+实现接收组件中类的简单方法是将其放在元素上，使用 `{$$props.class}`，例如 `div class="{$$props.class} foo bar" />`。
+
+### 应用指令
+
+你可以在 `<style>` 块中使用应用指令，支持 `--at-apply` 或 `@apply`，或者通过 `applyVariables` 选项传入自定义值。
+
+Svelte 作用域甚至能够正确处理上下文相关类如 `dark:text-white`，而普通的 [`@unocss/transformer-directives`](/transformers/directives) 包处理不了，因为它不是专门为 Svelte 样式块设计的。例如，使用 Svelte 作用域，这个组件：
+
+```svelte
+<div />
+
+<style>
+  div {
+    --at-apply: rtl:ml-2;
+  }
+</style>
+```
+
+将被转化为：
+
+```svelte
+<div />
+
+<style>
+  :global([dir=\\"rtl\\"]) div {
+    margin-right: 0.5rem;
+  }
+</style>
+```
+
+为使 `rtl:ml-2` 正常工作，`[dir="rtl"]` 选择器被包裹在 `:global()` 中，防止 Svelte 编译器在当前组件没有该属性的元素时自动剥离它。然而，`div` 不能被包含在 `:global()` 中，因为该样式将影响你应用中的所有 `div`。
+
+### 其他样式块指令
+
+支持使用 [theme()](https://unocss.dev/transformers/directives#theme)，但 **不支持** [@screen](https://unocss.dev/transformers/directives#screen)。
+
+## Vite 插件
+
+在 Svelte 或 SvelteKit 应用中，生成的样式会直接注入各自的 Svelte 组件，同时只把最少必要的样式放入一个全局样式表。查看 Stackblitz 中的 [SvelteKit 示例](https://github.com/unocss/unocss/tree/main/examples/sveltekit-scoped)：
+
+[![在 StackBlitz 中打开](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/fork/github/unocss/unocss/tree/main/examples/sveltekit-scoped)
+
+### 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D unocss @unocss/svelte-scoped
+```
+
+```bash [yarn]
+yarn add -D unocss @unocss/svelte-scoped
+```
+
+```bash [npm]
+npm install -D unocss @unocss/svelte-scoped
+```
+
+```bash [bun]
+bun add -D unocss @unocss/svelte-scoped
+```
+
+:::
+
+#### 添加插件
+
+将 `@unocss/svelte-scoped/vite` 加入你的 Vite 配置中：
+
+```ts [vite.config.ts]
+import { sveltekit } from '@sveltejs/kit/vite'
+import UnoCSS from '@unocss/svelte-scoped/vite'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [
+    UnoCSS({
+      // injectReset: '@unocss/reset/normalize.css', // 查看类型定义了解所有支持的重置选项或如何传入自定义重置
+      // ...其他 Svelte 作用域选项
+    }),
+    sveltekit(),
+  ],
+})
+```
+
+#### 添加配置文件
+
+按照[下方](#configuration)的说明设置你的 `uno.config.ts` 文件。
+
+#### 全局样式
+
+虽然几乎所有样式都放在各组件内，但仍有部分样式必须放置全局样式表：预飞行 (preflights)、安全列表 (safelist) 以及可选的重置样式（如果你使用 `injectReset` 选项）。
+
+将 `%unocss-svelte-scoped.global%` 占位符放入你的 `<head>` 标签内。Svelte 中通常在 `index.html`，SvelteKit 中则是在 `%sveltekit.head%` 之前的 `app.html` 文件中：
+
+```html [index.html]
+<head>
+  <!-- ... -->
+  <title>使用 UnoCSS Svelte 作用域的 SvelteKit</title>
+  %unocss-svelte-scoped.global%
+  %sveltekit.head%
+</head>
+```
+
+## Svelte 预处理器
+
+使用工具类构建一个不依赖外部 CSS 文件的组件库，通过预处理器将生成样式直接嵌入构建组件中。查看 Stackblitz 中的 [SvelteKit Library 示例](https://github.com/unocss/unocss/tree/main/examples/sveltekit-preprocess)：
+
+[![在 StackBlitz 中打开](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/fork/github/unocss/unocss/tree/main/examples/sveltekit-preprocess)
+
+### 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D unocss @unocss/svelte-scoped
+```
+
+```bash [yarn]
+yarn add -D unocss @unocss/svelte-scoped
+```
+
+```bash [npm]
+npm install -D unocss @unocss/svelte-scoped
+```
+
+```bash [bun]
+bun add -D unocss @unocss/svelte-scoped
+```
+
+:::
+
+#### 添加预处理器
+
+将 `@unocss/svelte-scoped/preprocess` 添加到你的 Svelte 配置中：
+
+```ts [svelte.config.js]
+import adapter from '@sveltejs/adapter-auto'
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
+import UnoCSS from '@unocss/svelte-scoped/preprocess'
+
+const config = {
+  preprocess: [
+    vitePreprocess(),
+    UnoCSS({
+      // ... 预处理器选项
+    }),
+  ],
+  // 其他 Svelte 配置
+}
+```
+
+#### 开发环境中禁用类合并
+
+使用 Svelte 作用域的 Vite 插件时，它会自动区分 `dev` 与 `build` 环境。开发时，类名保持区分度并且会根据位置哈希，方便在浏览器开发工具中启用或禁用。举例，`class="mb-1 mr-1"` 会变成类似 `class="_mb-1_9hwi32 _mr-1_84jfy4"`。生产环境中，这些会被编译成一个单一的哈希类名，默认前缀为 `uno-`，根据文件名+类名生成，例如 `class="uno-84dke3"`。
+
+如果你希望预处理器在开发时也保持此行为，必须显式根据环境设置 `combine` 选项。一个做法是安装 [cross-env](https://www.npmjs.com/package/cross-env)，并将开发脚本改为：
+
+```
+"dev": "cross-env NODE_ENV=development vite dev"
+```
+
+然后调整 svelte.config.js：
+
+```diff
++const prod = process.env.NODE_ENV !== 'development'
+const config = {
+  preprocess: [
+    vitePreprocess(),
+    UnoCSS({
++      combine: prod,
+    }),
+  ],
+}
+```
+
+#### 添加配置文件
+
+请根据[下方](#configuration)说明设置你的 `uno.config.ts` 文件。
+
+### 预飞行（Preflights）
+
+使用预处理器时，你可以选择在需要的组件里包含预飞行样式，方法是在 `<style>` 标签加入 `uno-preflights` 属性：
+
+```html
+<style uno-preflights></style>
+```
+
+任何以句点开头的特殊预飞行样式（如 `.prose :where(a):not(:where(.not-prose, .not-prose *))`）会被包裹在 `:global()` 中，以避免被 Svelte 编译器自动移除。
+
+*如果你的类不依赖预飞行，或者组件仅在包含预飞行的应用里被消费，则不必为单个组件额外添加预飞行。*
+
+### 安全列表（Safelist）
+
+使用预处理器时，可通过加入 `uno-safelist` 样式属性，在组件内包含安全列表类：
+
+```html
+<style uno-safelist></style>
+```
+
+安全列表样式会被包裹在 `:global()` 中，避免被 Svelte 编译器自动剥离。
+
+## 配置
+
+请将你的 UnoCSS 配置写入 `uno.config.ts` 文件中：
+
+```ts [uno.config.ts]
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  // ...UnoCSS 配置选项
+})
+```
+
+Extractors 不被支持，因为常规 UnoCSS 全局用法和 Svelte 作用域用法存在差异。Presets 和 Transformers 会按下述章节支持。欲了解全部详情，请查看 [配置文件](/guide/config-file) 和 [配置参考](/config/)。
+
+### 预设支持
+
+鉴于全局样式表中仅有少量必要样式，其他样式均分布在各组件中，预设需逐案处理：
+
+| 预设                                                                                                                                                                                                                                                                                                                                                                      | 支持 | 备注                                                                                                                                                                                                                                                                                                                                                                                                  |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ~~[@unocss/preset-uno](https://unocss.dev/presets/uno)~~, [@unocss/preset-mini](https://unocss.dev/presets/mini), [@unocss/preset-wind3](https://unocss.dev/presets/wind3), [@unocss/preset-icons](https://github.com/unocss/unocss/tree/main/packages-presets/preset-icons), [@unocss/web-fonts](https://github.com/unocss/unocss/tree/main/packages-presets/preset-icons) | ✅  | 这些预设和所有社区插件（例如 [unocss-preset-forms](https://github.com/Julien-R44/unocss-preset-forms)）仅依赖规则/变体/预飞行样式，因此可以正常工作。                                                                                                                                                                                                                                               |
+| [@unocss/preset-typography](https://github.com/unocss/unocss/tree/main/packages-presets/preset-typography)                                                                                                                                                                                                                                                                  | ✅  | 由于该预设通过预飞行样式添加规则集，使用时必须将 `prose` 类加入安全列表，否则预飞行样式不会被触发。来自该预设的其他类，如 `prose-pink`，可以被组件作用域。 从 `v66.5.0` 起，`prose` 样式被重构为规则，不再需要将其类加入安全列表。                                                                                                                     |
+| [@unocss/preset-rem-to-px](https://github.com/unocss/unocss/tree/main/packages-presets/preset-rem-to-px)                                                                                                                                                                                                                                                                    | ✅  | 该预设和所有仅修改样式输出的预设均支持。                                                                                                                                                                                                                                                                                                                                                             |
+| [@unocss/preset-attributify](https://github.com/unocss/unocss/tree/main/packages-presets/preset-attributify)                                                                                                                                                                                                                                                                | -   | 该预设不支持。请改用 [unplugin-attributify-to-class](https://github.com/MellowCo/unplugin-attributify-to-class) Vite 插件，并在 Svelte 作用域插件前使用：`attributifyToClass({ include: [/\.svelte$/]})`。                                                                                                                                                                           |
+| [@unocss/preset-tagify](https://github.com/unocss/unocss/tree/main/packages-presets/preset-tagify)                                                                                                                                                                                                                                                                          | -   | 添加了自定义解析器的预设不支持。请先创建预处理器将 `<text-red>Hi</text-red>` 转换为 `<span class="text-red">Hi</span>`，然后可考虑提交 PR 添加对应支持。                                                                                                                                                                                                                                         |
+
+其他预设如果不依赖传统的 `class="..."` 用法，需要先将类名预处理成 `class="..."` 属性。如果它们添加了类似 typography 的 `.prose` 类等需要预设触发的元素，则需要将触发预设的类放在安全列表中。
+
+### 转换器支持
+
+转换器支持用于 CSS 文件（css|postcss|sass|scss|less|stylus|styl），使用时，可在 `vite.config.ts` 中将转换器加入 `cssFileTransformers` 配置项：
+
+```ts [vite.config.ts]
+import transformerDirectives from '@unocss/transformer-directives'
+
+export default defineConfig({
+  plugins: [
+    UnoCSS({
+      cssFileTransformers: [transformerDirectives()],
+    }),
+    sveltekit(),
+  ],
+})
+```
+
+::: info
+由于 Svelte 作用域的工作机制，转换器不支持在 Svelte 组件中使用。
+:::
+
+## 作用域工具类激发创造力
+
+关于何时考虑使用作用域样式的建议：在大型项目中，如果你每次使用类似 `.md:max-w-[50vw]` 的类时，都只用一次，你可能会不安，因为这让你感觉全局样式表持续膨胀，试试这个包吧。对工具类的犹豫限制了创造力。当然，你可以在样式块里用 `--at-apply: md:max-w-[50vw]`，但这很繁琐，而且上下文中的样式很有用。此外，如果想在项目中包含许多图标，感觉将它们加入全局样式表压力很大。将样式和图标都内置于组件，可以让你无需分析每个新加内容的成本收益，尽情扩展项目。
+
+## 许可证
+
+* MIT 许可证 © 2022-PRESENT [Jacob Bowdoin](https://github.com/jacob-8)
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/integrations/vite.md'
+description: UnoCSS 的 Vite 插件 (@unocss/vite)。
+---
+
+# Vite 插件
+
+Vite 插件随 `unocss` 包一起提供。
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D unocss
+```
+
+```bash [yarn]
+yarn add -D unocss
+```
+
+```bash [npm]
+npm install -D unocss
+```
+
+```bash [bun]
+bun add -D unocss
+```
+
+:::
+
+安装插件：
+
+```ts [vite.config.ts]
+import UnoCSS from 'unocss/vite'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [
+    UnoCSS(),
+  ],
+})
+```
+
+创建一个 `uno.config.ts` 文件：
+
+```ts [uno.config.ts]
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  // ...UnoCSS 选项
+})
+```
+
+在你的主入口中添加 `virtual:uno.css`：
+
+```ts [main.ts]
+import 'virtual:uno.css'
+```
+
+## 模式
+
+Vite 插件提供了一组模式以启用不同的行为。
+
+### `global`（默认）
+
+这是插件的默认模式：在此模式下，你需要在入口点添加 `uno.css` 的导入。
+
+此模式启用了一组 Vite 插件用于 `build` 和 `dev`，并支持 `HMR`。
+
+生成的 `css` 将是注入到 `index.html` 的全局样式表。
+
+### `vue-scoped`
+
+此模式将生成的 CSS 注入到 Vue 单文件组件的 `<style scoped>` 中以实现隔离。
+
+### `svelte-scoped`
+
+`svelte-scoped` 模式已被移至其自己的包中，查看 [@unocss/svelte-scoped/vite](/integrations/svelte-scoped)。
+
+### `shadow-dom`
+
+由于 `Web Components` 使用 `Shadow DOM`，无法直接从全局样式表为内容设定样式（除非你使用 `CSS 自定义属性`，这些属性将渗透到 `Shadow DOM` 中），你需要将插件生成的 CSS 内联到 `Shadow DOM` 样式中。
+
+要内联生成的 CSS，你只需将插件模式配置为 `shadow-dom` 并在每个 Web 组件样式 CSS 块中包含 `@unocss-placeholder` 魔法占位符。如果你在 Vue 单文件组件中定义 Web 组件，并希望在 UnoCSS 旁边定义自定义样式，你可以将占位符包裹在 CSS 注释中，以避免你 IDE 中的语法错误。
+
+### `per-module`（实验性）
+
+此模式将为每个模块生成一个 CSS 表，可以是 scoped。
+
+### `dist-chunk`（实验性）
+
+此模式将在构建时为每个代码块生成一个 CSS 表，适用于 MPA。
+
+## 在开发者工具中编辑类
+
+因为 "按需" 的限制，开发者工具不知道你尚未在源代码中使用的类。因此，如果你想通过直接更改开发者工具中的类来尝试功能，只需在主入口中添加以下行。
+
+```ts
+import 'uno.css'
+import 'virtual:unocss-devtools'
+```
+
+::: warning
+请谨慎使用，在底层我们使用 [`MutationObserver`](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) 来检测类的变化。这意味着不仅你手动的更改，但也由你的脚本进行的更改将被检测并包含在样式表中。当你根据某些逻辑在脚本标签中添加动态类时，这可能导致开发版和生产构建之间的某些不一致性。如果可能的话，我们建议将你的动态部分添加到 [safelist](https://github.com/unocss/unocss/issues/511) 或为你的生产构建设置 UI 回归测试。
+:::
+
+## 框架
+
+一些 UI/App 框架有一些注意事项，必须解决才能使其正常工作，如果你使用以下框架之一，只需应用建议。
+
+### VanillaJS / TypeScript
+
+使用 VanillaJS 或 TypeScript 时，你需要添加 `js` 和 `ts` 文件扩展名，以允许 UnoCSS 阅读和解析内容，默认情况下 `js` 和 `ts` 文件被排除，查看 [从构建工具管道提取](/guide/extracting#extracting-from-build-tools-pipeline) 部分。
+
+### React
+
+如果你正在使用 `@vitejs/plugin-react`：
+
+```ts [vite.config.ts]
+import React from '@vitejs/plugin-react'
+import UnoCSS from 'unocss/vite'
+
+export default {
+  plugins: [
+    React(),
+    UnoCSS(),
+  ],
+}
+```
+
+如果你正在使用 `@unocss/preset-attributify`，你应该从 `build` 脚本中删除 `tsc`。
+
+如果你正在使用 `babel-plugin-react-compiler`，或者在使用 `@vitejs/plugin-react` 搭配 `@unocss/preset-attributify`，你必须在 `@vitejs/plugin-react` 之前添加该插件。
+
+```ts [vite.config.ts]
+import React from '@vitejs/plugin-react'
+import UnoCSS from 'unocss/vite'
+
+export default {
+  plugins: [
+    UnoCSS(),
+    React(),
+  ],
+}
+```
+
+你可以在 [examples/vite-react](https://github.com/unocss/unocss/tree/main/examples/vite-react) 目录中查看一个使用这两个插件的 `React` 示例项目，查看 `package.json` 中的脚本和其 Vite 配置文件。
+
+### Preact
+
+如果你正在使用 `@preact/preset-vite`：
+
+```ts [vite.config.ts]
+import Preact from '@preact/preset-vite'
+import UnoCSS from 'unocss/vite'
+
+export default {
+  plugins: [
+    UnoCSS(),
+    Preact(),
+  ],
+}
+```
+
+或者如果你正在使用 `@prefresh/vite`：
+
+```ts [vite.config.ts]
+import Prefresh from '@prefresh/vite'
+import UnoCSS from 'unocss/vite'
+
+export default {
+  plugins: [
+    UnoCSS(),
+    Prefresh(),
+  ],
+}
+```
+
+如果你正在使用 `@unocss/preset-attributify`，你应该从 `build` 脚本中删除 `tsc`。
+
+你可以在 [examples/vite-preact](https://github.com/unocss/unocss/tree/main/examples/vite-preact) 目录中查看一个使用这两个插件的 `Preact` 示例项目，查看 `package.json` 中的脚本和其 Vite 配置文件。
+
+### Svelte
+
+你必须在 `@sveltejs/vite-plugin-svelte` 之前添加插件。
+
+要支持 `class:foo` 和 `class:foo={bar}`，请添加插件并在 `extractors` 选项上配置 `extractorSvelte`。
+
+你可以使用带有 `class:` 的简单规则，例如 `class:bg-red-500={foo}`，或使用 `shortcuts` 包含多个规则，查看下面链接的示例项目中的 `src/App.svelte`。
+
+```ts [vite.config.ts]
+import { svelte } from '@sveltejs/vite-plugin-svelte'
+import extractorSvelte from '@unocss/extractor-svelte'
+import UnoCSS from 'unocss/vite'
+
+export default {
+  plugins: [
+    UnoCSS({
+      extractors: [
+        extractorSvelte(),
+      ],
+      /* 更多选项 */
+    }),
+    svelte(),
+  ],
+}
+```
+
+### Sveltekit
+
+要支持 `class:foo` 和 `class:foo={bar}`，请添加插件并在 `extractors` 选项上配置 `extractorSvelte`。
+
+你可以使用带有 `class:` 的简单规则，例如 `class:bg-red-500={foo}`，或使用 `shortcuts` 包含多个规则，查看下面链接的示例项目中的 `src/routes/+layout.svelte`。
+
+```ts [vite.config.ts]
+import { sveltekit } from '@sveltejs/kit/vite'
+import extractorSvelte from '@unocss/extractor-svelte'
+import UnoCSS from 'unocss/vite'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [
+    UnoCSS({
+      extractors: [
+        extractorSvelte(),
+      ],
+      /* 更多选项 */
+    }),
+    sveltekit(),
+  ],
+})
+```
+
+### Web Components
+
+要与 Web 组件一起工作，你需要在插件上启用 `shadow-dom` 模式。
+
+不要忘记移除 `uno.css` 的导入，因为 `shadow-dom` 模式不会暴露它，程序将无法工作。
+
+```ts [vite.config.ts]
+import UnoCSS from 'unocss/vite'
+
+export default {
+  plugins: [
+    UnoCSS({
+      mode: 'shadow-dom',
+      /* 更多选项 */
+    }),
+  ],
+}
+```
+
+在每个 `web component` 中，只需在其样式 CSS 块中添加 `@unocss-placeholder`：
+
+```ts
+const template = document.createElement('template')
+template.innerHTML = `
+<style>
+:host {...}
+@unocss-placeholder
+</style>
+<div class="m-1em">
+...
+</div>
+`
+```
+
+如果你正在使用 [Lit](https://lit.dev/)：
+
+```ts
+@customElement('my-element')
+export class MyElement extends LitElement {
+  static styles = css`
+    :host {...}
+    @unocss-placeholder
+  `
+  // ...
+}
+```
+
+你可以在 [examples/vite-lit](https://github.com/unocss/unocss/tree/main/examples/vite-lit) 目录中查看一个 `Web Components` 示例项目。
+
+#### `::part` 内置支持
+
+你可以使用 `::part`，因为插件通过 `shortcuts` 和使用来自 `preset-mini` 的 `part-[<part-name>]:<rule|shortcut>` 规则支持它，例如，使用简单规则如 `part-[<part-name>]:bg-green-500` 或使用一些 `shortcut`：查看以下链接示例项目中的 `src/my-element.ts`。
+
+`part-[<part-name>]:<rule|shortcut>` 仅在使用 `shadow-dom` 模式时与此插件一起工作。
+
+该插件使用 `nth-of-type` 来避免在相同 Web 组件中的多个部分之间的碰撞，对于不同 Web 组件中的相同部分，你不必担心，插件会为你处理。
+
+```ts [vite.config.ts]
+import UnoCSS from 'unocss/vite'
+
+export default {
+  plugins: [
+    UnoCSS({
+      mode: 'shadow-dom',
+      shortcuts: [
+        { 'cool-blue': 'bg-blue-500 text-white' },
+        { 'cool-green': 'bg-green-500 text-black' },
+      ],
+      /* 更多选项 */
+    }),
+  ],
+}
+```
+
+然后在你的 Web 组件中：
+
+```ts
+// my-container-wc.ts
+const template = document.createElement('template')
+template.innerHTML = `
+<style>
+@unocss-placeholder
+</style>
+<my-wc-with-parts class="part-[cool-part]:cool-blue part-[another-cool-part]:cool-green">...</my-wc-with-parts>
+`
+```
+
+```ts
+// my-wc-with-parts.ts
+const template = document.createElement('template')
+template.innerHTML = `
+<style>
+@unocss-placeholder
+</style>
+<div>
+  <div part="cool-part">...</div>
+  <div part="another-cool-part">...</div>
+</div>
+`
+```
+
+### Solid
+
+你需要在 UnoCSS 的插件之后添加 `vite-plugin-solid` 插件。
+
+```ts [vite.config.ts]
+import UnoCSS from 'unocss/vite'
+import solidPlugin from 'vite-plugin-solid'
+
+export default {
+  plugins: [
+    UnoCSS({
+      /* 选项 */
+    }),
+    solidPlugin(),
+  ],
+}
+```
+
+### Elm
+
+你需要在 UnoCSS 的插件之前添加 `vite-plugin-elm` 插件。
+
+```ts [vite.config.ts]
+import UnoCSS from 'unocss/vite'
+import { defineConfig } from 'vite'
+import Elm from 'vite-plugin-elm'
+
+export default defineConfig({
+  plugins: [
+    Elm(),
+    UnoCSS(),
+  ],
+})
+```
+
+### Marko
+
+你需要在 UnoCSS 的插件之前添加 `@marko/vite` 或 `@marko/run/vite`。
+
+```ts [vite.config.ts]
+import marko from '@marko/run/vite'
+import UnoCSS from 'unocss/vite'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [
+    marko(),
+    UnoCSS(),
+  ],
+})
+```
+
+## 传统
+
+如果 `@vitejs/plugin-legacy` 的 `renderModernChunks` 设置为 `false`，你需要将其添加到 `unocss` 选项中。
+
+```ts
+import legacy from '@vitejs/plugin-legacy'
+import vue from '@vitejs/plugin-vue'
+import { presetWind3 } from 'unocss'
+import Unocss from 'unocss/vite'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [
+    vue(),
+    Unocss({
+      presets: [presetWind3()],
+      legacy: {
+        renderModernChunks: false,
+      },
+    }),
+    legacy({
+      targets: ['defaults', 'not IE 11'],
+      renderModernChunks: false,
+    }),
+  ],
+})
+```
+
+## 许可证
+
+* MIT 许可证 © 2021-PRESENT [Anthony Fu](https://github.com/antfu)
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/integrations/vscode.md'
+description: UnoCSS 的 VS Code 扩展。
+---
+
+# VS Code 扩展
+
+[在市场中安装](https://marketplace.visualstudio.com/items?itemName=antfu.unocss)
+
+* 匹配工具类的装饰和提示
+* 自动加载配置
+* 匹配工具类的计数
+
+## 命令
+
+| 命令                            | 说明                                              |
+| ------------------------------- | ------------------------------------------------- |
+| `unocss.reload`                 | UnoCSS：重新加载 UnoCSS                           |
+| `unocss.insert-skip-annotation` | UnoCSS：为选中内容插入 `@unocss-skip` 注释         |
+
+## 配置项
+
+| 键                             | 说明                                                     | 类型            | 默认值       |
+| ------------------------------- | -------------------------------------------------------- | -------------- | ---------- |
+| `unocss.disable`                | 禁用 UnoCSS 扩展                                         | `boolean`      | `false`    |
+| `unocss.languageIds`            |                                                          | `array`        | ``        |
+| `unocss.root`                   | 包含 UnoCSS 配置文件的项目根目录                         | `array,string` |``         |
+| `unocss.include`                | 需要检测的文件目录                                       | `array,string` | ``        |
+| `unocss.exclude`                | 不需要检测的文件目录                                     | `array,string` |``         |
+| `unocss.underline`              | 启用/禁用类名的下划线装饰                               | `boolean`      | `true`     |
+| `unocss.colorPreview`           | 启用/禁用颜色预览装饰                                   | `boolean`      | `true`     |
+| `unocss.colorPreviewRadius`     | 颜色预览的圆角半径                                      | `string`       | `"50%"`    |
+| `unocss.remToPxPreview`         | 启用/禁用 hover 提示中的 rem 转 px                      | `boolean`      | `true`     |
+| `unocss.remToPxRatio`           | rem 转 px 比例                                          | `number`       | `16`       |
+| `unocss.selectionStyle`         | 启用/禁用选中样式装饰                                   | `boolean`      | `true`     |
+| `unocss.strictAnnotationMatch`  | 严格控制注释显示的位置                                  | `boolean`      | `false`    |
+| `unocss.autocomplete.matchType` | 自动补全的匹配类型                                     | `string`       | `"prefix"` |
+| `unocss.autocomplete.strict`    | 严格控制自动补全显示的位置                              | `boolean`      | `false`    |
+| `unocss.autocomplete.maxItems`  | 自动补全显示的最大项数                                 | `number`       | `1000`     |
+
+## 配置
+
+为了获得最佳的 IDE 体验，建议您[使用单独的 `uno.config.ts` 文件](/guide/config-file) 来配置 UnoCSS。
+
+扩展会尝试在您的项目中查找 UnoCSS 配置文件。如果未找到配置，扩展将被禁用。
+
+## 图标预设
+
+如果您正在使用[图标预设](/presets/icons)，还可以安装[Iconify IntelliSense](https://marketplace.visualstudio.com/items?itemName=antfu.iconify)，以获得图标的内联预览、自动补全和悬停提示信息。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/integrations/webpack.md'
+description: UnoCSS 的 webpack 插件 (@unocss/webpack)。
+---
+
+# Webpack 插件
+
+UnoCSS 的 webpack 插件：`@unocss/webpack`。当前，此插件仅支持 [`global` 模式](https://github.com/unocss/unocss/blob/main/packages-integrations/vite/src/types.ts#L11-L21)。
+
+::: info
+此插件不带任何默认预设。
+:::
+
+## 先决条件
+
+`@unocss/webpack` 需要 `style-loader` 和 `css-loader` 来处理 CSS 文件。
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/webpack
+```
+
+```bash [yarn]
+yarn add -D @unocss/webpack
+```
+
+```bash [npm]
+npm install -D @unocss/webpack
+```
+
+```bash [bun]
+bun add -D @unocss/webpack
+```
+
+:::
+
+从 UnoCSS 版本 `v0.59.0` 开始，UnoCSS 迁移至仅支持 ESM，你需要通过动态导入加载你的配置：
+
+::: code-group
+
+```ts [webpack 5]
+// webpack.config.js
+module.exports = function () {
+  return import('@unocss/webpack').then(({ default: UnoCSS }) => ({
+    plugins: [
+      UnoCSS()
+    ],
+    optimization: {
+      realContentHash: true
+    }
+  }))
+}
+```
+
+```js [webpack 4]
+// webpack.config.js
+module.exports = function () {
+  return import('@unocss/webpack').then(({ default: UnoCSS }) => ({
+    plugins: [
+      UnoCSS()
+    ],
+    css: {
+      extract: {
+        filename: '[name].[hash:9].css'
+      },
+    },
+  }))
+}
+```
+
+:::
+
+如果你使用的是旧版本的 UnoCSS，可以使用以下代码：
+
+::: code-group
+
+```ts [webpack 5]
+// webpack.config.js
+const UnoCSS = require('@unocss/webpack').default
+
+module.exports = {
+  plugins: [
+    UnoCSS()
+  ],
+  optimization: {
+    realContentHash: true
+  }
+}
+```
+
+```js [webpack 4]
+// webpack.config.js
+const UnoCSS = require('@unocss/webpack').default
+
+module.exports = {
+  plugins: [
+    UnoCSS()
+  ],
+  css: {
+    extract: {
+      filename: '[name].[hash:9].css'
+    }
+  }
+}
+```
+
+:::
+
+创建一个 `uno.config.ts` 文件：
+
+```ts [uno.config.ts]
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  // ...UnoCSS 选项
+})
+```
+
+::: warning
+如果你使用的是 webpack@4.x，`optimization.realContentHash` 配置不被支持，你应该使用 `css.extract.filename` 来自定义 CSS 文件名（我们使用哈希代码的前 9 个字母作为示例）。请注意此 [已知问题](https://github.com/unocss/unocss/issues/1728) 和 [webpack#9520](https://github.com/webpack/webpack/issues/9520#issuecomment-749534245)。
+:::
+
+## 使用方法
+
+将 `uno.css` 添加到你的主入口文件：
+
+```ts [main.ts]
+import 'uno.css'
+```
+
+## 框架
+
+### Vue + Vue CLI
+
+如果你使用的是 [Vue CLI](https://cli.vuejs.org/) 并搭配 webpack 4/5 和 UnoCSS `v0.59.0`，你需要使用最新的 [Vue CLI Service](https://cli.vuejs.org/guide/cli-service.html) `v5.0.8` 来通过动态导入加载你的配置：
+
+::: code-group
+
+```ts [webpack 5]
+// vue.config.js
+const process = require('node:process')
+
+module.exports = function () {
+  return import('@unocss/webpack').then(({ default: UnoCSS }) => ({
+    configureWebpack: {
+      devtool: 'inline-source-map',
+      plugins: [
+        UnoCSS()
+      ],
+      optimization: {
+        realContentHash: true
+      }
+    },
+    chainWebpack(config) {
+      config.module.rule('vue').uses.delete('cache-loader')
+      config.module.rule('tsx').uses.delete('cache-loader')
+      config.merge({
+        cache: false
+      })
+    },
+    css: {
+      extract: process.env.NODE_ENV === 'development'
+        ? {
+            filename: 'css/[name].css',
+            chunkFilename: 'css/[name].css'
+          }
+        : true
+    }
+  }))
+}
+```
+
+```ts [webpack 4]
+// vue.config.js
+const process = require('node:process')
+
+module.exports = function () {
+  return import('@unocss/webpack').then(({ default: UnoCSS }) => ({
+    configureWebpack: {
+      plugins: [
+        UnoCSS({})
+      ]
+    },
+    chainWebpack(config) {
+      config.module.rule('vue').uses.delete('cache-loader')
+      config.module.rule('tsx').uses.delete('cache-loader')
+      config.merge({
+        cache: false
+      })
+    },
+    css: {
+      extract: process.env.NODE_ENV === 'development'
+        ? {
+            filename: '[name].css',
+            chunkFilename: '[name].[hash:9].css'
+          }
+        : true
+    }
+  }))
+}
+```
+
+:::
+
+如果使用旧版本的 UnoCSS，可以使用以下代码：
+
+::: code-group
+
+```ts [webpack 5]
+// vue.config.js
+const process = require('node:process')
+const UnoCSS = require('@unocss/webpack').default
+
+module.exports = {
+  configureWebpack: {
+    devtool: 'inline-source-map',
+    plugins: [
+      UnoCSS()
+    ],
+    optimization: {
+      realContentHash: true
+    }
+  },
+  chainWebpack(config) {
+    config.module.rule('vue').uses.delete('cache-loader')
+    config.module.rule('tsx').uses.delete('cache-loader')
+    config.merge({
+      cache: false
+    })
+  },
+  css: {
+    extract: process.env.NODE_ENV === 'development'
+      ? {
+          filename: 'css/[name].css',
+          chunkFilename: 'css/[name].css'
+        }
+      : true
+  },
+}
+```
+
+```ts [webpack 4]
+// vue.config.js
+const process = require('node:process')
+const UnoCSS = require('@unocss/webpack').default
+
+module.exports = {
+  configureWebpack: {
+    plugins: [
+      UnoCSS({}),
+    ]
+  },
+  chainWebpack(config) {
+    config.module.rule('vue').uses.delete('cache-loader')
+    config.module.rule('tsx').uses.delete('cache-loader')
+    config.merge({
+      cache: false,
+    })
+  },
+  css: {
+    extract: process.env.NODE_ENV === 'development'
+      ? {
+          filename: '[name].css',
+          chunkFilename: '[name].[hash:9].css',
+        }
+      : true,
+  },
+}
+```
+
+:::
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/integrations/jetbrains.md'
+---
+
+# JetBrains IDEs 插件
+
+一个社区 [插件](https://github.com/re-ovo/unocss-intellij)，为 JetBrains IDEs 提供对 UnoCSS 的支持。
+
+:::info
+注意：这是一个 **社区维护的插件，并不是 UnoCSS 团队审核或维护的**。使用之前请自行研究。如果您在使用此插件时遇到任何问题，请向 [re-ovo/unocss-intellij](https://github.com/re-ovo/unocss-intellij) 报告。
+:::
+
+## 安装
+
+[JetBrains 市场](https://plugins.jetbrains.com/plugin/22204-unocss)
+
+## 特性
+
+* UnoCSS 类的自动补全
+* UnoCSS 类的悬停文档
+* 代码折叠
+* 颜色/图标预览
+
+## 错误报告 / 功能请求
+
+请在 [问题追踪器](https://github.com/re-ovo/unocss-intellij/issues) 提交。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/presets/web-fonts.md'
+description: UnoCSS 的 Web 字体支持 (@unocss/preset-web-fonts)。
+---
+
+# Web 字体预设
+
+通过简单地提供字体名称来使用来自 [Google Fonts](https://fonts.google.com/) 和 [FontShare](https://www.fontshare.com/) 的 Web 字体。
+
+查看 [所有支持的提供者](#providers)。
+
+[源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-web-fonts)
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/preset-web-fonts
+```
+
+```bash [yarn]
+yarn add -D @unocss/preset-web-fonts
+```
+
+```bash [npm]
+npm install -D @unocss/preset-web-fonts
+```
+
+```bash [bun]
+bun add -D @unocss/preset-web-fonts
+```
+
+:::
+
+```ts [uno.config.ts]
+import presetWebFonts from '@unocss/preset-web-fonts'
+import presetWind3 from '@unocss/preset-wind3'
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetWind3(),
+    presetWebFonts({ /* options */ }),
+  ],
+})
+```
+
+::: tip
+此预设包含在 `unocss` 包中，您也可以从那里导入它：
+
+```ts
+import { presetWebFonts } from 'unocss'
+```
+
+:::
+
+## 提供者
+
+当前支持的提供者：
+
+* `none` - 不执行任何操作，将字体视为系统字体
+* `google` - [Google Fonts](https://fonts.google.com/)
+* `bunny` - [隐私友好的 Google Fonts](https://fonts.bunny.net/)
+* `fontshare` - [ITF 提供的优质字体服务](https://www.fontshare.com/)
+* `fontsource` - [自托管开源字体，整齐打包的 NPM 包](https://fontsource.org/)
+* `coollabs` - [隐私友好的 Google Fonts 替代品](https://fonts.coollabs.io/)
+
+::: info
+欢迎提交 PR 以添加更多提供者。🙌
+:::
+
+### 自定义获取函数
+
+使用您自己的函数获取字体源。
+
+```ts [uno.config.ts]
+import presetWebFonts from '@unocss/preset-web-fonts'
+import presetWind3 from '@unocss/preset-wind3'
+import axios from 'axios'
+import ProxyAgent from 'proxy-agent'
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetWind3(),
+    presetWebFonts({
+      // 使用带有 https 代理的 axios
+      customFetch: (url: string) => axios.get(url, { httpsAgent: new ProxyAgent('https://localhost:7890') }).then(it => it.data),
+      provider: 'google',
+      fonts: {
+        sans: 'Roboto',
+        mono: ['Fira Code', 'Fira Mono:400,700'],
+      },
+    }),
+  ],
+})
+```
+
+## 选项
+
+### provider
+
+* **类型:** `WebFontsProviders`
+* **默认:** `google`
+
+Web 字体的提供者服务。
+
+```ts
+type WebFontsProviders = 'google' | 'bunny' | 'fontshare' | 'fontsource' | 'coollabs' | 'none'
+```
+
+### fonts
+
+* **类型:** `Record<string, WebFontMeta | string | (WebFontMeta | string)[]>`
+
+字体。有关更多详细信息，请参见 [示例](#example)。
+
+```ts
+interface WebFontMeta {
+  name: string
+  weights?: (string | number)[]
+  italic?: boolean
+  /**
+   * 覆盖提供者
+   * @default <匹配根配置>
+   */
+  provider?: WebFontsProviders
+}
+```
+
+### extendTheme
+
+* **类型:** `boolean`
+* **默认:** `true`
+
+扩展主题对象。
+
+### themeKey
+
+* **类型:** `string`
+* **默认:** `fontFamily`
+
+主题对象的键。
+
+### inlineImports
+
+* **类型:** `boolean`
+* **默认:** `true`
+
+内联 CSS `@import()`。
+
+### customFetch
+
+* **类型:** `(url: string) => Promise<string>`
+* **默认:** `undefined`
+
+使用您自己的函数获取字体源。有关更多信息，请参见 [自定义获取函数](#custom-fetch-function)。
+
+## 示例
+
+```ts
+presetWebFonts({
+  provider: 'google', // 默认提供者
+  fonts: {
+    // 这些将扩展默认主题
+    sans: 'Roboto',
+    mono: ['Fira Code', 'Fira Mono:400,700'],
+    // 自定义字体
+    lobster: 'Lobster',
+    lato: [
+      {
+        name: 'Lato',
+        weights: ['400', '700'],
+        italic: true,
+      },
+      {
+        name: 'sans-serif',
+        provider: 'none',
+      },
+    ],
+  },
+})
+```
+
+将自动生成以下 CSS：
+
+```css
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Fira+Code&family=Fira+Mono:wght@400;700&family=Lobster&family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+/* layer: default */
+.font-lato {
+  font-family: "Lato", sans-serif;
+}
+.font-lobster {
+  font-family: "Lobster";
+}
+.font-mono {
+  font-family: "Fira Code", "Fira Mono", ui-monospace, SFMono-Regular, Menlo,
+    Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.font-sans {
+  font-family: "Roboto", ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
+}
+```
+
+## 本地服务字体
+
+默认情况下，预设将从提供者的 CDN 中获取字体。如果您想要在本地提供字体，可以下载字体并使用 `@unocss/preset-web-fonts/local` 中的处理器从您自己的服务器提供它们。
+
+```ts
+import presetWebFonts from '@unocss/preset-web-fonts'
+import { createLocalFontProcessor } from '@unocss/preset-web-fonts/local'
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetWebFonts({
+      provider: 'none',
+      fonts: {
+        sans: 'Roboto',
+        mono: 'Fira Code',
+      },
+      // 这将下载字体并在本地提供
+      processors: createLocalFontProcessor({
+        // 缓存字体的目录
+        cacheDir: 'node_modules/.cache/unocss/fonts',
+
+        // 保存字体资产的目录
+        fontAssetsDir: 'public/assets/fonts',
+
+        // 客户端提供字体的基本 URL
+        fontServeBaseUrl: '/assets/fonts',
+
+        // Custom fetch function to download the fonts
+        fetch: async url => axios.get(url)
+      })
+    }),
+  ],
+})
+```
+
+这将把字体资产下载到 `public/assets/fonts` 并从客户端的 `/assets/fonts` 提供它们。在执行此操作时，请确保字体的许可证允许您如此重新分发，工具不对任何法律问题负责。
+
+::: info
+
+此功能特定于 Node.js，无法在浏览器中使用。
+
+:::
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/presets/wind3.md'
+description: UnoCSS 的 Tailwind CSS / Windi CSS 紧凑预设 (@unocss/preset-wind3)。
+---
+
+# Wind3 预设
+
+UnoCSS 的 Tailwind CSS / Windi CSS 紧凑预设。
+
+[源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-wind3)
+
+::: info
+`@unocss/preset-wind` 和 `@unocss/preset-uno` 已被弃用并重命名为 `@unocss/preset-wind3`。该预设继承自 [`@unocss/preset-mini`](/presets/mini)。
+:::
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/preset-wind3
+```
+
+```bash [yarn]
+yarn add -D @unocss/preset-wind3
+```
+
+```bash [npm]
+npm install -D @unocss/preset-wind3
+```
+
+```bash [bun]
+bun add -D @unocss/preset-wind3
+```
+
+:::
+
+```ts [uno.config.ts]
+import presetWind3 from '@unocss/preset-wind3'
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetWind3(),
+  ],
+})
+```
+
+::: tip
+该预设包含在 `unocss` 包中，您也可以从那里导入：
+
+```ts
+import { presetWind3 } from 'unocss'
+```
+
+:::
+
+## 规则
+
+该预设的主要目标是提供与 [Tailwind CSS](https://tailwindcss.com/) 和 [Windi CSS](https://windicss.org/) 的兼容性。需要注意的是，无法保证完全兼容。请参考他们的 [文档](https://tailwindcss.com/docs) 以获取详细用法。
+
+有关该预设中包含的所有规则和预设，请参阅我们的 交互式文档 或直接查看 [源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-wind3)。
+
+## 特性
+
+### 暗黑模式
+
+默认情况下，该预设生成基于类的暗黑模式，使用 `dark:` 变体。
+
+```html
+<div class="dark:bg-red:10" />
+```
+
+将生成：
+
+```css
+.dark .dark\:bg-red\:10 {
+  background-color: rgb(248 113 113 / 0.1);
+}
+```
+
+#### 基于媒体查询的暗黑模式
+
+要在全局使用基于媒体查询的暗黑模式，您可以更改 `dark:` 变体的配置：
+
+```ts
+presetWind3({
+  dark: 'media'
+})
+```
+
+现在
+
+```html
+<div class="dark:bg-red:10" />
+```
+
+将生成：
+
+```css
+@media (prefers-color-scheme: dark) {
+  .dark\:bg-red\:10 {
+    background-color: rgb(248 113 113 / 0.1);
+  }
+}
+```
+
+#### 可选的基于媒体查询的暗黑模式
+
+要使用可选的基于媒体查询的暗黑模式，您可以使用 `@dark:` 变体：
+
+```html
+<div class="@dark:bg-red:10" />
+```
+
+```css
+@media (prefers-color-scheme: dark) {
+  .\@dark\:bg-red\:10 {
+    background-color: rgb(248 113 113 / 0.1);
+  }
+}
+```
+
+## 与 Tailwind CSS 的区别
+
+### 引号
+
+在模板（用于处理的文件）中使用引号是不支持的，原因在于提取器的工作方式。例如，您将无法写 `before:content-['']`。在这些情况下，您可以考虑引入一个新工具，以便可以明确设置，例如 `class="before:content-empty"`。
+
+### 背景位置与任意值
+
+Tailwind [允许](https://tailwindcss.com/docs/background-position#using-custom-values) 使用裸语法为 `background-position` 使用自定义值：
+
+```html
+<div class="bg-[center_top_1rem]"></div>
+```
+
+Wind 预设将解读 `center_top_1rem` 为颜色。使用 `position:` 前缀可以实现同样的效果：
+
+```html
+<div class="bg-[position:center_top_1rem]"></div>
+```
+
+### 动画
+
+Tailwind CSS 内置的动画较少，我们完全支持其动画规则，并内部整合了 [Animate.css](https://github.com/animate-css/animate.css) 以提供更多动画效果。
+
+您可以使用 `animate-` 前缀来引导 IntelliSense 快速找到您需要的动画。
+
+:::tip
+我们不会合并 Tailwind 和 Animate.css 中冲突的动画名称。如果您需要使用 Animate.css 的动画名称，请使用 `animate-<name>-alt`。
+:::
+
+例如
+
+|                                                                                                                                         Tailwind CSS                                                                                                                                          |                                                                                                                                            Animate.css                                                                                                                                            |
+| :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|                                                                                                                                       `animate-bounce`                                                                                                                                        |                                                                                                                                       `animate-bounce-alt`                                                                                                                                        |
+|  |  |
+
+如果您想自定义或修改动画效果，我们提供高度可定制的配置项。您可以通过配置项修改动画的持续时间、延迟、速度曲线等。
+
+```ts [uno.config.ts]
+export default defineConfig({
+  theme: {
+    animation: {
+      keyframes: {
+        custom: '{0%, 100% { transform: scale(0.5); } 50% { transform: scale(1); }}',
+      },
+      durations: {
+        custom: '1s',
+      },
+      timingFns: {
+        custom: 'cubic-bezier(0.4,0,.6,1)',
+      },
+      properties: {
+        custom: { 'transform-origin': 'center' },
+      },
+      counts: {
+        custom: 'infinite',
+      },
+    }
+  }
+})
+```
+
+预览自定义动画：
+
+:::tip
+您还可以添加 `category` 来对动画进行分组以便于管理。这将使下游工具更容易使用动画效果。
+
+```ts [uno.config.ts] {9}
+export default defineConfig({
+  theme: {
+    animation: {
+      keyframes: {
+        custom: '{0%, 100% { transform: scale(0.5); } 50% { transform: scale(1); }}',
+      },
+      // ...
+      category: {
+        custom: 'Zooming',
+      },
+    }
+  }
+})
+```
+
+:::
+
+## 与 Windi CSS 的区别
+
+### 断点
+
+| Windi CSS | UnoCSS      |
+| :-------- | :---------- |
+| `<sm:p-1` | `lt-sm:p-1` |
+| `@lg:p-1` | `at-lg:p-1` |
+| `>xl:p-1` | `xl:p-1`    |
+
+### 括号语法空格
+
+该预设使用 `_` 代替 `,` 来保留括号语法中的空格。
+
+| Windi CSS                          | UnoCSS                             |
+| :--------------------------------- | :--------------------------------- |
+| `grid-cols-[1fr,10px,max-content]` | `grid-cols-[1fr_10px_max-content]` |
+
+由于某些 CSS 规则要求 `,` 作为值的一部分，例如 `grid-cols-[repeat(3,auto)]`
+
+## 实验特性
+
+::: warning
+该预设包含实验特性，这些特性可能在任何时候发生重大变化。
+:::
+
+### 媒体悬停
+
+媒体悬停解决了 [粘性悬停](https://css-tricks.com/solving-sticky-hover-states-with-media-hover-hover/) 问题，其中在移动设备上点击包括悬停样式的目标会持续保持该悬停样式，直到点击其他位置。
+
+由于常规 `:hover` 样式通常会被广泛使用，因此该变体使用 `@hover` 语法来将其与常规 `hover` 伪类区分开。
+
+变体 `@hover-text-red` 将输出：
+
+```css
+@media (hover: hover) and (pointer: fine) {
+  .\@hover-text-red:hover {
+    --un-text-opacity: 1;
+    color: rgb(248 113 113 / var(--un-text-opacity));
+  }
+}
+```
+
+## 选项
+
+::: info
+该预设选项继承自 [`@unocss/preset-mini`](/presets/mini#options)。
+:::
+
+### important
+
+* **类型：** `boolean | string`
+* **默认值：** `false`
+
+`important` 选项让您控制 UnoCSS 的实用工具是否应该标记为 `!important`。在使用带有高特异性选择器的现有 CSS 时，这可能非常有用。
+
+::: warning
+使用此选项将使 UnoCSS 生成的所有实用工具均应用 `!important`。如果您只想将其应用于特定的实用工具，您可以使用 `important:` 变体。
+:::
+
+然而，将 `important` 设置为 `true` 可能会在合并第三方 JS 库时引入一些问题，这些库会向您的元素添加内联样式。在这些情况下，UnoCSS 的 `!important` 实用工具会覆盖内联样式，从而可能破坏您想要的设计。
+
+为了绕过这个问题，您可以将 important 设置为 ID 选择器，例如 `#app` ：
+
+```ts [uno.config.ts]
+import presetWind3 from '@unocss/preset-wind'
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetWind3({
+      important: '#app',
+    }),
+  ],
+})
+```
+
+此配置将为您所有的实用工具添加给定选择器的前缀，从而有效地提高它们的特异性，而无需实际将它们设置为 `!important`。
+
+实用工具 `dark:bg-blue` 将输出：
+
+```css
+#app :is(.dark .dark\:bg-blue) {
+  --un-bg-opacity: 1;
+  background-color: rgb(96 165 250 / var(--un-bg-opacity));
+}
+```
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/presets/wind4.md'
+description: 用于 UnoCSS 的 Tailwind4 CSS 紧凑预设（@unocss/preset-wind4）。
+---
+
+# Wind4 预设
+
+用于 UnoCSS 的 Tailwind4 CSS 紧凑预设。它与 PresetWind3 的所有功能兼容，并进一步增强。
+
+[源码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-wind4)
+
+::: tip
+您可以花一点时间阅读本文档以了解更改
+:::
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/preset-wind4
+```
+
+```bash [yarn]
+yarn add -D @unocss/preset-wind4
+```
+
+```bash [npm]
+npm install -D @unocss/preset-wind4
+```
+
+```bash [bun]
+bun add -D @unocss/preset-wind4
+```
+
+:::
+
+```ts twoslash [uno.config.ts]
+import { defineConfig, presetWind4 } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetWind4(),
+    //  ^?
+  ],
+})
+```
+
+## 兼容性
+
+请参考 [Tailwind 兼容性](https://tailwindcss.com/docs/compatibility) 了解浏览器支持和兼容性。
+
+## 主题
+
+`PresetWind4` 的主题几乎与 `PresetWind3` 的主题相同，但某些主题键已进行了调整。
+
+::: warning
+请注意在切换到 PresetWind4 时，参阅下表检查您的主题键配置并进行适当的调整。
+:::
+
+|                                            PresetWind3                                            |                          PresetWind4                          |
+| :-----------------------------------------------------------------------------------------------: | :-----------------------------------------------------------: |
+|                                           `fontFamily`                                            |                            `font`                             |
+|                                            `fontSize`                                             |            移至 `text` 中的 `fontSize` 属性                    |
+|                                           `lineHeight`                                            |   移至 `text` 中的 `lineHeight` 属性或使用 `leading`         |
+|                                          `letterSpacing`                                          | 移至 `text` 中的 `letterSpacing` 属性或使用 `tracking`      |
+|                                          `borderRadius`                                           |                           `radius`                            |
+|                                             `easing`                                              |                            `ease`                             |
+|                                           `breakpoints`                                           |                         `breakpoint`                          |
+|                                       `verticalBreakpoints`                                       |                     `verticalBreakpoint`                      |
+|                                            `boxShadow`                                            |                           `shadow`                            |
+|                                                 -                                                 |                         `insetShadow`                         |
+|     像 `width`, `height`, `maxWidth`, `maxHeight`, `minWidth`, `minHeight` 这样的尺寸属性      |                   统一为使用 `spacing`                        |
+|                                       `transitionProperty`                                        |                          `property`                           |
+| `gridAutoColumn`, `gridAutoRow`, `gridColumn`, `gridRow`, `gridTemplateColumn`, `gridTemplateRow` |                               -                               |
+|                                       `container.maxWidth`                                        |                     `containers.maxWidth`                     |
+|                                                 -                                                 |                          `defaults`                           |
+
+### `Theme.defaults`
+
+`Theme.defaults` 是一个全局默认主题配置，将应用于 `reset` 样式或作为某些规则的默认值。
+
+以下是 `Theme.defaults` 的默认值，您可以在主题配置中覆盖它们。
+
+```ts twoslash [uno.config.ts]
+import type { Theme } from '@unocss/preset-wind4/theme'
+
+export const defaults: Theme['default'] = {
+  transition: {
+    duration: '150ms',
+    timingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+  },
+  font: {
+    family: 'var(--font-sans)',
+    featureSettings: 'var(--font-sans--font-feature-settings)',
+    variationSettings: 'var(--font-sans--font-variation-settings)',
+  },
+  monoFont: {
+    family: 'var(--font-mono)',
+    featureSettings: 'var(--font-mono--font-feature-settings)',
+    variationSettings: 'var(--font-mono--font-variation-settings)',
+  },
+}
+```
+
+## 选项
+
+PresetWind4 的基本配置与 [PresetWind3](/presets/wind3#options) 类似，但有以下重要更改。
+
+### Preflights
+
+我们在 `PresetWind4` 中添加了 `preflights` 配置选项，以控制是否启用预设样式。
+
+#### Reset
+
+在 PresetWind4 中，我们使重置样式与 tailwind4 对齐并进行了内部集成。您无需安装任何额外的 CSS 重置包，如 `@unocss/reset` 或 `normalize.css`。
+
+```ts [main.ts]
+import '@unocss/reset/tailwind.css' // [!code --]
+import '@unocss/reset/tailwind-compat.css' // [!code --]
+```
+
+您只需通过开关控制是否启用重置样式：
+
+```ts twoslash [uno.config.ts]
+import { defineConfig, presetWind4 } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetWind4({
+      preflights: { // [!code ++]
+        reset: true, // [!code ++]
+      } // [!code ++]
+    }),
+  ],
+})
+```
+
+#### 主题
+
+选择如何生成主题 CSS 变量。
+
+##### 模式
+
+安装了 `presetWind4` 的 UnoCSS 引擎会在解析工具时自动收集主题的依赖关系，并在最后生成 CSS 变量。
+
+* `true`: 完全生成主题键。
+* `false`: 禁用主题键。 (不推荐 ⚠️)
+* `'on-demand'`: 仅在使用时生成主题键。-> ✅ **(默认)**
+
+```ts twoslash [uno.config.ts]
+import { defineConfig, presetWind4 } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetWind4({
+      preflights: { // [!code ++]
+        theme: true, // [!code ++]
+      }, // [!code ++]
+    }),
+  ],
+})
+```
+
+##### 处理
+
+您可以进一步控制主题变量的输出。例如，如果您想将 `rem` 转换为 `px` 的主题变量，我们提供了 `createRemToPxProcessor` 函数来处理您的主题变量。
+
+```ts twoslash [uno.config.ts]
+import { createRemToPxProcessor } from '@unocss/preset-wind4/utils' // [!code ++]
+import { defineConfig, presetWind4 } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetWind4({
+      preflights: { // [!code ++]
+        theme: { // [!code ++]
+          mode: 'on-demand', // 默认为 'on-demand' // [!code ++]
+          process: createRemToPxProcessor(), // [!code ++]
+        } // [!code ++]
+      }, // [!code ++]
+    }),
+  ],
+})
+```
+
+顺便说一下，如果您想使用 `presetRemToPx` 预设将 `rem` 转换为 `px`，您不再需要单独导入这个预设，因为 `presetWind4` 已经在内部提供了这个功能。
+
+```ts twoslash [uno.config.ts]
+import { createRemToPxProcessor } from '@unocss/preset-wind4/utils' // [!code ++]
+import { defineConfig, presetWind4 } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetWind4({
+      preflights: { // [!code ++]
+        theme: { // [!code ++]
+          process: createRemToPxProcessor(), // [!code ++]
+        } // [!code ++]
+      }, // [!code ++]
+    }),
+  ],
+  postprocess: [createRemToPxProcessor()], // [!code ++]
+})
+```
+
+#### 属性
+
+控制在 `properties` 层中生成 `@property` CSS 规则。
+
+默认情况下，PresetWind4 使用 `@property` 来定义 CSS 自定义属性，以实现更好的浏览器优化。这些属性会根据你对工具类的使用自动生成，并包裹在 `@supports` 查询中，以实现渐进增强。
+
+```ts twoslash [uno.config.ts]
+import { defineConfig, presetWind4 } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetWind4({
+      preflights: {
+        property: true, // Enable (default) | `false` to disable [!code ++]
+      },
+    }),
+  ],
+})
+```
+
+##### 父级和选择器
+
+您可以自定义父级包装器和选择器：
+
+```ts twoslash [uno.config.ts]
+import { defineConfig, presetWind4 } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetWind4({
+      preflights: {
+        property: {
+          // Custom parent selector (e.g., use @layer instead of @supports)
+          parent: '@layer custom-properties',
+          // Custom selector for applying properties
+          selector: ':where(*, ::before, ::after)',
+        },
+      },
+    }),
+  ],
+})
+```
+
+如果你不想要 `@supports` 包裹，并希望属性被直接应用：
+
+```ts twoslash [uno.config.ts]
+import { defineConfig, presetWind4 } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetWind4({
+      preflights: {
+        property: {
+          parent: false, // No parent wrapper
+        },
+      },
+    }),
+  ],
+})
+```
+
+**默认输出：**
+
+```css
+@supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or
+  ((-moz-orient: inline) and (not (color: rgb(from red r g b)))) {
+  *,
+  ::before,
+  ::after,
+  ::backdrop {
+    --un-text-opacity: 100%;
+    /* ... */
+  }
+}
+```
+
+**使用 `parent: false`：**
+
+```css
+*,
+::before,
+::after,
+::backdrop {
+  --un-text-opacity: 100%;
+  /* ... */
+}
+```
+
+## 生成的 CSS
+
+在 PresetWind4 的输出中，新增了三个层：`base`、`theme` 和 `properties`。
+
+|  层名称  |              描述              | 顺序 |
+| :----------: | :-----------------------------------: | :---: |
+| `properties` | 由 `@property` 定义的 CSS 属性 | -200  |
+|   `theme`    |      主题相关的 CSS 变量      | -150  |
+|    `base`    |      基础预设/重置样式       | -100  |
+
+### `properties` 层
+
+我们在许多规则中使用 `@property` 来定义 CSS 属性，以实现更好的性能和更小的体积。
+
+例如，常用的实用程序如 `text-op-xx`、`bg-op-xx` 等。
+
+```css
+@property --un-text-opacity {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 100%;
+}
+```
+
+### `theme` 层
+
+我们将与主题相关的 CSS 变量放在 `theme` 层中，以便您更容易覆盖和直接使用。
+它可以是全面的或按需的。它始终来自您的主题配置。
+
+::: info
+生成的键名称可能与 `Tailwind4` 的不完全相同。我们尽量避免在主题中对键名称进行重大更改，以尊重从 `presetWind3` 迁移的用户。
+您还可以在 [Preflights 主题处理](#process) 中自定义想要的输出。
+:::
+
+```css
+:root,
+:host {
+  --spacing: 0.25rem;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --colors-black: #000;
+  --colors-white: #fff;
+  /* ... */
+}
+```
+
+## 与其他预设的兼容性
+
+`PresetWind4` 在增强和兼容 `PresetWind3` 的基础上进行。由于其他包最初是为 `PresetWind3` 开发的，在一起使用时可能会出现一些问题。已知问题包括：
+
+### presetRemToPx
+
+在 `PresetWind4` 中，不再需要 `presetRemToPx`，因为它已在内部包含。您可以将其从配置中删除。
+
+请参阅选项中的 [`process`](#process) 选项。
+
+### presetLegacyCompat
+
+在 `presetWind4` 中，我们使用 `oklch` 颜色模型以支持更好的颜色对比和颜色感知。因此，它与 `presetLegacyCompat` 不兼容，不推荐一起使用。
+
+请参阅 [兼容性](#compatibility) 部分以获取更多信息。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/guide/why.md'
+---
+
+# 为什么选择 UnoCSS？
+
+## 动机
+
+我们建议您阅读由 UnoCSS 的创建者 [Anthony Fu](https://antfu.me/) 撰写的博客文章 [重新构想原子 CSS](https://antfu.me/posts/reimagine-atomic-css)，以更好地理解 UnoCSS 背后的动机。
+
+## UnoCSS 与 X 的不同之处
+
+### Windi CSS
+
+UnoCSS 是由 [Windi CSS](https://windicss.org/) 的一位团队成员发起的，许多灵感来自于我们在 Windi CSS 中所做的工作。尽管 Windi CSS 在 2023 年 3 月之后不再积极维护，但您可以将 UnoCSS 视为 Windi CSS 的 *“精神继承者”*。
+
+UnoCSS 继承了 Windi CSS 的按需特性、[属性化模式](/presets/attributify)、[快捷方式](/config/shortcuts)、[变体组](/transformers/variant-group)、[编译模式](/transformers/compile-class)等诸多功能。更重要的是，UnoCSS 从头开始构建，最大限度地考虑了可扩展性和性能，使我们能够引入新的功能，如 [纯 CSS 图标](/presets/icons)、[无值属性化](/presets/attributify#valueless-attributify)、[标签化](/presets/tagify)、[网页字体](/presets/web-fonts) 等等。
+
+最重要的是，UnoCSS 被提取为一个原子 CSS 引擎，所有功能都是可选的，可以轻松创建您自己的约定、自己的设计系统和自己的预设 - 结合您想要的功能。
+
+### Tailwind CSS
+
+Windi CSS 和 UnoCSS 均受到 [Tailwind CSS](https://tailwindcss.com/) 的启发。由于 UnoCSS 从头开始构建，我们能够很好地概述原子 CSS 如何通过先前的艺术进行设计并抽象成优雅而强大的 API。由于设计目标的不同，很难与 Tailwind CSS 进行直接比较。但我们会尝试列出一些不同之处。
+
+Tailwind CSS 是一个 PostCSS 插件，而 UnoCSS 是一个具有一系列一流集成的同构引擎（包括 [PostCSS 插件](/integrations/postcss)）。这意味着 UnoCSS 在不同地方使用时灵活性更高（例如，[CDN 运行时](/integrations/runtime)，可以动态生成 CSS）并与构建工具深度集成，以提供更好的 HMR、性能和开发者体验（例如，[检查器](/tools/inspector)）。
+
+抛开技术权衡不谈，UnoCSS 也被设计为完全可扩展和可定制，而 Tailwind CSS 更加规范。基于 Tailwind CSS 构建自定义设计系统（或设计令牌）可能比较困难，您无法真正脱离 Tailwind CSS 的约定。而使用 UnoCSS，您几乎可以用完全的控制构建任何您想要的东西。例如，我们在 [一个单一预设](/presets/wind3) 中实现了整个 Tailwind CSS 兼容的实用工具，并且还有许多采用其他有趣理念的 [优秀社区预设](/presets/community)。
+
+得益于 UnoCSS 提供的灵活性，我们能够在其基础上实验许多创新功能，例如：
+
+* [纯 CSS 图标](/presets/icons)
+* [属性化模式](/presets/attributify)
+* [变体组](/transformers/variant-group)
+* [快捷方式](/config/shortcuts)
+* [标签化](/presets/tagify)
+* [网页字体](/presets/web-fonts)
+* [CDN 运行时](/integrations/runtime)
+* [检查器](/tools/inspector)
+
+由于与 Tailwind CSS 的设计目标不同，UnoCSS 不支持 Tailwind CSS 的插件系统或配置，这意味着从一个 heavily customized 的 Tailwind CSS 项目迁移可能会更加困难。这是为了使 UnoCSS 在性能和可扩展性上达到高标准而做出的有意决策，我们相信这个权衡是值得的。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/config/theme.md'
+description: UnoCSS 还支持您可能熟悉的主题系统，就像在 Tailwind CSS / Windi CSS 中一样。
+---
+
+# 主题
+
+UnoCSS 还支持您可能熟悉的主题系统，就像在 Tailwind CSS / Windi CSS 中一样。在用户级别，您可以在配置中指定 `theme` 属性，它将被深度合并到默认主题中。
+
+## 使用
+
+```ts
+theme: {
+  // ...
+  colors: {
+    veryCool: '#0000ff', // class="text-very-cool"
+    brand: {
+      primary: 'hsl(var(--hue, 217) 78% 51%)', //class="bg-brand-primary"
+      DEFAULT: '#942192' //class="bg-brand"
+    },
+  },
+}
+```
+
+::: tip
+在解析过程中，`theme` 将始终存在于 `context` 中。
+:::
+
+### 在 `rules` 中使用
+
+要在规则中使用主题：
+
+```ts
+rules: [
+  [/^text-(.*)$/, ([, c], { theme }) => {
+    if (theme.colors[c])
+      return { color: theme.colors[c] }
+  }],
+]
+```
+
+### 在 `variants` 中使用
+
+要在变体中使用主题：
+
+```ts
+variants: [
+  {
+    name: 'variant-name',
+    match(matcher, { theme }) {
+      // ...
+    },
+  },
+]
+```
+
+### 在 `shortcuts` 中使用
+
+要在动态短语中使用主题：
+
+```ts
+shortcuts: [
+  [/^badge-(.*)$/, ([, c], { theme }) => {
+    if (Object.keys(theme.colors).includes(c))
+      return `bg-${c}4:10 text-${c}5 rounded`
+  }],
+]
+```
+
+## 窗口断点
+
+::: warning
+当提供自定义 `breakpoints` 对象时，默认值将被覆盖，而不是合并。
+:::
+
+通过以下示例，您将只能使用 `sm:` 和 `md:` 断点变体：
+
+```ts
+theme: {
+  // ...
+  breakpoints: {
+    sm: '320px',
+    md: '640px',
+  },
+}
+```
+
+如果您想继承 `original` 主题断点，可以使用 `extendTheme`：
+
+```ts
+extendTheme: (theme) => {
+  return {
+    ...theme,
+    breakpoints: {
+      ...theme.breakpoints,
+      sm: '320px',
+      md: '640px',
+    },
+  }
+}
+```
+
+::: info
+`verticalBreakpoints` 与 `breakpoints` 相同，但用于垂直布局。
+:::
+
+另外，我们将按大小（相同单位）对屏幕点进行排序。对于不同单位的屏幕点，避免出现错误，请在配置中使用统一单位。
+
+```ts
+theme: {
+  // ...
+  breakpoints: {
+    sm: '320px',
+    // 因为 uno 不支持不同单位大小的比较排序，请转换为相同单位。
+    // md: '40rem',
+    md: `${40 * 16}px`,
+    lg: '960px',
+  },
+}
+```
+
+## ExtendTheme
+
+`ExtendTheme` 允许您编辑 **深度合并的主题** 来获取完整的主题对象。
+
+自定义函数会修改主题对象。
+
+```ts
+extendTheme: (theme) => {
+  theme.colors.veryCool = '#0000ff' // class="text-very-cool"
+  theme.colors.brand = {
+    primary: 'hsl(var(--hue, 217) 78% 51%)', // class="bg-brand-primary"
+  }
+}
+```
+
+也可以返回一个新的主题对象以完全替换原始对象。
+
+```ts
+extendTheme: (theme) => {
+  return {
+    ...theme,
+    colors: {
+      ...theme.colors,
+      veryCool: '#0000ff', // class="text-very-cool"
+      brand: {
+        primary: 'hsl(var(--hue, 217) 78% 51%)', // class="bg-brand-primary"
+      },
+    },
+  }
+}
+```
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/extractors/arbitrary-variants.md'
+---
+
+# 任意变体提取器
+
+一个更复杂的提取器，以支持实用工具的任意变体。
+
+```html
+<div class="[&>*]:m-1 [&[open]]:p-2"></div>
+```
+
+将会捕获 `[&>*]:m-1` 和 `[&[open]]:p-2` 作为变体。
+
+该提取器被包括在 [`@unocss/preset-mini`](/presets/mini) 中，作为默认提取器。通常你不需要手动安装这个包。
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/extractor-arbitrary-variants
+```
+
+```bash [yarn]
+yarn add -D @unocss/extractor-arbitrary-variants
+```
+
+```bash [npm]
+npm install -D @unocss/extractor-arbitrary-variants
+```
+
+```bash [bun]
+bun add -D @unocss/extractor-arbitrary-variants
+```
+
+:::
+
+```ts [uno.config.ts]
+import extractorArbitrary from '@unocss/extractor-arbitrary-variants'
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  extractors: [
+    extractorArbitrary(),
+  ],
+})
+```
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/presets/legacy-compat.md'
+description: 传统兼容工具集合。
+---
+
+# 传统兼容预设
+
+传统兼容工具的集合。
+
+此预设不包含任何规则， 它对来自其他预设生成的 CSS 进行后处理。
+
+默认情况下，没有选项启用，您需要明确选择每个选项。
+
+[源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-legacy-compat)
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/preset-legacy-compat
+```
+
+```bash [yarn]
+yarn add -D @unocss/preset-legacy-compat
+```
+
+```bash [npm]
+npm install -D @unocss/preset-legacy-compat
+```
+
+```bash [bun]
+bun add -D @unocss/preset-legacy-compat
+```
+
+:::
+
+```ts [uno.config.ts]
+import presetLegacyCompat from '@unocss/preset-legacy-compat'
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    // ...其他预设
+    presetLegacyCompat({
+      // 选项
+      commaStyleColorFunction: true,
+      legacyColorSpace: true
+    }),
+  ],
+})
+```
+
+## 选项
+
+### `commaStyleColorFunction`
+
+* **类型:** `boolean`
+* **默认:** `false`
+
+将颜色函数（`rgb()` 和 `hsl()`）从空格分隔转换为逗号分隔，以更好地兼容传统浏览器。恢复 UnoCSS v0.57.0 之前的旧行为，该行为在 [#3221](https://github.com/unocss/unocss/pull/3221) 中更改为空格分隔，以与 Tailwind CSS 对齐。
+
+示例：
+
+* `rgb(255 0 0)` -> `rgb(255, 0, 0)`
+* `rgb(255 0 0 / 50%)` -> `rgba(255, 0, 0, 50%)`
+* `hsl(0 100% 50% / 50%)` -> `hsla(0, 100%, 50%, 50%)`
+
+### `legacyColorSpace`
+
+* **类型:** `boolean`
+* **默认:** `false`
+
+从生成的样式中移除颜色空间关键字，如 `in oklch` 和 `in oklab`。这对于确保与不支持这些现代颜色空间的传统浏览器的兼容性非常有用。
+
+要启用此功能，请将 `legacyColorSpace` 选项设置为 `true`。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/guide/packages.md'
+description: UnoCSS 包：可用包及其包含和启用的内容。
+---
+
+# 包
+
+UnoCSS 是一个包含多个包的单体仓库。此页面列出了所有包及其在 `unocss` 包中的包含情况：
+
+| 包                                                                   | 描述                                | 包含在 `unocss` | 启用 |
+| -------------------------------------------------------------------- | ----------------------------------- | --------------- | ---- |
+| [@unocss/core](/tools/core)                                          | 没有预设的核心库                    | ✅              | -    |
+| [@unocss/cli](/integrations/cli)                                     | UnoCSS 的命令行接口                 | ✅              | -    |
+| [@unocss/preset-mini](/presets/mini)                                 | 最小但必要的规则和变体              | ✅              | ✅   |
+| [@unocss/preset-wind3](/presets/wind3)                               | Tailwind CSS / Windi CSS 精简预设   | ✅              | ✅   |
+| [@unocss/preset-wind4](/presets/wind4)                               | Tailwind4 CSS 精简预设              | ✅              | ✅   |
+| [@unocss/preset-attributify](/presets/attributify)                   | 启用 Attributify 模式以支持其他规则 | ✅              | 否   |
+| [@unocss/preset-tagify](/presets/tagify)                             | 启用 Tagify 模式以支持其他规则      | ✅              | 否   |
+| [@unocss/preset-icons](/presets/icons)                               | 基于 Iconify 的纯 CSS 图标解决方案  | ✅              | 否   |
+| [@unocss/preset-web-fonts](/presets/web-fonts)                       | 支持网页字体（Google 字体等）       | ✅              | 否   |
+| [@unocss/preset-typography](/presets/typography)                     | 排版预设                            | ✅              | 否   |
+| [@unocss/preset-rem-to-px](/presets/rem-to-px)                       | 将 rem 转换为 px 用于实用工具       | 否              | 否   |
+| [@unocss/preset-legacy-compat](/presets/legacy-compat)               | 用于旧版兼容性的工具集合            | 否              | 否   |
+| [@unocss/transformer-variant-group](/transformers/variant-group)     | Windi CSS 的变体组功能的转换器      | ✅              | 否   |
+| [@unocss/transformer-directives](/transformers/directives)           | 用于 CSS 指令如 `@apply` 的转换器   | ✅              | 否   |
+| [@unocss/transformer-compile-class](/transformers/compile-class)     | 将一组类编译成一个类                | ✅              | 否   |
+| [@unocss/transformer-attributify-jsx](/transformers/attributify-jsx) | 支持在 JSX/TSX 中使用无值的属性     | ✅              | 否   |
+| [@unocss/extractor-pug](/extractors/pug)                             | Pug 的提取器                        | 否              | -    |
+| [@unocss/extractor-svelte](/extractors/svelte)                       | Svelte 的提取器                     | 否              | -    |
+| [@unocss/autocomplete](/tools/autocomplete)                          | 自动补全工具                        | 否              | -    |
+| [@unocss/config](/guide/config-file)                                 | 配置文件加载器                      | ✅              | -    |
+| [@unocss/reset](/guide/style-reset)                                  | 常见 CSS 重置的集合                 | ✅              | 否   |
+| [@unocss/vite](/integrations/vite)                                   | Vite 插件                           | ✅              | -    |
+| [@unocss/inspector](/tools/inspector)                                | UnoCSS 的检查器 UI                  | ✅              | -    |
+| [@unocss/astro](/integrations/astro)                                 | Astro 集成                          | ✅              | -    |
+| [@unocss/webpack](/integrations/webpack)                             | Webpack 插件                        | 否              | -    |
+| [@unocss/nuxt](/integrations/nuxt)                                   | Nuxt 模块                           | 否              | -    |
+| [@unocss/svelte-scoped](/integrations/svelte-scoped)                 | Svelte Scoped Vite 插件 + 预处理器  | 否              | -    |
+| [@unocss/next](/integrations/next)                                   | Next.js 插件                        | 否              | -    |
+| [@unocss/runtime](/integrations/runtime)                             | UnoCSS 的 CSS-in-JS 运行时          | 否              | -    |
+| [@unocss/eslint-plugin](/integrations/eslint)                        | ESLint 插件                         | 否              | -    |
+| [@unocss/eslint-config](/integrations/eslint)                        | ESLint 配置                         | 否              | -    |
+| [@unocss/postcss](/integrations/postcss)                             | PostCSS 插件                        | 否              | -    |
+| [VS Code 扩展](/integrations/vscode)                                 | UnoCSS 的 VS Code 扩展              | -               | -    |
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/config/variants.md'
+description: 变体允许您对现有规则应用一些变更。
+---
+
+# 变体
+
+[变体](https://windicss.org/utilities/general/variants.html) 允许您对现有规则应用一些变更，例如 Tailwind CSS 的 `hover:` 变体。
+
+## 示例
+
+```ts
+variants: [
+  // hover:
+  (matcher) => {
+    if (!matcher.startsWith('hover:'))
+      return matcher
+    return {
+      // 切掉 `hover:` 前缀并传递给下一个变体和规则
+      matcher: matcher.slice(6),
+      selector: s => `${s}:hover`,
+    }
+  },
+],
+rules: [
+  [/^m-(\d)$/, ([, d]) => ({ margin: `${d / 4}rem` })],
+]
+```
+
+* `matcher` 控制变体何时启用。如果返回值是一个字符串，它将被用作匹配规则的选择器。
+* `selector` 提供了自定义生成的 CSS 选择器的可能性。
+
+## 内部原理
+
+让我们看一下匹配 `hover:m-2` 时发生了什么：
+
+* `hover:m-2` 从用户使用中提取出来
+* `hover:m-2` 发送到所有变体进行匹配
+* `hover:m-2` 被我们的变体匹配并返回 `m-2`
+* 结果 `m-2` 将用于下一轮变体匹配
+* 如果没有其他变体匹配，`m-2` 将继续匹配规则
+* 我们的第一条规则匹配并生成 `.m-2 { margin: 0.5rem; }`
+* 最后，我们将变体的转换应用于生成的 CSS。在这种情况下，我们在 `selector` 钩子前添加了 `:hover`
+
+因此，将生成以下 CSS：
+
+```css
+.hover\:m-2:hover { margin: 0.5rem; }
+```
+
+这样，只有当用户悬停在元素上时，才会应用 `m-2`。
+
+## 进一步探索
+
+变体系统非常强大，这一指南无法全面覆盖，您可以查看 [默认预设的实现](https://github.com/unocss/unocss/tree/main/packages-presets/preset-mini/src/_variants) 以了解更多高级用法。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/transformers/variant-group.md'
+description: 启用 UnoCSS 的 Windi CSS 的变体组功能 (@unocss/transformer-variant-group)
+---
+
+# 变体组转换器
+
+启用 [Windi CSS 的变体组功能](https://windicss.org/features/variant-groups.html) 供 UnoCSS 使用。
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/transformer-variant-group
+```
+
+```bash [yarn]
+yarn add -D @unocss/transformer-variant-group
+```
+
+```bash [npm]
+npm install -D @unocss/transformer-variant-group
+```
+
+```bash [bun]
+bun add -D @unocss/transformer-variant-group
+```
+
+:::
+
+```ts [uno.config.ts]
+import transformerVariantGroup from '@unocss/transformer-variant-group'
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  // ...
+  transformers: [
+    transformerVariantGroup(),
+  ],
+})
+```
+
+::: tip
+此预设包含在 `unocss` 包中，你也可以从那里导入：
+
+```ts
+import { transformerVariantGroup } from 'unocss'
+```
+
+:::
+
+## 使用
+
+```html
+<div class="hover:(bg-gray-400 font-medium) font-(light mono)" />
+```
+
+将被转换为：
+
+```html
+<div class="hover:bg-gray-400 hover:font-medium font-light font-mono" />
+```
+
+## 许可证
+
+* MIT 许可证 © 2021-至今 [Anthony Fu](https://github.com/antfu)
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/presets/icons.md'
+description: 使用纯 CSS 在 UnoCSS 中使用任何图标 (@unocss/preset-icons)。
+---
+
+# 图标预设
+
+使用纯 CSS 在 UnoCSS 中使用任何图标。
+
+[源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-icons)
+
+::: tip
+推荐阅读：[纯 CSS 中的图标](https://antfu.me/posts/icons-in-pure-css)
+:::
+
+遵循以下约定以使用图标
+
+* `<prefix><collection>-<icon>`
+* `<prefix><collection>:<icon>`
+
+例如：
+
+```html
+<!-- 来自 Phosphor 图标的基本锚点图标 -->
+<div class="i-ph-anchor-simple-thin" />
+<!-- 来自 Material Design 图标的橙色警报 -->
+<div class="i-mdi-alarm text-orange-400" />
+<!-- 大型 Vue 徽标 -->
+<div class="i-logos-vue text-3xl" />
+<!-- 光模式下的太阳，暗模式下的月亮，来自 Carbon -->
+<button class="i-carbon-sun dark:i-carbon-moon" />
+<!-- 微笑的 Twemoji，悬停时变成流泪 -->
+<div class="i-twemoji-grinning-face-with-smiling-eyes hover:i-twemoji-face-with-tears-of-joy" />
+```
+
+检查 [所有可用图标](https://icones.js.org/)。
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/preset-icons @iconify-json/[你想要的集合]
+```
+
+```bash [yarn]
+yarn add -D @unocss/preset-icons @iconify-json/[你想要的集合]
+```
+
+```bash [npm]
+npm install -D @unocss/preset-icons @iconify-json/[你想要的集合]
+```
+
+```bash [bun]
+bun add -D @unocss/preset-icons @iconify-json/[你想要的集合]
+```
+
+:::
+
+我们使用 [Iconify](https://iconify.design) 作为我们的图标数据源。你需要通过遵循 `@iconify-json/*` 模式在 `devDependencies` 中安装相应的图标集。例如，使用 `@iconify-json/mdi` 来获取 [Material Design Icons](https://materialdesignicons.com/)，使用 `@iconify-json/tabler` 来获取 [Tabler](https://tabler-icons.io/)。你可以参考 [Icônes](https://icones.js.org/) 或 [Iconify](https://icon-sets.iconify.design/) 获取所有可用的集合。
+
+```ts [uno.config.ts]
+import presetIcons from '@unocss/preset-icons'
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetIcons({ /* 选项 */ }),
+    // ...其他预设
+  ],
+})
+```
+
+::: tip
+这个预设包含在 `unocss` 包中，你也可以从那里导入它：
+
+```ts
+import { presetIcons } from 'unocss'
+```
+
+:::
+
+::: info
+你也可以单独使用这个预设来补充你现有的 UI 框架，以获得纯 CSS 图标！
+:::
+
+如果你希望一次安装 Iconify 上所有可用的图标集（~130MB）：
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @iconify/json
+```
+
+```bash [yarn]
+yarn add -D @iconify/json
+```
+
+```bash [npm]
+npm install -D @iconify/json
+```
+
+```bash [bun]
+bun add -D @iconify/json
+```
+
+:::
+
+### 额外属性
+
+你可以提供额外的 CSS 属性来控制图标的默认行为。以下是将图标默认设置为内联的示例：
+
+```ts
+presetIcons({
+  extraProperties: {
+    'display': 'inline-block',
+    'vertical-align': 'middle',
+    // ...
+  },
+})
+```
+
+## 模式覆盖
+
+默认情况下，此预设将根据图标的特性自动选择每个图标的渲染模式。你可以在这篇 [博客文章](https://antfu.me/posts/icons-in-pure-css) 中了解更多。在某些情况下，你可能希望显式设置每个图标的渲染模式。
+
+* `?bg` 表示 `background-img` - 将图标渲染为背景图像
+* `?mask` 表示 `mask` - 将图标渲染为蒙版图像
+
+例如，`vscode-icons:file-type-light-pnpm` 是一个带有颜色的图标（`svg` 不包含 `currentColor`），将作为背景图像渲染。使用 `vscode-icons:file-type-light-pnpm?mask` 来将其渲染为蒙版图像并忽略其颜色。
+
+```html
+<div class="w-full flex items-center justify-center gap-x-4 text-4xl p-2 mt-4">
+  <div class="i-vscode-icons:file-type-light-pnpm" />
+  <div class="i-vscode-icons:file-type-light-pnpm?mask text-red-300" />
+</div>
+```
+
+## 配置集合和图标解析器
+
+你可以通过 `@iconify-json/[你想要的集合]`、`@iconify/json` 或使用自定义的图标解析器，通过在 `UnoCSS` 配置中的 `collections` 选项提供集合。
+
+### 浏览器
+
+要加载 `iconify` 集合，你应该使用 `@iconify-json/[你想要的集合]` 而不是 `@iconify/json` 因为 `json` 文件非常大。
+
+#### 打包工具
+
+使用打包工具时，可以通过 `动态导入` 提供集合，这样它们将作为异步块进行打包并按需加载。
+
+```ts
+import presetIcons from '@unocss/preset-icons/browser'
+
+export default defineConfig({
+  presets: [
+    presetIcons({
+      collections: {
+        carbon: () => import('@iconify-json/carbon/icons.json').then(i => i.default),
+        mdi: () => import('@iconify-json/mdi/icons.json').then(i => i.default),
+        logos: () => import('@iconify-json/logos/icons.json').then(i => i.default),
+      }
+    })
+  ]
+})
+```
+
+#### CDN
+
+或者，如果你更愿意从 CDN 获取它们，你可以指定 `cdn` 选项，自 v0.32.10 版本开始。我们推荐使用 [esm.sh](https://esm.sh/) 作为 CDN 供应商。
+
+```ts
+presetIcons({
+  cdn: 'https://esm.sh/'
+})
+```
+
+#### 自定义
+
+你还可以使用 [CustomIconLoader](https://github.com/iconify/iconify/blob/master/packages/utils/src/loader/types.ts#L17) 或 [InlineCollection](https://github.com/iconify/iconify/blob/master/packages/utils/src/loader/types.ts#L86) 提供你自己的自定义集合，例如使用 `InlineCollection`：
+
+```ts
+presetIcons({
+  collections: {
+    custom: {
+      circle: '<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="50"></circle></svg>',
+      /* ... */
+    },
+    carbon: () => import('@iconify-json/carbon/icons.json').then(i => i.default as any),
+    /* ... */
+  }
+})
+```
+
+然后，你可以在你的 HTML 中使用它：`<span class="i-custom:circle"></span>`
+
+### Node.js
+
+在 `Node.js` 中，该预设会自动搜索已安装的 iconify 数据集，因此你无需注册 `iconify` 集合。
+
+你也可以使用 [CustomIconLoader](https://github.com/iconify/iconify/blob/master/packages/utils/src/loader/types.ts#L24) 或 [InlineCollection](https://github.com/iconify/iconify/blob/master/packages/utils/src/loader/types.ts#L100) 提供你自己的自定义集合。
+
+#### FileSystemIconLoader
+
+此外，你还可以使用 [FileSystemIconLoader](https://github.com/iconify/iconify/blob/master/packages/utils/src/loader/node-loaders.ts#L9) 从文件系统加载自定义图标。你需要将 `@iconify/utils` 包安装为开发依赖。
+
+```ts [unocss.config.ts]
+import fs from 'node:fs/promises'
+// 加载器助手
+import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
+import { defineConfig, presetIcons } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetIcons({
+      collections: {
+        // key 作为集合名称
+        'my-icons': {
+          account: '<svg><!-- ... --></svg>',
+          // 懒加载你的自定义图标
+          settings: () => fs.readFile('./path/to/my-icon.svg', 'utf-8'),
+          /* ... */
+        },
+        'my-other-icons': async (iconName) => {
+          // 你的自定义加载器。随你所愿。
+          // 例如，从远程服务器获取：
+          return await fetch(`https://example.com/icons/${iconName}.svg`).then(res => res.text())
+        },
+        // 从文件系统加载图标的助手
+        // `./assets/icons` 目录下的文件将作为其文件名加载，且仅限 `.svg` 扩展名
+        // 你也可以提供一个转换回调来更改每个图标（可选）
+        'my-yet-other-icons': FileSystemIconLoader(
+          './assets/icons',
+          svg => svg.replace(/#fff/, 'currentColor')
+        )
+      }
+    })
+  ]
+})
+```
+
+#### ExternalPackageIconLoader
+
+从 `@iconify/utils v2.1.20` 开始，你可以使用其他包通过新的 [createExternalPackageIconLoader](https://github.com/iconify/iconify/blob/main/packages/utils/src/loader/external-pkg.ts#L13) 助手从其他作者加载图标。
+
+::: warning 警告
+外部包必须包含 `icons.json` 文件，并将图标数据以 `IconifyJSON` 格式保存，具体可使用 Iconify Tools 导出。详细信息请查看 [导出图标集为 JSON 包](https://iconify.design/docs/libraries/tools/export/json-package.html)。
+:::
+
+例如，你可以使用 `an-awesome-collection` 或 `@my-awesome-collections/some-collection` 加载你的自定义或第三方图标：
+
+```ts [unocss.config.ts]
+import { createExternalPackageIconLoader } from '@iconify/utils/lib/loader/external-pkg'
+import { defineConfig, presetIcons } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetIcons({
+      collections: createExternalPackageIconLoader('an-awesome-collection')
+    })
+  ]
+})
+```
+
+你还可以将其与其他自定义图标加载器结合使用，例如：
+
+```ts [unocss.config.ts]
+import { createExternalPackageIconLoader } from '@iconify/utils/lib/loader/external-pkg'
+import { defineConfig, presetIcons } from 'unocss'
+import { FileSystemIconLoader } from 'unplugin-icons/loaders'
+
+export default defineConfig({
+  presets: [
+    presetIcons({
+      collections: {
+        ...createExternalPackageIconLoader('other-awesome-collection'),
+        ...createExternalPackageIconLoader('@my-awesome-collections/some-collection'),
+        ...createExternalPackageIconLoader('@my-awesome-collections/some-other-collection'),
+        'my-yet-other-icons': FileSystemIconLoader(
+          './assets/icons',
+          svg => svg.replace(/^<svg /, '<svg fill="currentColor" ')
+        )
+      }
+    })
+  ]
+})
+```
+
+## 图标自定义
+
+你可以使用 `customizations` 配置选项自定义所有图标。
+
+可用的自定义函数：
+
+* `transform`: 转换原始 `svg`，仅在使用 `custom` 图标集合时应用（不包括 iconify 集合）。
+* `customize`: 更改默认图标自定义值。
+* `iconCustomizer`: 更改默认图标自定义值。
+
+对每个加载的图标，自定义将按此顺序应用：
+
+* 如果提供了 `transform`，则对原始 `svg` 应用转换（使用自定义图标集合时）
+* 如果提供了 `customize`，则使用默认自定义值
+* 如果提供了 `iconCustomizer`，则使用 `customize` 自定义值
+
+### 全局自定义图标转换
+
+加载自定义图标时，你可以对其进行转换，例如添加 `fill` 属性并设置为 `currentColor`：
+
+```ts
+presetIcons({
+  customizations: {
+    transform(svg) {
+      return svg.replace(/#fff/, 'currentColor')
+    }
+  }
+})
+```
+
+从版本 `0.30.8` 开始，`transform` 提供 `collection` 和 `icon` 名称：
+
+```ts
+presetIcons({
+  customizations: {
+    transform(svg, collection, icon) {
+      // 不对该集合中的此图标应用填充
+      if (collection === 'custom' && icon === 'my-icon')
+        return svg
+      return svg.replace(/#fff/, 'currentColor')
+    }
+  }
+})
+```
+
+### 全局图标自定义
+
+在加载任何图标时，你可以为所有图标自定义通用属性，例如配置相同的大小：
+
+```ts
+presetIcons({
+  customizations: {
+    customize(props) {
+      props.width = '2em'
+      props.height = '2em'
+      return props
+    }
+  }
+})
+```
+
+### 图标/集合自定义
+
+你可以使用 `iconCustomizer` 配置选项自定义每个图标。
+
+`iconCustomizer` 将优先于配置。
+
+`iconCustomizer` 将应用于任何集合，即从自定义加载器、在自定义集合中的内联图标或来自 `@iconify` 的图标。
+
+例如，你可以配置 `iconCustomizer` 来更改一个集合中的所有图标或集合中的个别图标：
+
+```ts
+presetIcons({
+  customizations: {
+    iconCustomizer(collection, icon, props) {
+      // 自定义此集合中的所有图标
+      if (collection === 'my-other-icons') {
+        props.width = '4em'
+        props.height = '4em'
+      }
+      // 自定义此集合中的此图标
+      if (collection === 'my-icons' && icon === 'account') {
+        props.width = '6em'
+        props.height = '6em'
+      }
+      // 自定义此集合中的此 @iconify 图标
+      if (collection === 'mdi' && icon === 'account') {
+        props.width = '2em'
+        props.height = '2em'
+      }
+    }
+  }
+})
+```
+
+## 指令
+
+你可以在 CSS 中使用 `icon()` 指令获取图标的元数据。
+
+```css
+.icon {
+  background-image: icon('i-carbon-sun');
+}
+```
+
+::: warning
+`icon()` 依赖于 `@unocss/preset-icons`，并将使用配置，确保你已添加该预设。
+:::
+
+关于 `icon()` 指令的更多信息，请查看 [指令](/transformers/directives#icon)。
+
+## 选项
+
+### scale
+
+* 类型：`number`
+* 默认值：`1`
+
+与当前字体大小 (1em) 相关的缩放值。
+
+### mode
+
+* 类型：`'mask' | 'bg' | 'auto'`
+* 默认值：`'auto'`
+* 参见：https://antfu.me/posts/icons-in-pure-css
+
+生成的 CSS 图标的模式。
+
+:::tip
+
+* `mask` - 使用背景颜色和 `mask` 属性适用于单色图标
+* `bg` - 使用背景图像作为图标，颜色是静态的
+* `auto` - 根据每个图标的样式智能地决定 `mask` 和 `bg` 模式
+
+:::
+
+### prefix
+
+* 类型：`string | string[]`
+* 默认值：`'i-'`
+
+匹配图标规则的类前缀。
+
+### extraProperties
+
+* 类型：`Record<string, string>`
+* 默认值：`{}`
+
+应用于生成 CSS 的额外 CSS 属性。
+
+### warn
+
+* 类型：`boolean`
+* 默认值：`false`
+
+在缺少匹配图标时发出警告。
+
+### iconifyCollectionsNames
+
+* 类型：`string[]`
+* 默认值：`undefined`
+
+要使用的额外 `@iconify-json` 集合。此选项应在新 `@iconify-json` 集合未列入默认图标预设集合名称时使用。
+
+### collections
+
+* 类型：`Record<string, (() => Awaitable<IconifyJSON>) | undefined | CustomIconLoader | InlineCollection>`
+* 默认值：`undefined`
+
+在 Node.js 环境中，预设将自动搜索已安装的 iconify 数据集。在浏览器中使用时，此选项用于提供具有自定义加载机制的数据集。
+
+### layer
+
+* 类型：`string`
+* 默认值：`'icons'`
+
+规则层。
+
+### customizations
+
+* 类型：`Omit<IconCustomizations, 'additionalProps' | 'trimCustomSvg'>`
+* 默认值：`undefined`
+
+自定义图标自定义。
+
+### autoInstall
+
+* 类型：`boolean`
+* 默认值：`false`
+
+当检测到使用时自动安装图标源包。
+
+:::warning
+仅在 `node` 环境中使用，浏览器中将忽略此选项。
+:::
+
+### unit
+
+* 类型：`string`
+* 默认值：`'em'`
+
+自定义图标单位。
+
+### cdn
+
+* 类型：`string`
+* 默认值：`undefined`
+
+从 CDN 加载图标。应以 `https://` 开头并以 `/` 结尾。
+
+推荐：
+
+* `https://esm.sh/`
+* `https://cdn.skypack.dev/`
+
+### customFetch
+
+* 类型：`(url: string) => Promise<any>`
+* 默认值：`undefined`
+
+预设使用 [`ofetch`](https://github.com/unjs/ofetch) 作为默认获取器，你也可以自定义获取函数来提供图标数据。
+
+### processor
+
+* 类型：`(cssObject: CSSObject, meta: Required<IconMeta>) => void`
+* 默认值：`undefined`
+
+```ts
+interface IconMeta {
+  collection: string
+  icon: string
+  svg: string
+  mode?: IconsOptions['mode']
+}
+```
+
+在字符串化之前处理 CSS 对象。参见 [示例](https://github.com/unocss/unocss/blob/7d83789b0dee8c72c401db24263ea429086de95d/test/preset-icons.test.ts#L66-L82)。
+
+## 高级自定义图标集清理
+
+使用此预设与自定义图标时，请考虑进行类似于 [Iconify](https://iconify.design/) 对任何图标集进行的清理过程。你所需的所有工具都可以在 [Iconify Tools](https://iconify.design/docs/libraries/tools/) 中找到。
+
+你可以查看这个仓库，使用此预设在 `Vue 3` 项目中的例子：[@iconify/tools/@iconify-demo/unocss](https://github.com/iconify/tools/tree/main/%40iconify-demo/unocss)。
+
+阅读 [清理图标](https://iconify.design/docs/articles/cleaning-up-icons/) 文章以获取更多详细信息。
+
+## 可访问性问题
+
+使用图标时，重要的是考虑到所有潜在用户。其中一些用户可能正在使用屏幕阅读器，他们需要替代文本以理解图标的含义。你可以使用 `aria-label` 属性提供图标的描述：
+
+```html
+<a href="/profile" aria-label="个人资料" class="i-ph:user-duotone"></a>
+```
+
+如果图标纯粹是装饰性的，并且不需要替代文本，你可以使用 `aria-hidden="true"` 将其隐藏以避免屏幕阅读器读取：
+
+```html
+<a href="/profile">
+  <span aria-hidden="true" class="i-ph:user-duotone"></span>
+  我的个人资料
+</a>
+```
+
+还有许多其他技术可以为屏幕阅读器提供提示文本，例如， [Wind3 预设](./wind3) 包含 [sr-only](/interactive/?s=sr-only)，隐藏元素以视觉上不可见但对屏幕阅读器可访问。
+
+你可以在网上找到一些关于图标可访问性的良好资源，并且 CSS 图标的行为类似于图标字体，因此你可以使用与图标字体相同的技术。
+
+## 鸣谢
+
+* 此预设的灵感来自由 [@husayt](https://github.com/husayt) 创建的 [此问题](https://github.com/antfu/unplugin-icons/issues/88)。
+* 基于 [@userquin](https://github.com/userquin) 在 [此 PR](https://github.com/antfu/unplugin-icons/pull/90) 中的工作。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/presets.md'
+---
+# 官方包
+
+## 预设
+
+| 包                                                 | 描述                                     |
+| -------------------------------------------------- | ---------------------------------------- |
+| [@unocss/preset-mini](/presets/mini)               | 最小但必要的规则和变种                   |
+| [@unocss/preset-wind3](/presets/wind3)             | Tailwind CSS / Windi CSS 紧凑预设        |
+| [@unocss/preset-wind4](/presets/wind4)             | Tailwind4 CSS 紧凑预设                   |
+| [@unocss/preset-attributify](/presets/attributify) | 启用其他规则的属性模式                   |
+| [@unocss/preset-tagify](/presets/tagify)           | 启用其他规则的标签模式                   |
+| [@unocss/preset-icons](/presets/icons)             | 由 Iconify 提供支持的纯 CSS 图标解决方案 |
+| [@unocss/preset-web-fonts](/presets/web-fonts)     | 网页字体 (Google Fonts 等) 支持          |
+| [@unocss/preset-typography](/presets/typography)   | 排版预设                                 |
+| [@unocss/preset-rem-to-px](/presets/rem-to-px)     | 将 rem 转换为 px 的工具                  |
+
+### 已弃用
+
+| 包                        | 描述                                  | 原因                                              |
+| ------------------------- | ------------------------------------- | ------------------------------------------------- |
+| ~~`@unocss/preset-wind`~~ | ~~Tailwind CSS / Windi CSS 紧凑预设~~ | 此包已弃用，现已重命名为 `@unocss/preset-wind3`。 |
+| ~~`@unocss/preset-uno`~~  | ~~默认预设~~                          | 此包已弃用，现已重命名为 `@unocss/preset-wind3`。 |
+
+## 转换器
+
+| 包                                                                   | 描述                              |
+| -------------------------------------------------------------------- | --------------------------------- |
+| [@unocss/transformer-variant-group](/transformers/variant-group)     | Windi CSS 的变种组特性转换器      |
+| [@unocss/transformer-directives](/transformers/directives)           | 用于 CSS 指令如 `@apply` 的转换器 |
+| [@unocss/transformer-compile-class](/transformers/compile-class)     | 将一组类编译为一个类              |
+| [@unocss/transformer-attributify-jsx](/transformers/attributify-jsx) | 支持在 JSX/TSX 中使用无值属性     |
+
+## 提取器
+
+| 包                                                                     | 描述                           |
+| ---------------------------------------------------------------------- | ------------------------------ |
+| [@unocss/extractor-pug](/extractors/pug)                               | Pug 的提取器                   |
+| [@unocss/extractor-svelte](/extractors/svelte)                         | Svelte 的提取器                |
+| [@unocss/extractor-arbitrary-variants](/extractors/arbitrary-variants) | 支持用于工具的任意变种的提取器 |
+
+# 社区
+
+我们热忱欢迎大家加入并帮助建设 [UnoCSS 社区](https://github.com/unocss-community)。你可以在 [Awesome UnoCSS](https://github.com/unocss-community/awesome-unocss) 中使用和分享与 UnoCSS 相关的资源。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/config/layers.md'
+description: UnoCSS 允许您自定义层的定义。
+---
+
+# 层
+
+CSS 的顺序会影响其优先级。虽然引擎会 [保留规则的顺序](/config/rules#ordering)，有时您可能希望将一些工具组合在一起，以便明确控制它们的顺序。
+
+## 用法
+
+与提供三个固定层（`base`、`components`、`utilities`）的 Tailwind CSS 不同，UnoCSS 允许您按需定义层。要设置层，您可以将元数据作为规则的第三个项目传递：
+
+```ts
+rules: [
+  [/^m-(\d)$/, ([, d]) => ({ margin: `${d / 4}rem` }), { layer: 'utilities' }],
+  // 如果您省略层，它将默认为 `default`
+  ['btn', { padding: '4px' }],
+]
+```
+
+这将生成：
+
+```css
+/* layer: default */
+.btn { padding: 4px; }
+/* layer: utilities */
+.m-2 { margin: 0.5rem; }
+```
+
+层也可以在每个预飞行中设置：
+
+```ts
+preflights: [
+  {
+    layer: 'my-layer',
+    getCSS: async () => (await fetch('my-style.css')).text(),
+  },
+]
+```
+
+## 排序
+
+您可以通过以下方式控制层的顺序：
+
+```ts
+layers: {
+  'components': -1,
+  'default': 1,
+  'utilities': 2,
+  'my-layer': 3,
+}
+```
+
+没有指定顺序的层将按字母顺序排序。
+
+当您希望在层之间添加自定义 CSS 时，可以更新您的入口模块：
+
+```ts
+// 'uno:[layer-name].css'
+import 'uno:components.css'
+
+// 除了 'components' 和 'utilities' 之外的层将回退到这里
+import 'uno.css'
+
+// 您自己的 CSS
+import './my-custom.css'
+
+// "utilities" 层具有最高优先级
+import 'uno:utilities.css'
+```
+
+## CSS 级联层
+
+您可以通过以下方式输出 CSS 级联层：
+
+```ts
+outputToCssLayers: true
+```
+
+您可以通过以下方式更改 CSS 层的名称：
+
+```ts
+outputToCssLayers: {
+  cssLayerName: (layer) => {
+    // 默认层将输出到 "utilities" CSS 层。
+    if (layer === 'default')
+      return 'utilities'
+
+    // 快捷方式层将输出到 "utilities" CSS 层的 "shortcuts" 子层。
+    if (layer === 'shortcuts')
+      return 'utilities.shortcuts'
+
+    // 所有其他层将以其名称作为 CSS 层名称。
+  }
+}
+```
+
+## 输出所有 CSS 层
+
+UnoCSS 默认输出所有已使用的 CSS 层。如果您想强制输出所有定义的 CSS 层，可以设置 `allLayers` 选项：
+
+```ts
+outputToCssLayers: {
+  allLayers: true,
+}
+```
+
+它将输出所有定义的 CSS 层，即使它们未被使用。
+
+```css
+@layer theme, preflights, unused-layer, default;
+
+/* generated CSS */
+```
+
+## 使用变体的层
+
+层可以通过变体创建。
+
+`uno-layer-<name>:` 可用于创建一个 UnoCSS 层。
+
+```html
+<p class="uno-layer-my-layer:text-xl">text</p>
+```
+
+```css
+/* layer: my-layer */
+.uno-layer-my-layer\:text-xl{ font-size:1.25rem; line-height:1.75rem; }
+```
+
+`layer-<name>:` 可以用于创建 CSS 的 @layer。
+
+```html
+<p class="layer-my-layer:text-xl">text</p>
+```
+
+```css
+/* layer: default */
+@layer my-layer{ .layer-my-layer\:text-xl{ font-size:1.25rem; line-height:1.75rem; } }
+```
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/config/shortcuts.md'
+description: UnoCSS 提供的快捷功能类似于 Windi CSS 的功能。
+---
+
+# 快捷方式
+
+快捷方式让你将多个规则组合成一个简写，灵感来自于 [Windi CSS](https://windicss.org/features/shortcuts.html)。
+
+## 用法
+
+```ts
+shortcuts: {
+  // 多个实用工具的快捷方式
+  'btn': 'py-2 px-4 font-semibold rounded-lg shadow-md',
+  'btn-green': 'text-white bg-green-500 hover:bg-green-700',
+  // 单独的实用程序别名
+  'red': 'text-red-100',
+}
+```
+
+除了简单的映射，UnoCSS 还允许你定义动态快捷方式。
+
+类似于 [规则](/config/rules)，动态快捷方式是一个匹配器 `RegExp` 和一个处理函数的组合。
+
+```ts
+shortcuts: [
+  // 你仍然可以使用对象风格
+  {
+    btn: 'py-2 px-4 font-semibold rounded-lg shadow-md',
+  },
+  // 动态快捷方式
+  [/^btn-(.*)$/, ([, c]) => `bg-${c}-400 text-${c}-100 py-2 px-4 rounded-lg`],
+]
+```
+
+这样，我们可以使用 `btn-green` 和 `btn-red` 生成以下 CSS：
+
+```css
+.btn-green {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  --un-bg-opacity: 1;
+  background-color: rgb(74 222 128 / var(--un-bg-opacity));
+  border-radius: 0.5rem;
+  --un-text-opacity: 1;
+  color: rgb(220 252 231 / var(--un-text-opacity));
+}
+.btn-red {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  --un-bg-opacity: 1;
+  background-color: rgb(248 113 113 / var(--un-bg-opacity));
+  border-radius: 0.5rem;
+  --un-text-opacity: 1;
+  color: rgb(254 226 226 / var(--un-text-opacity));
+}
+```
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/transformers/directives.md'
+description: >-
+  UnoCSS 变换器，用于 `@apply`、`@screen` 和 `theme()`
+  指令（@unocss/transformer-directives）
+---
+
+# 指令变换器
+
+UnoCSS 变换器，用于 `@apply`、`@screen` 和 `theme()` 指令：`@unocss/transformer-directives`。
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/transformer-directives
+```
+
+```bash [yarn]
+yarn add -D @unocss/transformer-directives
+```
+
+```bash [npm]
+npm install -D @unocss/transformer-directives
+```
+
+```bash [bun]
+bun add -D @unocss/transformer-directives
+```
+
+:::
+
+```ts [uno.config.ts]
+import transformerDirectives from '@unocss/transformer-directives'
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  // ...
+  transformers: [
+    transformerDirectives(),
+  ],
+})
+```
+
+::: tip
+此预设包含在 `unocss` 包中，您也可以从那里导入：
+
+```ts
+import { transformerDirectives } from 'unocss'
+```
+
+:::
+
+## 用法
+
+### `@apply`
+
+```css
+.custom-div {
+  @apply text-center my-0 font-medium;
+}
+```
+
+将被转换为：
+
+```css
+.custom-div {
+  margin-top: 0rem;
+  margin-bottom: 0rem;
+  text-align: center;
+  font-weight: 500;
+}
+```
+
+#### `--at-apply`
+
+为了兼容原生 CSS，您可以使用 CSS 自定义属性来替代 `@apply` 指令：
+
+```css
+.custom-div {
+  --at-apply: text-center my-0 font-medium;
+}
+```
+
+此功能默认启用，具有一些别名，您可以通过以下方式进行配置或禁用：
+
+```js
+transformerDirectives({
+  // 默认值
+  applyVariable: ['--at-apply', '--uno-apply', '--uno'],
+  // 或者禁用：
+  // applyVariable: false
+})
+```
+
+#### 添加引号
+
+要使用包含 `:` 的规则，您必须对整个值加引号：
+
+```css
+.custom-div {
+  --at-apply: 'hover:text-red hover:font-bold';
+  /* 或 */
+  @apply 'hover:text-red hover:font-bold';
+}
+```
+
+在 `@apply` 后使用引号是可选的，以满足某些格式化器的行为。
+
+### `@screen`
+
+`@screen` 指令允许您通过名称引用您的断点来创建媒体查询，来源于 [`theme.breakpoints`](/config/theme)。
+
+```css
+.grid {
+  --uno: grid grid-cols-2;
+}
+@screen xs {
+  .grid {
+    --uno: grid-cols-1;
+  }
+}
+@screen sm {
+  .grid {
+    --uno: grid-cols-3;
+  }
+}
+/* ... */
+...;
+```
+
+将被转换为：
+
+```css
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (min-width: 320px) {
+  .grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+/* ... */
+```
+
+#### 断点变体支持
+
+`@screen` 还支持 `lt`、`at` 变体：
+
+#### `@screen lt-`
+
+```css
+.grid {
+  --uno: grid grid-cols-2;
+}
+@screen lt-xs {
+  .grid {
+    --uno: grid-cols-1;
+  }
+}
+@screen lt-sm {
+  .grid {
+    --uno: grid-cols-3;
+  }
+}
+/* ... */
+```
+
+将被转换为：
+
+```css
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (max-width: 319.9px) {
+  .grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+@media (max-width: 639.9px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+/* ... */
+```
+
+#### `@screen at-`
+
+```css
+.grid {
+  --uno: grid grid-cols-2;
+}
+@screen at-xs {
+  .grid {
+    --uno: grid-cols-1;
+  }
+}
+@screen at-xl {
+  .grid {
+    --uno: grid-cols-3;
+  }
+}
+@screen at-xxl {
+  .grid {
+    --uno: grid-cols-4;
+  }
+}
+/* ... */
+```
+
+将被转换为：
+
+```css
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (min-width: 320px) and (max-width: 639.9px) {
+  .grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1280px) and (max-width: 1535.9px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1536px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+/* ... */
+```
+
+### `theme()`
+
+使用 `theme()` 函数通过点符号访问您的主题配置值。
+
+```css
+.btn-blue {
+  background-color: theme('colors.blue.500');
+}
+```
+
+将被编译为：
+
+```css
+.btn-blue {
+  background-color: #3b82f6;
+}
+```
+
+### `icon()`
+
+使用 `icon()` 函数将图标工具转换为特定的 svg 图标。
+
+::: warning
+`icon()` 依赖于 `@unocss/preset-icons` 并将使用该配置，请确保您已添加此预设。
+:::
+
+```css
+.icon {
+  background-image: icon('i-carbon-sun');
+}
+```
+
+将被编译为：
+
+```css
+.icon {
+  background-image: url("data:image/svg+xml;utf8,%3Csvg viewBox='0 0 32 32' width='1em' height='1em' xmlns='http://www.w3.org/2000/svg' %3E%3Cpath fill='currentColor' d='M16 12.005a4 4 0 1 1-4 4a4.005 4.005 0 0 1 4-4m0-2a6 6 0 1 0 6 6a6 6 0 0 0-6-6M5.394 6.813L6.81 5.399l3.505 3.506L8.9 10.319zM2 15.005h5v2H2zm3.394 10.193L8.9 21.692l1.414 1.414l-3.505 3.506zM15 25.005h2v5h-2zm6.687-1.9l1.414-1.414l3.506 3.506l-1.414 1.414zm3.313-8.1h5v2h-5zm-3.313-6.101l3.506-3.506l1.414 1.414l-3.506 3.506zM15 2.005h2v5h-2z'/%3E%3C/svg%3E");
+}
+```
+
+由于图标默认使用 `currentColor` 作为填充颜色，如果您想自定义图标的颜色，可以使用 `icon('图标名称', '自定义颜色')`。
+
+```css
+.icon {
+  background-image: icon('i-carbon-moon', '#fff');
+  background-image: icon('i-carbon-moon', 'theme("colors.red.500")'); /* 使用主题颜色 */
+}
+```
+
+将被编译为：
+
+```css
+.icon {
+  background-image: url("data:image/svg+xml;utf8,%3Csvg viewBox='0 0 32 32' width='1em' height='1em' xmlns='http://www.w3.org/2000/svg' %3E%3Cpath fill='%23fff' d='M13.503 5.414a15.076 15.076 0 0 0 11.593 18.194a11.1 11.1 0 0 1-7.975 3.39c-.138 0-.278.005-.418 0a11.094 11.094 0 0 1-3.2-21.584M14.98 3a1 1 0 0 0-.175.016a13.096 13.096 0 0 0 1.825 25.981c.164.006.328 0 .49 0a13.07 13.07 0 0 0 10.703-5.555a1.01 1.01 0 0 0-.783-1.565A13.08 13.08 0 0 1 15.89 4.38A1.015 1.015 0 0 0 14.98 3'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml;utf8,%3Csvg viewBox='0 0 32 32' width='1em' height='1em' xmlns='http://www.w3.org/2000/svg' %3E%3Cpath fill='%23ef4444' d='M13.503 5.414a15.076 15.076 0 0 0 11.593 18.194a11.1 11.1 0 0 1-7.975 3.39c-.138 0-.278.005-.418 0a11.094 11.094 0 0 1-3.2-21.584M14.98 3a1 1 0 0 0-.175.016a13.096 13.096 0 0 0 1.825 25.981c.164.006.328 0 .49 0a13.07 13.07 0 0 0 10.703-5.555a1.01 1.01 0 0 0-.783-1.565A13.08 13.08 0 0 1 15.89 4.38A1.015 1.015 0 0 0 14.98 3'/%3E%3C/svg%3E");
+}
+```
+
+## 许可证
+
+* MIT 许可证 © 2022-PRESENT [hannoeru](https://github.com/hannoeru)
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/guide.md'
+description: 使用 UnoCSS 入门
+---
+
+# 什么是 UnoCSS？
+
+UnoCSS 是一个即时原子 CSS 引擎，旨在灵活和可扩展。核心部分是无偏见的，所有的 CSS 工具通过预设提供。
+
+例如，你可以通过在本地的 [配置文件](/guide/config-file) 中提供规则来定义自定义的 CSS 工具。
+
+```ts [uno.config.ts]
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  rules: [
+    ['m-1', { margin: '1px' }],
+  ],
+})
+```
+
+这将向你的项目添加一个新的 CSS 工具 `m-1`。由于 UnoCSS 是按需生成的，直到你在代码库中使用它之前，它不会执行任何操作。假设我们有一个这样的组件：
+
+```html
+<div class="m-1">Hello</div>
+```
+
+`m-1` 将被检测到，以下 CSS 将被生成：
+
+```css
+.m-1 { margin: 1px; }
+```
+
+为了使其更灵活，你可以通过将规则中的第一个参数（我们称之为匹配器）更改为 `RegExp`，并将主体更改为一个函数，从而使你的规则动态化，例如：
+
+```diff [uno.config.ts]
+export default defineConfig({
+  rules: [
+-    ['m-1', { margin: '1px' }],
++    [/^m-([\.\d]+)$/, ([_, num]) => ({ margin: `${num}px` })],
+  ],
+})
+```
+
+这样做后，你现在可以拥有任意的边距工具，例如 `m-1`、`m-100` 或 `m-52.43`。同样地，UnoCSS 仅在你使用它们时生成它们。
+
+```html
+<div class="m-1">Hello</div>
+<div class="m-7.5">World</div>
+```
+
+```css
+.m-1 { margin: 1px; }
+.m-7.5 { margin: 7.5px; }
+```
+
+## 预设
+
+一旦你创建了一些规则，你可以将它们提取到一个预设中，并与其他人分享。例如，你可以为公司的设计系统创建一个预设，并与团队分享。
+
+```ts [my-preset.ts]
+import { Preset } from 'unocss'
+
+export const myPreset: Preset = {
+  name: 'my-preset',
+  rules: [
+    [/^m-([.\d]+)$/, ([_, num]) => ({ margin: `${num}px` })],
+    [/^p-([.\d]+)$/, ([_, num]) => ({ padding: `${num}px` })],
+  ],
+  variants: [/* ... */],
+  shortcuts: [/* ... */],
+  // ...
+}
+```
+
+```ts [uno.config.ts]
+import { defineConfig } from 'unocss'
+import { myPreset } from './my-preset'
+
+export default defineConfig({
+  presets: [
+    myPreset, // 你自己的预设
+  ],
+})
+```
+
+因此，我们提供了一些 [官方预设](/presets/) 供你立即开始使用，你也可以找到许多有趣的 [社区预设](/presets/community)。
+
+## 演示
+
+你可以在 游乐场 中尝试 UnoCSS。或者在 互动文档 中查找默认预设中的工具。
+
+## 集成
+
+UnoCSS 提供了与各种框架/工具的集成：
+
+## 示例
+
+所有示例的源代码可以在 [/examples](https://github.com/unocss/unocss/tree/main/examples) 目录中找到。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/presets/typography.md'
+description: UnoCSS 的排版类 (@unocss/preset-typography)。
+---
+
+# 排版预设
+
+提供一组散文类，可以用来为普通 HTML 添加排版默认值。
+
+[源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-typography)
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/preset-typography
+```
+
+```bash [yarn]
+yarn add -D @unocss/preset-typography
+```
+
+```bash [npm]
+npm install -D @unocss/preset-typography
+```
+
+```bash [bun]
+bun add -D @unocss/preset-typography
+```
+
+:::
+
+::: tip
+这个预设包含在 `unocss` 包中，你也可以从那里导入：
+
+```ts
+import presetTypography from '@unocss/preset-typography'
+// 或者
+import { presetTypography } from 'unocss'
+```
+
+:::
+
+## 使用方法
+
+```ts [uno.config.ts]
+import {
+  defineConfig,
+  presetAttributify,
+  presetTypography,
+  presetWind3 // 或 presetWind4
+} from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetWind3(), // 必需！
+    presetAttributify(), // 使用属性模式时必需
+    presetTypography(),
+  ],
+})
+```
+
+::: code-group
+
+```html [Classes]
+<article class="text-base prose dark:prose-invert xl:text-xl">
+  {{ markdown }}
+  <p class="not-prose">一些文本</p>
+</article>
+```
+
+```html [Attributes]
+<article text-base prose="~ dark:invert" xl="text-xl">
+  {{ markdown }}
+  <p class="not-prose">一些文本</p>
+</article>
+```
+
+:::
+
+::: warning
+注意：`not-prose` 只能用作类，不能用作属性。
+:::
+
+## 特点
+
+### 任意尺寸
+
+使用内置的尺寸变体应用不同的排版大小：`prose-sm`、`prose-base`、`prose-lg`、`prose-xl` 和 `prose-2xl`。默认的 `prose` 类使用基础大小，你也可以用特定的尺寸工具类覆盖它。
+
+```html
+<!-- 不同尺寸 -->
+<article class="prose prose-sm">小号排版</article>
+<article class="prose prose-base">基础排版（默认）</article>
+<article class="prose prose-lg">大号排版</article>
+<article class="prose prose-xl">超大号排版</article>
+<article class="prose prose-2xl">两倍大排版</article>
+```
+
+你还可以将尺寸工具类与响应式变体结合使用：
+
+```html
+<!-- 响应式排版尺寸 -->
+<article class="prose prose-sm md:prose-base lg:prose-lg xl:prose-xl">
+  根据屏幕尺寸缩放的响应式排版
+</article>
+
+<!-- 与其他工具类结合使用 -->
+<article class="prose prose-lg prose-gray dark:prose-invert">带颜色和暗色模式的大号排版</article>
+```
+
+### 任意颜色
+
+通过 `presetWind3/4` 提供的 `prose-${colorName}` 工具类应用任意颜色。它们的颜色来自主题的 `colors` 键，推荐这些颜色具有从 `50` 到 `950` 的色阶以便于渐变效果。因此，`presetWind3/4` 是 **必需** 的。
+
+而 `prose` 的默认颜色是 `prose-gray`。排版颜色工具类会应用到各种排版元素，如标题、链接、引用块和代码块。
+
+```html
+<!-- 不同的颜色主题 -->
+<article class="prose prose-gray">灰色主题排版</article>
+<article class="prose prose-blue">蓝色主题排版</article>
+<article class="prose prose-green">绿色主题排版</article>
+<article class="prose prose-purple">紫色主题排版</article>
+```
+
+| 自然色系                                                                       | 强调色系                                                       |
+| ------------------------------------------------------------------------------ | -------------------------------------------------------------- |
+| 这些有不同的颜色调度范围，影响全局排版颜色应用。                              | 这些只改变链接颜色，不影响其他颜色。                           |
+| `prose-slate`                                                                  | `prose-rose`                                                   |
+| `prose-slate`                                                                  | `prose-red`                                                    |
+| `prose-gray`                                                                   | `prose-orange`                                                 |
+| `prose-zinc`                                                                   | `prose-amber`                                                  |
+| `prose-neutral`                                                                | `prose-yellow`                                                 |
+| `prose-stone`                                                                  | `prose-lime`                                                   |
+|                                                                                | `prose-green`                                                  |
+|                                                                                | `prose-emerald`                                                |
+|                                                                                | `prose-teal`                                                   |
+|                                                                                | `prose-cyan`                                                   |
+|                                                                                | `prose-sky`                                                    |
+|                                                                                | `prose-blue`                                                   |
+|                                                                                | `prose-indigo`                                                 |
+|                                                                                | `prose-violet`                                                 |
+|                                                                                | `prose-purple`                                                 |
+|                                                                                | `prose-fuchsia`                                                |
+|                                                                                | `prose-pink`                                                   |
+|                                                                                | `prose-rose`                                                   |
+
+您可以将颜色与尺寸和响应式变体组合使用：
+
+```html
+<!-- 响应式颜色变化 -->
+<article class="prose prose-gray md:prose-blue lg:prose-green">
+  在不同断点下颜色变化的排版
+</article>
+
+<!-- 颜色、尺寸和暗色模式结合 -->
+<article class="prose prose-lg prose-slate dark:prose-invert">
+  带石板色和暗色模式支持的大号排版
+</article>
+```
+
+### 通过单个工具类支持暗色模式
+
+通过 `prose-invert` 应用排版暗色模式（背景色需要用户自行处理）。例如，`prose dark:prose-invert` 会在暗色模式下使用反色。
+
+### 你自己的风格
+
+不是 `prose` 内的元素样式保持原样，没有样式重置，类似于 UnoCSS。
+
+### 使用 `not` 工具撤销
+
+对元素应用 `not-prose` 可撤销排版样式。例如，`<table class="not-prose">` 将跳过本预设为 `table` 元素应用的样式 **（注意：`not` 工具仅能作为类使用，因为它仅用于 CSS 选择器且不被 UnoCSS 扫描）**。
+
+### 兼容性选项
+
+该预设使用了一些不被广泛支持的伪类，但你可以禁用它们。（[#2064](https://github.com/unocss/unocss/pull/2064)）
+
+* 启用 `noColonNot` 或 `noColonWhere` 时，`not-prose` 将不可用。
+* 启用 `noColonIs` 时，属性模式会有错误表现。
+
+## 选项
+
+此预设提供全面的配置选项以自定义排版样式、颜色、尺寸和行为。
+
+:::tip
+传递给 `cssExtend` 的 CSS 声明将：
+
+* **覆盖** 冲突的内置样式，否则
+* **与** 内置样式深度**合并**。
+  :::
+
+### selectorName
+
+* **类型：** `string`
+* **默认值：** `prose`
+
+用于应用排版工具的类名。若要撤销元素样式，请使用 `not-${selectorName}`，默认即为 `not-prose`。
+
+:::tip
+`not` 工具仅在类中可用。
+:::
+
+### cssExtend
+
+* **类型:** `Record<string, CSSObject> | ((theme: T) => Record<string, CSSObject>)`
+* **默认:** `undefined`
+
+扩展或覆盖 CSS 选择器的样式块。可以是静态对象，也可以是接收主题参数返回 CSS 选择器的函数。
+
+### important
+
+* **类型:** `boolean | string`
+* **默认:** `false`
+
+控制是否为排版工具类加入 `!important`。当设置为 `true` 时，所有排版样式都会添加 `!important`。当设置为字符串时，作为 CSS 选择器作用域。
+
+### colorScheme
+
+* **类型:** `TypographyColorScheme`
+* **默认:** 如下所示
+
+排版元素的颜色方案。每个键表示一个排版元素，值的格式为 `[光模式颜色, 暗模式颜色]`，即 `[color, invert-color]`。
+
+**默认颜色方案：**
+
+```json
+{
+  "body": [700, 300],
+  "headings": [900, "white"],
+  "lead": [600, 400],
+  "links": [900, "white"],
+  "bold": [900, "white"],
+  "counters": [500, 400],
+  "bullets": [300, 600],
+  "hr": [200, 700],
+  "quotes": [900, 100],
+  "quote-borders": [200, 700],
+  "captions": [500, 400],
+  "kbd": [900, "white"],
+  "kbd-shadows": [900, "white"],
+  "code": [900, "white"],
+  "pre-code": [200, 300],
+  "pre-bg": [800, "rgb(0 0 0 / 50%)"],
+  "th-borders": [300, 600],
+  "td-borders": [200, 700]
+}
+```
+
+### sizeScheme
+
+* **类型:** `TypographySizeScheme`
+* **默认:** `undefined`
+
+排版元素的尺寸方案。允许自定义不同尺寸下各种排版元素的 CSS 样式。类似于 `cssExtend`，但可针对不同文字大小精细覆盖。
+
+**示例：**
+
+```json
+{
+  "sm": {
+    "h1": { "font-size": "1.5rem" },
+    "p": { "font-size": "0.875rem" }
+  },
+  "base": {
+    "h1": { "font-size": "2rem" },
+    "p": { "font-size": "1rem" }
+  },
+  "lg": {
+    "h1": { "font-size": "2.5rem" },
+    "p": { "font-size": "1.125rem" }
+  }
+}
+```
+
+### cssVarPrefix
+
+* **类型:** `string`
+* **默认:** `--un-prose`
+
+生成的 CSS 自定义属性（CSS 变量）的前缀。允许自定义预设内部使用的 CSS 变量命名。
+
+### 兼容性
+
+* **类型:** `TypographyCompatibilityOptions`
+* **默认:** `undefined`
+
+请参见 [兼容选项](#兼容性选项)。
+
+:::warning
+请注意，这会影响某些功能。
+:::
+
+```ts
+interface TypographyCompatibilityOptions {
+  noColonWhere?: boolean
+  noColonIs?: boolean
+  noColonNot?: boolean
+}
+```
+
+## 示例
+
+```ts [uno.config.ts]
+import { presetTypography } from '@unocss/preset-typography'
+import { defineConfig, presetAttributify, presetWind3 } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetAttributify(), // 使用属性模式时必需
+    presetWind3(), // 必需
+    presetTypography({
+      selectorName: 'markdown', // 现在类名为 `markdown markdown-gray`，撤销用 `not-markdown`
+      // cssExtend 是一个对象，键为 CSS 选择器，
+      // 值为 CSS 声明块，类似于写普通 CSS。
+      cssExtend: {
+        'code': {
+          color: '#8b5cf6',
+        },
+        'a:hover': {
+          color: '#f43f5e',
+        },
+        'a:visited': {
+          color: '#14b8a6',
+        },
+      },
+    }),
+  ],
+})
+```
+
+## 致谢
+
+* [Tailwind CSS 排版](https://github.com/tailwindlabs/tailwindcss-typography)
+* [Windi CSS 排版](https://github.com/windicss/windicss/tree/main/src/plugin/typography)
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/guide/extracting.md'
+---
+
+# 提取
+
+UnoCSS 通过在你的代码库中搜索工具的使用，按需生成相应的 CSS。我们称这一过程为 **提取**。
+
+## 内容来源
+
+UnoCSS 支持从多个来源提取工具的使用：
+
+* [构建工具管道](#extracting-from-build-tools-pipeline) - 直接从构建工具管道中提取
+* [文件系统](#extracting-from-filesystem) - 通过读取和监视文件从文件系统中提取
+* [内联](#extracting-from-inline-text) - 从内联纯文本中提取
+
+来自不同来源的工具使用将合并在一起，生成最终的 CSS。
+
+### 从构建工具管道提取
+
+这在 [Vite](/integrations/vite) 和 [Webpack](/integrations/webpack) 集成中受支持。
+
+UnoCSS 将读取经过构建工具管道的内容，并从中提取工具的使用。这是提取的最有效和准确的方法，因为我们仅智能地提取在你的应用中实际使用的工具，且提取过程中不进行额外的文件 I/O 操作。
+
+默认情况下，UnoCSS 会从构建流程中的 `.jsx`、`.tsx`、`.vue`、`.md`、`.html`、`.svelte`、`.astro`、`.marko` 等扩展名的文件中提取工具类的使用，并按需生成相应的 CSS。`.js` 和 `.ts` 文件**默认不包含**。
+
+要配置它们，你可以更新你的 `uno.config.ts`：
+
+```ts [uno.config.ts]
+export default defineConfig({
+  content: {
+    pipeline: {
+      include: [
+        // 默认
+        /\.(vue|svelte|[jt]sx|vine.ts|mdx?|astro|elm|php|phtml|marko|html)($|\?)/,
+        // 包括 js/ts 文件
+        'src/**/*.{js,ts}',
+      ],
+      // 排除文件
+      // exclude: []
+    },
+  },
+})
+```
+
+你还可以在需要 UnoCSS 扫描的文件中的任意位置添加 `@unocss-include` 魔法注释，以逐个文件为单位。这对于需要扫描 `*.js` 或 `*.ts` 文件时尤其有用，需在配置中包含所有 js/ts 文件作为扫描目标。
+
+```ts
+// ./some-utils.js
+
+// 由于 `.js` 文件未默认包含，
+// 以下注释告知 UnoCSS 强制扫描此文件。
+// @unocss-include
+export const classes = {
+  active: 'bg-primary text-white',
+  inactive: 'bg-gray-200 text-gray-500',
+}
+```
+
+同样，你也可以添加 `@unocss-ignore` 来跳过整个文件的扫描和转换。
+
+如果你想让 UnoCSS 跳过一块代码而不在任何提取文件中被提取，你可以使用 `@unocss-skip-start` 和 `@unocss-skip-end` 作为成对使用。请注意，它必须 **成对使用** 才能生效。
+
+```html
+<p class="text-green text-xl">绿色大号</p>
+
+<!-- @unocss-skip-start -->
+<!-- `text-red` 将不会被提取 -->
+<p class="text-red">红色</p>
+<!-- @unocss-skip-end -->
+```
+
+### 从文件系统提取
+
+在使用没有访问构建工具管道的集成的情况下（例如 [PostCSS](/integrations/postcss) 插件），或者在与后端框架集成时，因为代码没有经过管道，你可以手动指定要提取的文件。
+
+```ts [uno.config.ts]
+export default defineConfig({
+  content: {
+    filesystem: [
+      'src/**/*.php',
+      'public/*.html',
+    ],
+  },
+})
+```
+
+符合条件的文件将直接从文件系统读取，并在开发模式下监视其变化。
+
+### 从内联文本提取
+
+此外，你还可以从可能从其他地方检索到的内联文本中提取工具的使用。
+
+你也可以传递一个异步函数以返回内容。但请注意，该函数将在构建时只调用一次。
+
+```ts [uno.config.ts]
+export default defineConfig({
+  content: {
+    inline: [
+      // 纯文本
+      '<div class="p-4 text-red">一些文本</div>',
+      // 异步获取器
+      async () => {
+        const response = await fetch('https://example.com')
+        return response.text()
+      },
+    ],
+  },
+})
+```
+
+## 限制
+
+由于 UnoCSS 在 **构建时** 工作，这意味着只有静态呈现的工具将被生成并打包到你的应用中。动态使用或在运行时从外部资源获取的工具可能 **不会** 被检测或应用。
+
+### 安全列表
+
+有时你可能想使用动态连接，例如：
+
+```html
+<div class="p-${size}"></div>
+<!-- 这将不起作用！ -->
+```
+
+由于 UnoCSS 在构建时使用静态提取，因此在编译时它无法知道所有工具的组合。为此，你可以配置 `safelist` 选项。
+
+```ts [uno.config.ts]
+safelist: 'p-1 p-2 p-3 p-4'.split(' ')
+```
+
+对应的 CSS 将始终生成：
+
+```css
+.p-1 { padding: 0.25rem; }
+.p-2 { padding: 0.5rem; }
+.p-3 { padding: 0.75rem; }
+.p-4 { padding: 1rem; }
+```
+
+或者更灵活地：
+
+```ts [uno.config.ts]
+safelist: [
+  ...Array.from({ length: 4 }, (_, i) => `p-${i + 1}`),
+]
+```
+
+如果你寻求在运行时进行真正的动态生成，你可能需要查看 [@unocss/runtime](/integrations/runtime) 包。
+
+### 静态列表组合
+
+解决动态构造工具限制的另一种方法是，你可以使用一个对象列出所有组合 **静态**。例如，如果你想要这个：
+
+```html
+<div class="text-${color} border-${color}"></div>
+<!-- 这将不起作用！ -->
+```
+
+你可以创建一个对象，列出所有组合（假设你知道想要使用的 `color` 的所有可能值）
+
+```ts
+// 由于它们是静态的，UnoCSS 将能够在构建时提取它们
+const classes = {
+  red: 'text-red border-red',
+  green: 'text-green border-green',
+  blue: 'text-blue border-blue',
+}
+```
+
+然后在你的模板中使用它：
+
+```html
+<div class="${classes[color]}"></div>
+```
+
+### 黑名单
+
+类似于 `safelist`，你也可以配置 `blocklist` 以排除一些工具的生成。这对于排除一些提取的误报非常有用。与 `safelist` 不同，`blocklist` 同时接受字符串以进行精确匹配和正则表达式以进行模式匹配。
+
+```ts [uno.config.ts]
+blocklist: [
+  'p-1',
+  /^p-[2-4]$/,
+]
+```
+
+这将排除 `p-1` 以及 `p-2`、`p-3`、`p-4` 的生成。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/config/extractors.md'
+---
+# 提取器
+
+提取器用于从源代码中提取工具的使用情况。
+
+```ts [uno.config.ts]
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  extractors: [
+    // 你的提取器
+  ],
+})
+```
+
+默认情况下，[extractorSplit](https://github.com/unocss/unocss/blob/main/packages-engine/core/src/extractors/split.ts) 将始终应用，它会将源代码拆分为标记并直接提供给引擎。
+
+要覆盖默认提取器，可以使用 `extractorDefault` 选项。
+
+```ts [uno.config.ts]
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  extractors: [
+    // 你的提取器
+  ],
+  // 禁用默认提取器
+  extractorDefault: false,
+  // 用你自己的提取器覆盖默认提取器
+  extractorDefault: myExtractor,
+})
+```
+
+例如，请查看 [pug 提取器](https://github.com/unocss/unocss/blob/main/packages-presets/extractor-pug/src/index.ts) 或 [attributify 提取器](https://github.com/unocss/unocss/blob/main/packages-presets/preset-attributify/src/extractor.ts) 的实现。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/guide/style-reset.md'
+description: UnoCSS 默认不提供样式重置或预飞行，以实现最大灵活性，并且不会填充您的全局 CSS。
+---
+
+# 浏览器样式重置
+
+UnoCSS 默认不提供样式重置或预飞行，以避免填充您的全局 CSS，并且为了实现最大灵活性。如果您将 UnoCSS 与其他 CSS 框架一起使用，它们可能已经为您进行了样式重置。如果您单独使用 UnoCSS，则可以使用像 [Normalize.css](https://github.com/csstools/normalize.css) 这样的重置库。
+
+我们还提供了一小部分库供您快速获取：
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add @unocss/reset
+```
+
+```bash [yarn]
+yarn add @unocss/reset
+```
+
+```bash [npm]
+npm install @unocss/reset
+```
+
+```bash [bun]
+bun add @unocss/reset
+```
+
+:::
+
+## 使用方法
+
+您可以将以下重置样式表之一添加到您的 `main.js` 中。
+
+### Normalize.css
+
+来源: https://github.com/csstools/normalize.css
+
+```ts
+import '@unocss/reset/normalize.css'
+```
+
+### sanitize.css
+
+来源: https://github.com/csstools/sanitize.css
+
+```ts
+import '@unocss/reset/sanitize/sanitize.css'
+import '@unocss/reset/sanitize/assets.css'
+```
+
+### Eric Meyer
+
+来源: https://meyerweb.com/eric/tools/css/reset/index.html
+
+```ts
+import '@unocss/reset/eric-meyer.css'
+```
+
+### Tailwind
+
+基于较早的 [Preflight](https://github.com/tailwindlabs/tailwindcss/blob/v3.4.18/src/css/preflight.css)，并包含部分近期变更
+
+```ts
+import '@unocss/reset/tailwind.css'
+```
+
+### Tailwind v4
+
+基于 [Preflight](https://github.com/tailwindlabs/tailwindcss/blob/main/packages/tailwindcss/preflight.css)
+
+```ts
+import '@unocss/reset/tailwind-v4.css'
+```
+
+### Tailwind 兼容
+
+```ts
+import '@unocss/reset/tailwind-compat.css'
+```
+
+该重置基于 [Tailwind reset](#tailwind)，去掉了按钮的背景颜色重写，以避免与 UI 框架冲突。请参见 [相关问题](https://github.com/unocss/unocss/issues/2127)。
+
+::: code-group
+
+```css [之前]
+button,
+[type='button'],
+[type='reset'],
+[type='submit'] {
+  -webkit-appearance: button; /* 1 */
+  background-color: transparent; /* 2 */
+  background-image: none; /* 2 */
+}
+```
+
+```css [之后]
+button,
+[type='button'],
+[type='reset'],
+[type='submit'] {
+  -webkit-appearance: button; /* 1 */
+  /*background-color: transparent; !* 2 *!*/
+  background-image: none; /* 2 */
+}
+```
+
+:::
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/tools/core.md'
+description: UnoCSS 的核心引擎，没有任何预设。它可以作为您自己的原子 CSS 框架的引擎。
+---
+
+# 核心
+
+UnoCSS 的核心引擎，没有任何预设：`@unocss/core`。它可以作为您自己原子 CSS 框架的引擎。
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/core
+```
+
+```bash [yarn]
+yarn add -D @unocss/core
+```
+
+```bash [npm]
+npm install -D @unocss/core
+```
+
+```bash [bun]
+bun add -D @unocss/core
+```
+
+:::
+
+## 使用
+
+```ts
+import { createGenerator } from '@unocss/core'
+
+const generator = await createGenerator(
+  { /* 用户选项 */ },
+  { /* 默认选项 */ }
+)
+
+const { css } = await generator.generate(code)
+```
+
+## 许可证
+
+* MIT 许可证 © 2021-至今 [Anthony Fu](https://github.com/antfu)
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/tools/inspector.md'
+description: UnoCSS 的检查器 UI（@unocss/inspector）。
+---
+
+# 检查器
+
+UnoCSS 的检查器 UI：`@unocss/inspector`。
+随 `unocss` 和 `@unocss/vite` 一起提供。
+
+## 使用方法
+
+在您的 Vite 开发服务器中访问 localhost:5173/\_\_unocss 以查看检查器。
+
+检查器允许您检查生成的 CSS 规则和每个文件应用的类。它还提供了一个 REPL，以便根据您当前的配置测试您的工具。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/presets/community.md'
+---
+# 社区
+
+我们热忱欢迎大家加入并帮助建设 [UnoCSS 社区](https://github.com/unocss-community)。您可以在 [Awesome UnoCSS](https://github.com/unocss-community/awesome-unocss) 中使用和分享与 UnoCSS 相关的资源。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/transformers/compile-class.md'
+description: 将一组类编译成一个类 (@unocss/transformer-compile-class)
+---
+
+# 编译类转换器
+
+将一组类编译成一个类。灵感来自 Windi CSS 的 [编译模式](https://windicss.org/posts/modes.html#compilation-mode) 和 [issue #948](https://github.com/unocss/unocss/issues/948) 提出的 [@UltraCakeBakery](https://github.com/UltraCakeBakery)。
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/transformer-compile-class
+```
+
+```bash [yarn]
+yarn add -D @unocss/transformer-compile-class
+```
+
+```bash [npm]
+npm install -D @unocss/transformer-compile-class
+```
+
+```bash [bun]
+bun add -D @unocss/transformer-compile-class
+```
+
+:::
+
+```ts [uno.config.ts]
+import transformerCompileClass from '@unocss/transformer-compile-class'
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  // ...
+  transformers: [
+    transformerCompileClass(),
+  ],
+})
+```
+
+::: tip
+这个预设包含在 `unocss` 包中，你也可以从那里导入：
+
+```ts
+import { transformerCompileClass } from 'unocss'
+```
+
+:::
+
+## 用法
+
+在类字符串的开头添加 `:uno:` 来标记它们进行编译。
+
+例如：
+
+```html
+<div class=":uno: text-center sm:text-left">
+  <div class=":uno: text-sm font-bold hover:text-red" />
+</div>
+```
+
+将编译为：
+
+```html
+<div class="uno-qlmcrp">
+  <div class="uno-0qw2gr" />
+</div>
+```
+
+```css
+.uno-qlmcrp {
+  text-align: center;
+}
+.uno-0qw2gr {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+}
+.uno-0qw2gr:hover {
+  --un-text-opacity: 1;
+  color: rgb(248 113 113 / var(--un-text-opacity));
+}
+@media (min-width: 640px) {
+  .uno-qlmcrp {
+    text-align: left;
+  }
+}
+```
+
+## 选项
+
+你可以通过选项配置触发字符串和编译类的前缀。有关详细信息，请参考 [类型定义](https://github.com/unocss/unocss/blob/main/packages-presets/transformer-compile-class/src/index.ts#L4)。
+
+## 工具支持
+
+### ESLint
+
+有一个 eslint 规则用于强制在整个项目中使用类编译转换器：[@unocss/enforce-class-compile](https://unocss.dev/integrations/eslint#unocss-enforce-class-compile)
+
+**用法：**
+
+```json
+{
+  "plugins": ["@unocss"],
+  "rules": {
+    "@unocss/enforce-class-compile": "warn"
+  }
+}
+```
+
+## 许可证
+
+* MIT 许可证 © 2021-现在 [Anthony Fu](https://github.com/antfu)
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/tools/autocomplete.md'
+description: UnoCSS 的自动完成功能（@unocss/autocomplete）。
+---
+
+# 自动完成
+
+UnoCSS 的自动完成功能：`@unocss/autocomplete`。它嵌入在 playground 和 [VS Code 扩展](/integrations/vscode)。
+
+## 用法
+
+### 静态规则
+
+静态规则像这样将无需任何配置即可使用。
+
+```ts
+rules: [
+  ['flex', { display: 'flex' }]
+]
+```
+
+### 动态规则
+
+对于动态规则，您可以向规则提供一个额外的 `meta` 对象，并指定自动完成的模板。
+
+```ts
+rules: [
+  [
+    /^m-(\d)$/,
+    ([, d]) => ({ margin: `${d / 4}rem` }),
+    { autocomplete: 'm-<num>' }, // <-- 这个
+  ],
+]
+```
+
+模板使用简单的 DSL 来指定自动完成的建议。语法如下：
+
+* `(...|...)`：逻辑或组，使用 `|` 作为分隔符。当某些组匹配时，将使用它作为建议。
+* `<...>`：内置简写。目前支持 `<num>`、`<percent>` 和 `<directions>`
+* `$...`：主题推断。例如，`$colors` 将列出主题的 `colors` 对象的所有属性。
+
+## 示例
+
+### 示例 1
+
+* **模板**：`(border|b)-(solid|dashed|dotted|double|hidden|none)`
+* **输入**：`b-do`
+* **建议**：`b-dotted`、`b-double`
+
+### 示例 2
+
+* **模板**：`m-<num>`
+* **输入**：`m-`
+* **建议**：`m-1`、`m-2`、`m-3`…
+
+### 示例 3
+
+* **模板**：`text-$colors`
+* **输入**：`text-r`
+* **建议**：`text-red`、`text-rose`…
+
+### 示例 4
+
+对于多个模板：
+
+* **模板**：`['(border|b)-<num>', '(border|b)-<directions>-<num>']`
+* **输入**：`b-`
+* **建议**：`b-x`、`b-y`、`b-1`、`b-2`…
+* **输入**：`b-x-`
+* **建议**：`b-x-1`、`b-x-2`…
+
+## 许可证
+
+* MIT 许可证 © 2021-PRESENT [Anthony Fu](https://github.com/antfu)
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/config/autocomplete.md'
+---
+# 自动补全
+
+自动补全可以为 UnoCSS 的智能建议进行自定义，详见试验场和 [VS Code 插件](/integrations/vscode)。
+
+```ts
+autocomplete: {
+  templates: [
+    // 主题推断
+    'bg-$color/<opacity>',
+    // 简写
+    'text-<font-size>',
+    // 逻辑 OR 组
+    '(b|border)-(solid|dashed|dotted|double|hidden|none)',
+    // 常量
+    'w-half',
+  ],
+  shorthands: {
+    // 等同于 `opacity: "(0|10|20|30|40|50|60|70|90|100)"`
+    'opacity': Array.from({ length: 11 }, (_, i) => i * 10),
+    'font-size': '(xs|sm|base|lg|xl|2xl|3xl|4xl|5xl|6xl|7xl|8xl|9xl)',
+    // 覆盖内置简写
+    'num': '(0|1|2|3|4|5|6|7|8|9)',
+  },
+  extractors: [
+      // ...提取器
+  ],
+}
+```
+
+* `templates` 使用简单的 DSL 来指定自动补全建议。
+
+* `shorthands` 是简写名称到其模板的映射。如果是 `Array`，则将形成逻辑 OR 组。
+
+* `extractors` 用来提取可能的类并将类名样式建议转换为正确格式。例如，您可以查看我们是如何实现 [属性化自动补全提取器](https://github.com/unocss/unocss/blob/main/packages-presets/preset-attributify/src/autocomplete.ts)
+
+* 如需额外帮助，请参阅 [此处](/tools/autocomplete)。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/config/rules.md'
+description: 为 UnoCSS 编写自定义规则非常简单。
+---
+
+# 规则
+
+规则定义了工具类和生成的 CSS。UnoCSS 有许多内置规则，但也允许轻松添加自定义规则。
+
+## 静态规则
+
+以下示例：
+
+```ts
+rules: [
+  ['m-1', { margin: '0.25rem' }],
+]
+```
+
+只要在用户代码库中检测到 `m-1`，就会生成以下 CSS：
+
+```css
+.m-1 {
+  margin: 0.25rem;
+}
+```
+
+> **注意**：主体语法遵循 CSS 属性语法，例如 `font-weight` 而不是 `fontWeight`。如果属性名中有连字符 `-`，则应被引号括起来。
+>
+> ```ts
+> rules: [
+>   ['font-bold', { 'font-weight': 700 }],
+> ]
+> ```
+
+## 动态规则
+
+为了使其更智能，将匹配器更改为 `RegExp` 并将主体更改为函数：
+
+```ts
+rules: [
+  [/^m-(\d+)$/, ([, d]) => ({ margin: `${d / 4}rem` })],
+  // 你可以从第二个参数中获取丰富的上下文信息，如 `theme`、`symbols` 等。
+  [/^p-(\d+)$/, (match, ctx) => ({ padding: `${match[1] / 4}rem` })],
+]
+```
+
+主体函数的第一个参数是 `RegExp` 匹配结果，可以进行解构以获得匹配的组。
+
+例如，使用以下用法：
+
+```html
+<div class="m-100">
+  <button class="m-3">
+    <icon class="p-5" />
+    我的按钮
+  </button>
+</div>
+```
+
+将生成相应的 CSS：
+
+```css
+.m-100 { margin: 25rem; }
+.m-3 { margin: 0.75rem; }
+.p-5 { padding: 1.25rem; }
+```
+
+恭喜你！现在你拥有了自己的强大原子 CSS 工具。享受吧！
+
+## CSS 规则回退
+
+在某些情况下，你可能希望利用 CSS 规则回退使用新的 CSS 特性，同时能够回退以支持旧浏览器，你可以选择性地返回一个二维数组作为具有相同键的规则的 CSS 表示。例如：
+
+```ts
+rules: [
+  [/^h-(\d+)dvh$/, ([_, d]) => {
+    return [
+      ['height', `${d}vh`],
+      ['height', `${d}dvh`],
+    ]
+  }],
+]
+```
+
+这将使 `h-100dvh` 生成：
+
+```css
+.h-100dvh { height: 100vh; height: 100dvh; }
+```
+
+## 特殊符号
+
+自 v0.61 起，UnoCSS 支持特殊符号来定义生成 CSS 的附加元信息。你可以通过 `@unocss/core` 的 `symbols` 对象或动态规则主体函数的第二个参数访问这些符号。
+
+例如：
+
+::: code-group
+
+```ts [Static Rules]
+import { symbols } from '@unocss/core'
+
+rules: [
+  ['grid', {
+    [symbols.parent]: '@supports (display: grid)',
+    display: 'grid',
+  }],
+]
+```
+
+```ts [Dynamic Rules]
+rules: [
+  [/^grid$/, ([, d], { symbols }) => {
+    return {
+      [symbols.parent]: '@supports (display: grid)',
+      display: 'grid',
+    }
+  }],
+]
+```
+
+:::
+
+将生成：
+
+```css
+@supports (display: grid) {
+  .grid {
+    display: grid;
+  }
+}
+```
+
+:::tip
+如果你明确知道一个规则是如何生成的，建议使用**静态规则**以提升 UnoCSS 性能。
+:::
+
+### 可用符号
+
+| 符号                       | 描述                                                                                                     |
+| -------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `symbols.parent`           | 生成 CSS 规则的父包装器（例如 `@supports`、`@media` 等）                                               |
+| `symbols.selector`         | 用于修改生成 CSS 规则选择器的函数（见下面示例）                                                       |
+| `symbols.layer`            | 设置生成 CSS 规则的 UnoCSS 层级（可以是字符串、函数或正则匹配）                                        |
+| `symbols.variants`         | 应用于当前 CSS 对象的变体处理器数组                                                                    |
+| `symbols.shortcutsNoMerge` | 布尔值，禁用当前规则在快捷方式中的合并                                                                 |
+| `symbols.noMerge`          | 布尔值，禁用当前规则的合并                                                                              |
+| `symbols.sort`             | 数值，用于覆盖当前 CSS 对象的排序顺序                                                                  |
+| `symbols.body`             | 完全控制生成 CSS 规则的主体（详情见 [#4889](https://github.com/unocss/unocss/pull/4889)）               |
+
+## 多选择器规则
+
+自 v0.61 起，UnoCSS 支持通过 [JavaScript Generator 函数](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator)实现多选择器，并从单一规则生成多个 CSS 规则。
+
+例如：
+
+::: code-group
+
+```ts [Static Rules]
+rules: [
+  ['button-red', [
+    { background: 'red' },
+    {
+      [symbols.selector]: selector => `${selector}:hover`,
+      // https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix
+      background: `color-mix(in srgb, red 90%, black)`
+    },
+  ]],
+]
+```
+
+```ts [Dynamic Rules]
+rules: [
+  [/^button-(.*)$/, function* ([, color], { symbols }) {
+    yield {
+      background: color
+    }
+    yield {
+      [symbols.selector]: selector => `${selector}:hover`,
+      // https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix
+      background: `color-mix(in srgb, ${color} 90%, black)`
+    }
+  }],
+]
+```
+
+:::
+
+将生成多个 CSS 规则：
+
+```css
+.button-red {
+  background: red;
+}
+.button-red:hover {
+  background: color-mix(in srgb, red 90%, black);
+}
+```
+
+## 完全控制的规则
+
+::: tip
+这是一个高级功能，在大多数情况下不需要。
+:::
+
+当你确实需要一些未被 [动态规则](#dynamic-rules) 和 [变体](/config/variants) 组合覆盖的高级规则时，UnoCSS 还提供了一种让你完全控制生成 CSS 的方式。
+
+它允许你从动态规则的主体函数返回一个字符串，该字符串将**直接**传递给生成的 CSS（这也意味着你需要处理 CSS 转义、变体应用、CSS 构建等事情）。
+
+```ts [uno.config.ts]
+import { defineConfig, toEscapedSelector as e } from 'unocss'
+
+export default defineConfig({
+  rules: [
+    [/^custom-(.+)$/, ([, name], { rawSelector, currentSelector, variantHandlers, theme }) => {
+      // 丢弃不匹配的规则
+      if (name.includes('something'))
+        return
+
+      // 如果你想，可以禁用此规则的变体
+      if (variantHandlers.length)
+        return
+      const selector = e(rawSelector)
+      // 返回一个字符串而不是一个对象
+      return `
+${selector} {
+  font-size: ${theme.fontSize.sm};
+}
+/* 你可以有多个规则 */
+${selector}::after {
+  content: 'after';
+}
+.foo > ${selector} {
+  color: red;
+}
+/* 或者媒体查询 */
+@media (min-width: ${theme.breakpoints.sm}) {
+  ${selector} {
+    font-size: ${theme.fontSize.sm};
+  }
+}
+`
+    }],
+  ],
+})
+```
+
+::: warning
+上述方法可以完全控制生成的 CSS，但无法通过 `variants` 扩展，失去变体所带来的灵活性。
+
+例如 `hover:custom-xxx` -> `hover` 变体将不起作用。
+:::
+
+因此，如果你希望完全自定义输出且仍享受变体的便利，可以考虑使用 `symbols.body` 来实现。
+
+::: code-group
+
+```ts [Static Rules]
+import { symbols } from '@unocss/core'
+
+rules: [
+  ['custom-red', {
+    // symbols.body 不需要用 `{}` 包裹样式
+    [symbols.body]: `
+      font-size: 1rem;
+      &::after {
+        content: 'after';
+      }
+      & > .bar {
+        color: red;
+      }
+    `,
+    [symbols.selector]: selector => `:is(${selector})`,
+  }]
+]
+```
+
+```ts [Dynamic Rules]
+rules: [
+  [/^custom-(.+)$/, ([_, c], { symbols }) => {
+    return {
+      [symbols.body]: `
+        font-size: 1rem;
+        &::after {
+          content: 'after';
+        }
+        & > .bar {
+          color: ${c};
+        }
+      `,
+      [symbols.selector]: selector => `:is(${selector})`,
+    }
+  }]
+]
+```
+
+:::
+
+将从 `hover:custom-red` 生成完整的 CSS 规则：
+
+```css
+:is(.hover\:custom-red):hover {
+  font-size: 1rem;
+  &::after {
+    content: 'after';
+  }
+  & > .bar {
+    color: red;
+  }
+}
+```
+
+## 排序
+
+UnoCSS 在生成的 CSS 中会遵循你定义规则的顺序，后定义的规则优先级更高。
+
+使用动态规则时，可能会匹配多个 token。默认情况下，同一动态规则匹配的输出在该组内会按字母顺序排序。
+
+## 规则合并
+
+默认情况下，UnoCSS 会合并具有相同样式的 CSS 规则，以减少 CSS 大小。
+
+例如，`<div class="m-2 hover:m2">` 会生成：
+
+```css
+.hover\:m2:hover,
+.m-2 {
+  margin: 0.5rem;
+}
+```
+
+而不是两个分开的规则：
+
+```css
+.hover\:m2:hover {
+  margin: 0.5rem;
+}
+.m-2 {
+  margin: 0.5rem;
+}
+```
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/config/transformers.md'
+---
+# 转换器
+
+提供统一的接口来转换源代码，以支持约定。
+
+```ts [my-transformer.ts]
+import { SourceCodeTransformer } from 'unocss'
+import { createFilter } from 'unplugin-utils'
+
+export default function myTransformers(options: MyOptions = {}): SourceCodeTransformer {
+  return {
+    name: 'my-transformer',
+    enforce: 'pre', // 在其他转换器之前执行
+    idFilter(id) {
+      // 仅转换 .tsx 和 .jsx 文件
+      return id.match(/\.[tj]sx$/)
+    },
+    async transform(code, id, { uno }) {
+      // code 是一个 MagicString 实例
+      code.appendRight(0, '/* 我的转换器 */')
+    },
+  }
+}
+```
+
+你可以查看 [官方转换器](/presets/#transformers) 获取更多示例。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/presets/mini.md'
+description: UnoCSS 的最小预设 (@unocss/preset-mini)。
+---
+
+# 迷你预设
+
+UnoCSS 的基本预设，仅包含最基本的实用工具。
+
+[源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-mini)
+
+## 安装
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @unocss/preset-mini
+```
+
+```bash [yarn]
+yarn add -D @unocss/preset-mini
+```
+
+```bash [npm]
+npm install -D @unocss/preset-mini
+```
+
+```bash [bun]
+bun add -D @unocss/preset-mini
+```
+
+:::
+
+```ts [uno.config.ts]
+import presetMini from '@unocss/preset-mini'
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetMini(),
+    // ...其他预设
+  ],
+})
+```
+
+::: tip
+该预设包含在 `unocss` 包中，你也可以从那里导入：
+
+```ts
+import { presetMini } from 'unocss'
+```
+
+:::
+
+## 规则
+
+该预设是 [`@unocss/preset-wind3`](/presets/wind3) 的子集，仅包含与 CSS 属性对齐的最基本实用工具，排除了在 Tailwind CSS 中引入的有主观或复杂的实用工具（例如 `container`、`animation`、`gradient` 等）。这可以作为你在 Tailwind CSS 或 Windi CSS 基础上自定义预设的良好起点。
+
+## 特性
+
+### 暗黑模式
+
+默认情况下，该预设生成基于类的暗黑模式，使用 `dark:` 变体。
+
+```html
+<div class="dark:bg-red:10" />
+```
+
+将生成：
+
+```css
+.dark .dark\:bg-red\:10 {
+  background-color: rgb(248 113 113 / 0.1);
+}
+```
+
+#### 基于媒体查询的暗黑模式
+
+要全局使用基于媒体查询的暗黑模式，可以更改 `dark:` 变体的配置：
+
+```ts
+presetMini({
+  dark: 'media'
+})
+```
+
+现在
+
+```html
+<div class="dark:bg-red:10" />
+```
+
+将生成：
+
+```css
+@media (prefers-color-scheme: dark) {
+  .dark\:bg-red\:10 {
+    background-color: rgb(248 113 113 / 0.1);
+  }
+}
+```
+
+### CSS @layer
+
+支持 CSS 原生的 @layer 变体 `layer-xx:`：
+
+```html
+<div class="layer-foo:p4" />
+<div class="layer-bar:m4" />
+```
+
+将生成：
+
+```css
+@layer foo {
+  .layer-foo\:p4 {
+    padding: 1rem;
+  }
+}
+@layer bar {
+  .layer-bar\:m4 {
+    margin: 1rem;
+  }
+}
+```
+
+### 主题
+
+你可以在配置中完全自定义你的主题属性，UnoCSS 会最终将其深度合并到默认主题中。
+
+:::warning
+`breakpoints` 属性不会深度合并，而是被覆盖，参见 [断点](/config/theme#breakpoints)。
+:::
+
+```ts
+presetMini({
+  theme: {
+    // ...
+    colors: {
+      veryCool: '#0000ff', // class="text-very-cool"
+      brand: {
+        primary: 'hsl(var(--hue, 217) 78% 51%)', // class="bg-brand-primary"
+      }
+    },
+  }
+})
+```
+
+## 选项
+
+### dark
+
+* **类型:** `class | media | DarkModeSelectors`
+* **默认:** `class`
+
+暗黑模式选项。可以是 `class`、`media` 或自定义选择器对象（`DarkModeSelectors`）。
+
+```ts
+interface DarkModeSelectors {
+  /**
+   * 光亮变体的选择器。
+   *
+   * @default '.light'
+   */
+  light?: string
+
+  /**
+   * 暗黑变体的选择器。
+   *
+   * @default '.dark'
+   */
+  dark?: string
+}
+```
+
+### attributifyPseudo
+
+* **类型:** `Boolean`
+* **默认:** `false`
+
+生成伪选择器为 `[group=""]` 而不是 `.group`。
+
+### variablePrefix
+
+* **类型:** `string`
+* **默认:** `un-`
+
+CSS 自定义属性的前缀。
+
+### prefix
+
+* **类型:** `string | string[]`
+* **默认:** `undefined`
+
+工具的前缀。
+
+### preflight
+
+* **类型:** `boolean` | `on-demand`
+* **默认:** `true`
+
+生成基础样式 CSS。可以是：
+
+* `true`: 始终生成基础样式。
+* `false`: 不生成基础样式。
+* `on-demand`: 仅为使用的工具生成基础样式。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/config.md'
+description: 配置使 UnoCSS 强大。
+---
+
+# 配置 UnoCSS
+
+## 配置
+
+配置使 UnoCSS 强大。
+
+* [规则](/config/rules) - 定义原子 CSS 工具
+* [快捷键](/config/shortcuts) - 将多个规则组合成一个简写。
+* [主题](/config/theme) - 定义主题变量。
+* [变种](/config/variants) - 将自定义约定应用于规则。
+* [提取器](/config/extractors) - 定义工具的使用何处以及如何被提取。
+* [预飞行](/config/preflights) - 定义全局原始 CSS。
+* [层](/config/layers) - 定义每个工具层的顺序。
+* [预设](/config/presets) - 预定义配置以满足常见用例。
+* [转换器](/config/transformers) - 代码转换器，以用户源代码支持约定。
+* [自动完成](/config/autocomplete) - 定义自定义自动完成建议。
+
+## 选项
+
+### rules
+
+* **类型:** `Rule<Theme>[]`
+
+生成 CSS 工具的规则。后面的条目具有更高的优先级。
+
+### shortcuts
+
+* **类型:** `UserShortcuts<Theme>`
+
+类似于 Windi CSS 的快捷键，允许您通过组合现有工具来创建新的工具。后面的条目具有更高的优先级。
+
+### theme
+
+* **类型:** `Theme`
+
+用于规则之间共享配置的主题对象。
+
+### extendTheme
+
+* **类型:** `Arrayable<ThemeExtender<Theme>>`
+  自定义函数变更主题对象。
+
+也可以返回一个新的主题对象以完全替换原始对象。
+
+### variants
+
+* **类型:** `Variant<Theme>[]`
+
+预处理选择器的变种，能够重写 CSS 对象。
+
+### extractors
+
+* **类型:** `Extractor[]`
+
+提取器处理源文件并输出可能的类/选择器。可以是语言感知。
+
+### preflights
+
+* **类型:** `Preflight<Theme>[]`
+
+原始 CSS 注入。
+
+### layers
+
+* **类型:** `Record<string, number>`
+
+层的顺序。默认值为 0。
+
+### outputToCssLayers
+
+* **类型:** `boolean | UseCssLayersOptions`
+* **默认:** `false`
+
+将层输出到 CSS 级联层。
+
+#### cssLayerName
+
+* **类型:** `(internalLayer: string) => string | undefined | null`
+
+指定内部层应输出到的 CSS 层的名称（可以是子层，例如 "mylayer.mysublayer"）。
+
+如果返回 `undefined`，则使用内部层名称作为 CSS 层名称。
+如果返回 `null`，则内部层将不输出到 CSS 层。
+
+#### allLayers
+
+* **类型：** `boolean`
+
+强制输出所有 CSS 层，即使它们未被使用。
+
+例如：
+
+```css
+@layer theme, preflights, [unused-layer], default;
+```
+
+### sortLayers
+
+* **类型:** `(layers: string[]) => string[]`
+
+自定义函数以排序层。
+
+### presets
+
+* **类型:** `(PresetOrFactory<Theme> | PresetOrFactory<Theme>[])[]`
+
+用于常见用例的预定义配置。
+
+### transformers
+
+* **类型:** `SourceCodeTransformer[]`
+
+自定义源代码转换器。
+
+### blocklist
+
+* **类型:** `BlocklistRule[]`
+
+规则，用于排除设计系统的选择器（缩小可能性）。结合 `warnExcluded` 选项也可以帮助您识别错误使用。
+
+### safelist
+
+* **类型:** `string[]`
+
+始终包含的工具。
+
+### preprocess
+
+* **类型:** `Arrayable<Preprocessor>`
+
+预处理传入的工具，返回假值以排除。
+
+### postprocess
+
+* **类型:** `Arrayable<Postprocessor>`
+
+后处理生成的工具对象。
+
+### separators
+
+* **类型:** `Arrayable<string>`
+* **默认:** `[':', '-']`
+
+变种分隔符。
+
+### extractorDefault
+
+* **类型:** `Extractor | null | false`
+* **默认:** `import('@unocss/core').defaultExtractor`
+
+始终应用的默认提取器。默认情况下，它通过空格和引号拆分源代码。
+
+可以被预设或用户配置替换，仅能有一个默认提取器，后一个将覆盖先前的提取器。
+
+传递 `null` 或 `false` 以禁用默认提取器。
+
+### autocomplete
+
+自动完成的附加选项。
+
+#### templates
+
+* **类型:** `Arrayable<AutoCompleteFunction | AutoCompleteTemplate>`
+
+自定义函数/模板以提供自动完成建议。
+
+#### extractors
+
+* **类型:** `Arrayable<AutoCompleteExtractor>`
+
+自定义提取器以拾取可能的类并将类名样式建议转换为正确格式。
+
+#### shorthands
+
+* **类型:** `Record<string, string | string[]>`
+
+自定义简写以提供自动完成建议。如果值是数组，它将与 `|` 连接并用 `()` 包裹。
+
+### content
+
+用于提取工具用法的源选项。
+
+支持的来源：
+
+* `filesystem` - 从文件系统提取
+* `inline` - 从纯行内文本提取
+* `pipeline` - 从构建工具的转换管道提取，例如 Vite 和 Webpack
+
+从每个来源提取的用法将被 **合并** 在一起。
+
+#### filesystem
+
+* **类型:** `string[]`
+* **默认:** `[]`
+
+从文件系统中提取的全局模式，除了其他内容源。`node_modules` 默认情况下被忽略，但当您指定路径包含 `node_modules` 时，unocss 会从中扫描。
+
+在开发模式下，文件将被监视并触发 HMR。
+
+#### inline
+
+* **类型:** `string | { code: string; id?: string } | (() => Awaitable<string | { code: string; id?: string }>)) []`
+
+要提取的行内文本。
+
+#### pipeline
+
+确定是否从构建工具的转换管道中提取特定模块的过滤器。
+
+当前仅适用于 Vite 和 Webpack 集成。
+
+设置为 `false` 以禁用。
+
+##### include
+
+* **类型:** `FilterPattern`
+* **默认:** `[/\.(vue|svelte|[jt]sx|vine.ts|mdx?|astro|elm|php|phtml|html)($|\?)/]`
+
+过滤被提取文件的模式。支持正则表达式和 `picomatch` glob 模式。
+
+默认情况下，`.ts` 和 `.js` 文件不会被提取。
+
+##### exclude
+
+* **类型:** `FilterPattern`
+* **默认:** `[/\.(css|postcss|sass|scss|less|stylus|styl)($|\?)/]`
+
+不被提取文件的过滤模式。支持正则表达式和 `picomatch` glob 模式。
+
+默认情况下，`node_modules` 和 `dist` 也会被提取。
+
+### configResolved
+
+* **类型:** `(config: ResolvedConfig) => void`
+
+用于修改解析配置的钩子。
+
+首先运行预设，然后是用户配置。
+
+### configFile
+
+* **类型:** `string | false`
+
+从配置文件加载。
+
+设置为 `false` 以禁用。
+
+### configDeps
+
+* **类型:** `string[]`
+
+将触发配置重载的文件列表。
+
+### cli
+
+UnoCSS CLI 选项。
+
+#### entry
+
+* **类型:** `Arrayable<CliEntryItem>`
+
+UnoCSS CLI 入口点。
+
+##### patterns
+
+* **类型:** `string[]`
+
+从文件系统提取的 glob 模式。
+
+##### outFile
+
+* **类型:** `string`
+
+输出文件路径。
+
+### shortcutsLayer
+
+* **类型:** `string`
+* **默认:** `'shortcuts'`
+
+快捷键的布局名称。
+
+### envMode
+
+* **类型:** `'dev' | 'build'`
+* **默认:** `'build'`
+
+环境模式。
+
+### details
+
+* **类型:** `boolean`
+
+揭示内部细节以进行调试/检查。
+
+### warn
+
+* **类型:** `boolean`
+* **默认:** `true`
+
+当匹配的选择器出现在黑名单中时发出警告。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/guide/config-file.md'
+---
+# 配置文件
+
+我们**强烈建议使用专用的 `uno.config.ts` 文件**来配置你的 UnoCSS，以便在 IDE 和其他集成方面获得最佳体验。
+
+一个功能齐全的配置文件如下所示：
+
+```ts twoslash [uno.config.ts]
+import {
+  defineConfig,
+  presetAttributify,
+  presetIcons,
+  presetTypography,
+  presetWebFonts,
+  presetWind3,
+  transformerDirectives,
+  transformerVariantGroup
+} from 'unocss'
+
+export default defineConfig({
+  shortcuts: [
+    // ...
+  ],
+  theme: {
+    colors: {
+      // ...
+    }
+  },
+  presets: [
+    presetWind3(),
+    presetAttributify(),
+    presetIcons(),
+    presetTypography(),
+    presetWebFonts({
+      fonts: {
+        // ...
+      },
+    }),
+  ],
+  transformers: [
+    transformerDirectives(),
+    transformerVariantGroup(),
+  ],
+})
+```
+
+与您在 `vite.config.ts` 或其他工具配置中使用的内联配置相比，专用配置文件将更好地与[IDEs](/integrations/vscode)和集成工具（例如[ESLint 插件](/integrations/eslint)）配合使用，并且使热模块替换（HMR）工作得更好。
+
+默认情况下，UnoCSS 会自动寻找项目根目录下的 `uno.config.{js,ts,mjs,mts}` 或 `unocss.config.{js,ts,mjs,mts}`。您也可以手动指定配置文件，例如在 Vite 中：
+
+```ts [vite.config.ts]
+import UnoCSS from 'unocss/vite'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [
+    UnoCSS({
+      configFile: '../my-uno.config.ts',
+    }),
+  ],
+})
+```
+
+有关支持的配置选项的完整列表，请参考[配置参考](/config/)。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/integrations.md'
+---
+# 集成
+
+### 框架 / 工具
+
+UnoCSS 提供了与各种框架 / 工具的集成：
+
+### 示例
+
+所有示例的源代码可以在 [/examples](https://github.com/unocss/unocss/tree/main/examples) 目录中找到。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/config/preflights.md'
+description: 你可以从配置中注入原始 CSS 作为预处理。已解析的主题可用于自定义 CSS。
+---
+
+# 预处理
+
+你可以从配置中注入原始 CSS 作为预处理。已解析的 `theme` 可用于自定义 CSS。
+
+```ts
+preflights: [
+  {
+    getCSS: ({ theme }) => `
+      * {
+        color: ${theme.colors.gray?.[700] ?? '#333'};
+        padding: 0;
+        margin: 0;
+      }
+    `,
+  },
+]
+```
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/config/presets.md'
+---
+# 预设
+
+预设是部分配置，会合并到主配置中。
+
+在编写预设时，我们通常会导出一个构造函数，您可以根据需要提供一些特定于预设的选项。例如：
+
+```ts [my-preset.ts]
+import { definePreset, Preset } from 'unocss'
+
+export default definePreset((options?: MyPresetOptions) => {
+  return {
+    name: 'my-preset',
+    rules: [
+      // ...
+    ],
+    variants: [
+      // ...
+    ],
+    // 支持您在根配置中可以拥有的大多数配置
+  }
+})
+```
+
+然后用户可以像这样使用它：
+
+```ts [uno.config.ts]
+import { defineConfig } from 'unocss'
+import myPreset from './my-preset'
+
+export default defineConfig({
+  presets: [
+    myPreset({ /* 预设选项 */ }),
+  ],
+})
+```
+
+您可以查看 [官方预设](/presets/) 和 [社区预设](/presets/community) 以获取更多示例。
+
+---
+
+---
+url: 'https://unocss.zhcndoc.com/guide/presets.md'
+description: 预设是 UnoCSS 的核心。它们让您在几分钟内创建自己的自定义框架。
+---
+
+# 预设
+
+预设是 UnoCSS 的核心。它们让您在几分钟内创建自己的自定义框架。
+
+### 使用预设
+
+要将预设设置到您的项目中：
+
+```ts twoslash [uno.config.ts]
+import { defineConfig, presetAttributify, presetWind3 } from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetAttributify({ /* 预设选项 */}),
+    presetWind3(),
+    // ...自定义预设
+  ],
+})
+```
+
+当指定 `presets` 选项时，将忽略默认预设。
+
+要禁用默认预设，您可以将 `presets` 设置为空数组：
+
+```ts twoslash [uno.config.ts]
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
+  presets: [], // 禁用默认预设
+  rules: [
+    // 您的自定义规则
+  ],
+})
+```
+
+您可以查看 [官方预设](/presets/) 和 [社区预设](/presets/community) 以获取更多信息。
+
+### 创建预设
+
+要了解如何创建您自己的自定义预设，请参见 [配置：预设](/config/presets)。
