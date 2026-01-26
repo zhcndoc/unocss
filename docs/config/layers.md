@@ -101,11 +101,31 @@ outputToCssLayers: {
 }
 ```
 
+## 输出所有 CSS 层
+
+UnoCSS 默认输出所有已使用的 CSS 层。如果您想强制输出所有定义的 CSS 层，可以设置 `allLayers` 选项：
+
+<!-- eslint-skip -->
+
+```ts
+outputToCssLayers: {
+  allLayers: true,
+}
+```
+
+它将输出所有定义的 CSS 层，即使它们未被使用。
+
+```css
+@layer theme, preflights, unused-layer, default;
+
+/* generated CSS */
+```
+
 ## 使用变体的层
 
-层可以使用变体创建。
+层可以通过变体创建。
 
-`uno-layer-<name>:` 可以用于创建 UnoCSS 层。
+`uno-layer-<name>:` 可用于创建一个 UnoCSS 层。
 
 ```html
 <p class="uno-layer-my-layer:text-xl">text</p>
@@ -118,7 +138,7 @@ outputToCssLayers: {
 .uno-layer-my-layer\:text-xl{ font-size:1.25rem; line-height:1.75rem; }
 ```
 
-`layer-<name>:` 可以用于创建 CSS @layer。
+`layer-<name>:` 可以用于创建 CSS 的 @layer。
 
 ```html
 <p class="layer-my-layer:text-xl">text</p>

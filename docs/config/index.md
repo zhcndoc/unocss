@@ -88,6 +88,18 @@ outline: deep
 如果返回 `undefined`，则使用内部层名称作为 CSS 层名称。
 如果返回 `null`，则内部层将不输出到 CSS 层。
 
+#### allLayers
+
+- **类型：** `boolean`
+
+强制输出所有 CSS 层，即使它们未被使用。
+
+例如：
+
+```css
+@layer theme, preflights, [unused-layer], default;
+```
+
 ### sortLayers
 
 - **类型:** `(layers: string[]) => string[]`

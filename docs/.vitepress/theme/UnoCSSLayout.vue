@@ -49,21 +49,12 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
       <HomePage />
     </template> -->
 
-    <template #doc-before>
-      <div
-        class="flex w-full justify-center rounded-2 border border-gray-950/5 p-2 dark:border-white/10 cursor-pointer mb-4"
-      >
-        <div class="wwads-cn wwads-horizontal" data-id="354" data-umami-event="ads-wwads" />
-      </div>
+    <template #aside-outline-before>
+      <div class="wwads-cn wwads-vertical w-full my-4" data-id="354" />
     </template>
 
-    <template #aside-outline-after>
-      <div
-        data-umami-event="ads-rainyun"
-        class="flex w-full justify-center rounded-2 border border-gray-950/5 p-2 dark:border-white/10 cursor-pointer mt-4"
-      >
-        <!-- <div class="wwads-cn wwads-horizontal wwads-sticky" data-id="354" /> -->
-      </div>
+    <template #doc-after>
+      <div class="wwads-cn wwads-horizontal w-full my-4" data-id="354" />
     </template>
   </DefaultTheme.Layout>
 </template>

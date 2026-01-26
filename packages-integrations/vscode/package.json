@@ -3,7 +3,7 @@
   "name": "@unocss/vscode",
   "displayName": "UnoCSS",
   "type": "module",
-  "version": "66.5.12",
+  "version": "66.6.0",
   "private": true,
   "description": "UnoCSS for VS Code",
   "license": "MIT",
@@ -161,7 +161,6 @@
     "find-up": "catalog:utils",
     "jiti": "catalog:utils",
     "prettier": "catalog:utils",
-    "tsdown": "catalog:build",
     "unconfig": "catalog:utils",
     "unplugin-utils": "catalog:utils",
     "vscode-ext-gen": "catalog:utils"
