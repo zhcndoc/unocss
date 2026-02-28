@@ -1,0 +1,1 @@
+import{R as n}from"./index-DAydmHNs.js";import"./modulepreload-polyfill-B5Qt9EMX.js";function u(r={}){return{name:"@unocss/transformer-variant-group",enforce:"pre",transform(t){const a=n(t,r.separators);return{get highlightAnnotations(){return[...a.groupsByOffset.values()].flatMap(e=>e.items)}}}}}export{u as default};

@@ -1,0 +1,214 @@
+# UnoCSS
+
+> 即需即用的原子 CSS 引擎
+
+可定制 · 强大 · 快速 · 愉悦
+
+## Table of Contents
+
+### 指南
+
+- [指南](https://unocss.zhcndoc.com/guide.md): 使用 UnoCSS 入门
+- [为什么选择 UnoCSS？](https://unocss.zhcndoc.com/guide/why.md)
+- [预设](https://unocss.zhcndoc.com/guide/presets.md): 预设是 UnoCSS 的核心。它们让您在几分钟内创建自己的自定义框架。
+- [样式重置](https://unocss.zhcndoc.com/guide/style-reset.md): UnoCSS 默认不提供样式重置或预飞行，以实现最大灵活性，并且不会填充您的全局 CSS。
+- [配置文件](https://unocss.zhcndoc.com/guide/config-file.md)
+- [提取](https://unocss.zhcndoc.com/guide/extracting.md)
+
+### 集成
+
+- [集成](https://unocss.zhcndoc.com/integrations.md)
+- [UnoCSS Vite 插件](https://unocss.zhcndoc.com/integrations/vite.md): UnoCSS 的 Vite 插件 (@unocss/vite)。
+- [UnoCSS Nuxt 模块](https://unocss.zhcndoc.com/integrations/nuxt.md): 用于 UnoCSS 的 Nuxt 模块。
+- [Next.js](https://unocss.zhcndoc.com/integrations/next.md): 开始使用 UnoCSS 和 Next.js。
+- [UnoCSS Astro 集成](https://unocss.zhcndoc.com/integrations/astro.md): UnoCSS 在 Astro 中的集成（@unocss/astro）。
+- [UnoCSS Svelte 作用域](https://unocss.zhcndoc.com/integrations/svelte-scoped.md): Svelte 作用域 Vite 插件和 UnoCSS 的 Svelte 预处理器。
+- [UnoCSS Webpack 插件](https://unocss.zhcndoc.com/integrations/webpack.md): UnoCSS 的 webpack 插件 (@unocss/webpack)。
+- [UnoCSS CDN 运行时](https://unocss.zhcndoc.com/integrations/runtime.md): UnoCSS 的 CSS-in-JS 运行时（@unocss/runtime）。
+- [UnoCSS CLI](https://unocss.zhcndoc.com/integrations/cli.md): UnoCSS 的 CLI (@unocss/cli).
+- [UnoCSS PostCSS 插件](https://unocss.zhcndoc.com/integrations/postcss.md)
+- [UnoCSS ESLint 配置](https://unocss.zhcndoc.com/integrations/eslint.md): UnoCSS 的 ESLint 配置 (@unocss/eslint-config)。
+- [UnoCSS VS Code 扩展](https://unocss.zhcndoc.com/integrations/vscode.md): UnoCSS 的 VS Code 扩展。
+- [UnoCSS 的社区 JetBrains 插件](https://unocss.zhcndoc.com/integrations/jetbrains.md)
+- [UnoCSS Language Server](https://unocss.zhcndoc.com/integrations/lsp.md)
+- [UnoCSS 的社区 Zed 扩展](https://unocss.zhcndoc.com/integrations/zed.md)
+
+### 指南
+
+- [指南](https://unocss.zhcndoc.com/guide.md): 使用 UnoCSS 入门
+- [为什么选择 UnoCSS？](https://unocss.zhcndoc.com/guide/why.md)
+- [预设](https://unocss.zhcndoc.com/guide/presets.md): 预设是 UnoCSS 的核心。它们让您在几分钟内创建自己的自定义框架。
+- [样式重置](https://unocss.zhcndoc.com/guide/style-reset.md): UnoCSS 默认不提供样式重置或预飞行，以实现最大灵活性，并且不会填充您的全局 CSS。
+- [配置文件](https://unocss.zhcndoc.com/guide/config-file.md)
+- [提取](https://unocss.zhcndoc.com/guide/extracting.md)
+
+### 集成
+
+- [集成](https://unocss.zhcndoc.com/integrations.md)
+- [UnoCSS Vite 插件](https://unocss.zhcndoc.com/integrations/vite.md): UnoCSS 的 Vite 插件 (@unocss/vite)。
+- [UnoCSS Nuxt 模块](https://unocss.zhcndoc.com/integrations/nuxt.md): 用于 UnoCSS 的 Nuxt 模块。
+- [Next.js](https://unocss.zhcndoc.com/integrations/next.md): 开始使用 UnoCSS 和 Next.js。
+- [UnoCSS Astro 集成](https://unocss.zhcndoc.com/integrations/astro.md): UnoCSS 在 Astro 中的集成（@unocss/astro）。
+- [UnoCSS Svelte 作用域](https://unocss.zhcndoc.com/integrations/svelte-scoped.md): Svelte 作用域 Vite 插件和 UnoCSS 的 Svelte 预处理器。
+- [UnoCSS Webpack 插件](https://unocss.zhcndoc.com/integrations/webpack.md): UnoCSS 的 webpack 插件 (@unocss/webpack)。
+- [UnoCSS CDN 运行时](https://unocss.zhcndoc.com/integrations/runtime.md): UnoCSS 的 CSS-in-JS 运行时（@unocss/runtime）。
+- [UnoCSS CLI](https://unocss.zhcndoc.com/integrations/cli.md): UnoCSS 的 CLI (@unocss/cli).
+- [UnoCSS PostCSS 插件](https://unocss.zhcndoc.com/integrations/postcss.md)
+- [UnoCSS ESLint 配置](https://unocss.zhcndoc.com/integrations/eslint.md): UnoCSS 的 ESLint 配置 (@unocss/eslint-config)。
+- [UnoCSS VS Code 扩展](https://unocss.zhcndoc.com/integrations/vscode.md): UnoCSS 的 VS Code 扩展。
+- [UnoCSS 的社区 JetBrains 插件](https://unocss.zhcndoc.com/integrations/jetbrains.md)
+- [UnoCSS Language Server](https://unocss.zhcndoc.com/integrations/lsp.md)
+- [UnoCSS 的社区 Zed 扩展](https://unocss.zhcndoc.com/integrations/zed.md)
+
+### 预设
+
+- [迷你预设](https://unocss.zhcndoc.com/presets/mini.md): UnoCSS 的最小预设 (@unocss/preset-mini)。
+- [Wind3 预设](https://unocss.zhcndoc.com/presets/wind3.md): UnoCSS 的 Tailwind CSS / Windi CSS 紧凑预设 (@unocss/preset-wind3)。
+- [Wind4 预设](https://unocss.zhcndoc.com/presets/wind4.md): 用于 UnoCSS 的 Tailwind4 CSS 紧凑预设（@unocss/preset-wind4）。
+- [图标预设](https://unocss.zhcndoc.com/presets/icons.md): 使用纯 CSS 在 UnoCSS 中使用任何图标 (@unocss/preset-icons)。
+- [Attributify 预设](https://unocss.zhcndoc.com/presets/attributify.md): 启用属性模式的 UnoCSS 预设。
+- [排版预设](https://unocss.zhcndoc.com/presets/typography.md): UnoCSS 的排版类 (@unocss/preset-typography)。
+- [Web 字体预设](https://unocss.zhcndoc.com/presets/web-fonts.md): UnoCSS 的 Web 字体支持 (@unocss/preset-web-fonts)。
+- [传统兼容预设](https://unocss.zhcndoc.com/presets/legacy-compat.md): 传统兼容工具集合。
+- [Tagify 预设](https://unocss.zhcndoc.com/presets/tagify.md): UnoCSS 的 Tagify 模式 (@unocss/preset-tagify)。
+- [rem 转 px 预设](https://unocss.zhcndoc.com/presets/rem-to-px.md): 为工具转换 rem 到 px（@unocss/preset-rem-to-px）。
+
+### 转换器
+
+- [变体组转换器](https://unocss.zhcndoc.com/transformers/variant-group.md): 启用 UnoCSS 的 Windi CSS 的变体组功能 (@unocss/transformer-variant-group)
+- [指令变换器](https://unocss.zhcndoc.com/transformers/directives.md): UnoCSS 变换器，用于 `@apply`、`@screen` 和 `theme()` 指令（@unocss/transformer-directives）
+- [编译类转换器](https://unocss.zhcndoc.com/transformers/compile-class.md): 将一组类编译成一个类 (@unocss/transformer-compile-class)
+- [Attributify JSX 转换器](https://unocss.zhcndoc.com/transformers/attributify-jsx.md): 支持 JSX/TSX 中的无值属性化 (@unocss/transformer-attributify-jsx)
+
+### 提取器
+
+- [Pug 提取器](https://unocss.zhcndoc.com/extractors/pug.md): UnoCSS 的 Pug 提取器 (@unocss/extractor-pug)
+- [MDC 提取器](https://unocss.zhcndoc.com/extractors/mdc.md): 用于 UnoCSS 的 MDC 提取器 (@unocss/extractor-mdc)
+- [Svelte 提取器](https://unocss.zhcndoc.com/extractors/svelte.md)
+- [任意变体提取器](https://unocss.zhcndoc.com/extractors/arbitrary-variants.md)
+
+### 其他工具
+
+- [Inspector](https://unocss.zhcndoc.com/tools/inspector.md): The inspector UI for UnoCSS (@unocss/inspector).
+- [核心](https://unocss.zhcndoc.com/tools/core.md): UnoCSS 的核心引擎，没有任何预设。它可以作为您自己的原子 CSS 框架的引擎。
+- [自动完成功能](https://unocss.zhcndoc.com/tools/autocomplete.md): UnoCSS 的自动完成功能（@unocss/autocomplete）。
+
+### 预设
+
+- [迷你预设](https://unocss.zhcndoc.com/presets/mini.md): UnoCSS 的最小预设 (@unocss/preset-mini)。
+- [Wind3 预设](https://unocss.zhcndoc.com/presets/wind3.md): UnoCSS 的 Tailwind CSS / Windi CSS 紧凑预设 (@unocss/preset-wind3)。
+- [Wind4 预设](https://unocss.zhcndoc.com/presets/wind4.md): 用于 UnoCSS 的 Tailwind4 CSS 紧凑预设（@unocss/preset-wind4）。
+- [图标预设](https://unocss.zhcndoc.com/presets/icons.md): 使用纯 CSS 在 UnoCSS 中使用任何图标 (@unocss/preset-icons)。
+- [Attributify 预设](https://unocss.zhcndoc.com/presets/attributify.md): 启用属性模式的 UnoCSS 预设。
+- [排版预设](https://unocss.zhcndoc.com/presets/typography.md): UnoCSS 的排版类 (@unocss/preset-typography)。
+- [Web 字体预设](https://unocss.zhcndoc.com/presets/web-fonts.md): UnoCSS 的 Web 字体支持 (@unocss/preset-web-fonts)。
+- [传统兼容预设](https://unocss.zhcndoc.com/presets/legacy-compat.md): 传统兼容工具集合。
+- [Tagify 预设](https://unocss.zhcndoc.com/presets/tagify.md): UnoCSS 的 Tagify 模式 (@unocss/preset-tagify)。
+- [rem 转 px 预设](https://unocss.zhcndoc.com/presets/rem-to-px.md): 为工具转换 rem 到 px（@unocss/preset-rem-to-px）。
+
+### 转换器
+
+- [变体组转换器](https://unocss.zhcndoc.com/transformers/variant-group.md): 启用 UnoCSS 的 Windi CSS 的变体组功能 (@unocss/transformer-variant-group)
+- [指令变换器](https://unocss.zhcndoc.com/transformers/directives.md): UnoCSS 变换器，用于 `@apply`、`@screen` 和 `theme()` 指令（@unocss/transformer-directives）
+- [编译类转换器](https://unocss.zhcndoc.com/transformers/compile-class.md): 将一组类编译成一个类 (@unocss/transformer-compile-class)
+- [Attributify JSX 转换器](https://unocss.zhcndoc.com/transformers/attributify-jsx.md): 支持 JSX/TSX 中的无值属性化 (@unocss/transformer-attributify-jsx)
+
+### 提取器
+
+- [Pug 提取器](https://unocss.zhcndoc.com/extractors/pug.md): UnoCSS 的 Pug 提取器 (@unocss/extractor-pug)
+- [MDC 提取器](https://unocss.zhcndoc.com/extractors/mdc.md): 用于 UnoCSS 的 MDC 提取器 (@unocss/extractor-mdc)
+- [Svelte 提取器](https://unocss.zhcndoc.com/extractors/svelte.md)
+- [任意变体提取器](https://unocss.zhcndoc.com/extractors/arbitrary-variants.md)
+
+### 其他工具
+
+- [Inspector](https://unocss.zhcndoc.com/tools/inspector.md): The inspector UI for UnoCSS (@unocss/inspector).
+- [核心](https://unocss.zhcndoc.com/tools/core.md): UnoCSS 的核心引擎，没有任何预设。它可以作为您自己的原子 CSS 框架的引擎。
+- [自动完成功能](https://unocss.zhcndoc.com/tools/autocomplete.md): UnoCSS 的自动完成功能（@unocss/autocomplete）。
+
+### 预设
+
+- [迷你预设](https://unocss.zhcndoc.com/presets/mini.md): UnoCSS 的最小预设 (@unocss/preset-mini)。
+- [Wind3 预设](https://unocss.zhcndoc.com/presets/wind3.md): UnoCSS 的 Tailwind CSS / Windi CSS 紧凑预设 (@unocss/preset-wind3)。
+- [Wind4 预设](https://unocss.zhcndoc.com/presets/wind4.md): 用于 UnoCSS 的 Tailwind4 CSS 紧凑预设（@unocss/preset-wind4）。
+- [图标预设](https://unocss.zhcndoc.com/presets/icons.md): 使用纯 CSS 在 UnoCSS 中使用任何图标 (@unocss/preset-icons)。
+- [Attributify 预设](https://unocss.zhcndoc.com/presets/attributify.md): 启用属性模式的 UnoCSS 预设。
+- [排版预设](https://unocss.zhcndoc.com/presets/typography.md): UnoCSS 的排版类 (@unocss/preset-typography)。
+- [Web 字体预设](https://unocss.zhcndoc.com/presets/web-fonts.md): UnoCSS 的 Web 字体支持 (@unocss/preset-web-fonts)。
+- [传统兼容预设](https://unocss.zhcndoc.com/presets/legacy-compat.md): 传统兼容工具集合。
+- [Tagify 预设](https://unocss.zhcndoc.com/presets/tagify.md): UnoCSS 的 Tagify 模式 (@unocss/preset-tagify)。
+- [rem 转 px 预设](https://unocss.zhcndoc.com/presets/rem-to-px.md): 为工具转换 rem 到 px（@unocss/preset-rem-to-px）。
+
+### 转换器
+
+- [变体组转换器](https://unocss.zhcndoc.com/transformers/variant-group.md): 启用 UnoCSS 的 Windi CSS 的变体组功能 (@unocss/transformer-variant-group)
+- [指令变换器](https://unocss.zhcndoc.com/transformers/directives.md): UnoCSS 变换器，用于 `@apply`、`@screen` 和 `theme()` 指令（@unocss/transformer-directives）
+- [编译类转换器](https://unocss.zhcndoc.com/transformers/compile-class.md): 将一组类编译成一个类 (@unocss/transformer-compile-class)
+- [Attributify JSX 转换器](https://unocss.zhcndoc.com/transformers/attributify-jsx.md): 支持 JSX/TSX 中的无值属性化 (@unocss/transformer-attributify-jsx)
+
+### 提取器
+
+- [Pug 提取器](https://unocss.zhcndoc.com/extractors/pug.md): UnoCSS 的 Pug 提取器 (@unocss/extractor-pug)
+- [MDC 提取器](https://unocss.zhcndoc.com/extractors/mdc.md): 用于 UnoCSS 的 MDC 提取器 (@unocss/extractor-mdc)
+- [Svelte 提取器](https://unocss.zhcndoc.com/extractors/svelte.md)
+- [任意变体提取器](https://unocss.zhcndoc.com/extractors/arbitrary-variants.md)
+
+### 其他工具
+
+- [Inspector](https://unocss.zhcndoc.com/tools/inspector.md): The inspector UI for UnoCSS (@unocss/inspector).
+- [核心](https://unocss.zhcndoc.com/tools/core.md): UnoCSS 的核心引擎，没有任何预设。它可以作为您自己的原子 CSS 框架的引擎。
+- [自动完成功能](https://unocss.zhcndoc.com/tools/autocomplete.md): UnoCSS 的自动完成功能（@unocss/autocomplete）。
+
+### 预设
+
+- [迷你预设](https://unocss.zhcndoc.com/presets/mini.md): UnoCSS 的最小预设 (@unocss/preset-mini)。
+- [Wind3 预设](https://unocss.zhcndoc.com/presets/wind3.md): UnoCSS 的 Tailwind CSS / Windi CSS 紧凑预设 (@unocss/preset-wind3)。
+- [Wind4 预设](https://unocss.zhcndoc.com/presets/wind4.md): 用于 UnoCSS 的 Tailwind4 CSS 紧凑预设（@unocss/preset-wind4）。
+- [图标预设](https://unocss.zhcndoc.com/presets/icons.md): 使用纯 CSS 在 UnoCSS 中使用任何图标 (@unocss/preset-icons)。
+- [Attributify 预设](https://unocss.zhcndoc.com/presets/attributify.md): 启用属性模式的 UnoCSS 预设。
+- [排版预设](https://unocss.zhcndoc.com/presets/typography.md): UnoCSS 的排版类 (@unocss/preset-typography)。
+- [Web 字体预设](https://unocss.zhcndoc.com/presets/web-fonts.md): UnoCSS 的 Web 字体支持 (@unocss/preset-web-fonts)。
+- [传统兼容预设](https://unocss.zhcndoc.com/presets/legacy-compat.md): 传统兼容工具集合。
+- [Tagify 预设](https://unocss.zhcndoc.com/presets/tagify.md): UnoCSS 的 Tagify 模式 (@unocss/preset-tagify)。
+- [rem 转 px 预设](https://unocss.zhcndoc.com/presets/rem-to-px.md): 为工具转换 rem 到 px（@unocss/preset-rem-to-px）。
+
+### 转换器
+
+- [变体组转换器](https://unocss.zhcndoc.com/transformers/variant-group.md): 启用 UnoCSS 的 Windi CSS 的变体组功能 (@unocss/transformer-variant-group)
+- [指令变换器](https://unocss.zhcndoc.com/transformers/directives.md): UnoCSS 变换器，用于 `@apply`、`@screen` 和 `theme()` 指令（@unocss/transformer-directives）
+- [编译类转换器](https://unocss.zhcndoc.com/transformers/compile-class.md): 将一组类编译成一个类 (@unocss/transformer-compile-class)
+- [Attributify JSX 转换器](https://unocss.zhcndoc.com/transformers/attributify-jsx.md): 支持 JSX/TSX 中的无值属性化 (@unocss/transformer-attributify-jsx)
+
+### 提取器
+
+- [Pug 提取器](https://unocss.zhcndoc.com/extractors/pug.md): UnoCSS 的 Pug 提取器 (@unocss/extractor-pug)
+- [MDC 提取器](https://unocss.zhcndoc.com/extractors/mdc.md): 用于 UnoCSS 的 MDC 提取器 (@unocss/extractor-mdc)
+- [Svelte 提取器](https://unocss.zhcndoc.com/extractors/svelte.md)
+- [任意变体提取器](https://unocss.zhcndoc.com/extractors/arbitrary-variants.md)
+
+### 其他工具
+
+- [Inspector](https://unocss.zhcndoc.com/tools/inspector.md): The inspector UI for UnoCSS (@unocss/inspector).
+- [核心](https://unocss.zhcndoc.com/tools/core.md): UnoCSS 的核心引擎，没有任何预设。它可以作为您自己的原子 CSS 框架的引擎。
+- [自动完成功能](https://unocss.zhcndoc.com/tools/autocomplete.md): UnoCSS 的自动完成功能（@unocss/autocomplete）。
+
+### 配置
+
+- [配置 UnoCSS](https://unocss.zhcndoc.com/config.md): 配置使 UnoCSS 强大。
+- [规则](https://unocss.zhcndoc.com/config/rules.md): 为 UnoCSS 编写自定义规则非常简单。
+- [变体](https://unocss.zhcndoc.com/config/variants.md): 变体允许您对现有规则应用一些变更。
+- [快捷方式](https://unocss.zhcndoc.com/config/shortcuts.md): UnoCSS 提供的快捷功能类似于 Windi CSS 的功能。
+- [主题](https://unocss.zhcndoc.com/config/theme.md): UnoCSS 还支持您可能熟悉的主题系统，就像在 Tailwind CSS / Windi CSS 中一样。
+- [提取器](https://unocss.zhcndoc.com/config/extractors.md)
+- [预处理](https://unocss.zhcndoc.com/config/preflights.md): 你可以从配置中注入原始 CSS 作为预处理。已解析的主题可用于自定义 CSS。
+- [Safelist](https://unocss.zhcndoc.com/config/safelist.md)
+- [层](https://unocss.zhcndoc.com/config/layers.md): UnoCSS 允许您自定义层的定义。
+- [预设](https://unocss.zhcndoc.com/config/presets.md)
+- [转换器](https://unocss.zhcndoc.com/config/transformers.md)
+- [自动补全](https://unocss.zhcndoc.com/config/autocomplete.md)
+
+### Other
+
+- [包](https://unocss.zhcndoc.com/guide/packages.md): UnoCSS 包：可用包及其包含和启用的内容。
+- [官方包](https://unocss.zhcndoc.com/presets.md)
+- [社区](https://unocss.zhcndoc.com/presets/community.md)
