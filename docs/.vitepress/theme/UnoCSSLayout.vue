@@ -49,12 +49,12 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
       <HomePage />
     </template> -->
 
-    <template #aside-outline-before>
-      <div class="wwads-cn wwads-vertical max-w-[200px] !mt-0 mb-4" data-id="354" />
+    <template #doc-before>
+      <div class="wwads-cn wwads-horizontal w-full my-4" data-id="354" />
     </template>
 
-    <template #doc-after>
-      <div class="wwads-cn wwads-horizontal w-full mt-4" data-id="354" />
+    <template #aside-outline-after>
+      <div class="wwads-cn wwads-vertical max-w-[200px] my-4" data-id="354" />
     </template>
   </DefaultTheme.Layout>
 </template>

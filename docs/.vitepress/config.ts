@@ -48,6 +48,7 @@ const Integrations: DefaultTheme.NavItemWithLink[] = [
   { text: 'VS Code 扩展', link: '/integrations/vscode' },
   { text: 'JetBrains IDE 插件', link: '/integrations/jetbrains' },
   { text: 'LSP 支持', link: '/integrations/lsp' },
+  { text: 'Zed 扩展', link: '/integrations/zed' },
 ]
 
 const Presets: DefaultTheme.NavItemWithLink[] = [

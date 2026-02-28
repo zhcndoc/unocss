@@ -38,10 +38,10 @@
 | [@unocss/extractor-svelte](/extractors/svelte)                         | Svelte 的提取器                |
 | [@unocss/extractor-arbitrary-variants](/extractors/arbitrary-variants) | 支持用于工具的任意变种的提取器 |
 
-# 社区
+## 社区
 
 <p align="center">
-  <img src="https://avatars.githubusercontent.com/unocss-community" width='150' />
+  <img src="https://avatars.githubusercontent.com/unocss-community" width='150' alt="UnoCSS Community Logo" />
 </p>
 
 我们热忱欢迎大家加入并帮助建设 [UnoCSS 社区](https://github.com/unocss-community)。你可以在 [Awesome UnoCSS](https://github.com/unocss-community/awesome-unocss) 中使用和分享与 UnoCSS 相关的资源。

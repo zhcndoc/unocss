@@ -8,7 +8,7 @@ outline: deep
 
 预设是 UnoCSS 的核心。它们让您在几分钟内创建自己的自定义框架。
 
-### 使用预设
+## 使用预设
 
 要将预设设置到您的项目中：
 
@@ -41,6 +41,6 @@ export default defineConfig({
 
 您可以查看 [官方预设](/presets/) 和 [社区预设](/presets/community) 以获取更多信息。
 
-### 创建预设
+## 创建预设
 
 要了解如何创建您自己的自定义预设，请参见 [配置：预设](/config/presets)。

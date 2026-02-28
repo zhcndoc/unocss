@@ -90,6 +90,12 @@ theme: {
 }
 ```
 
+::: tip
+在 `presetWind4` 中，键名已更改为 `breakpoint`。
+
+有关 `presetWind4` 主题文档，请参见 https://unocss.dev/presets/wind4#theme。
+:::
+
 如果您想继承 `original` 主题断点，可以使用 `extendTheme`：
 
 ```ts
@@ -109,7 +115,7 @@ extendTheme: (theme) => {
 `verticalBreakpoints` 与 `breakpoints` 相同，但用于垂直布局。
 :::
 
-另外，我们将按大小（相同单位）对屏幕点进行排序。对于不同单位的屏幕点，避免出现错误，请在配置中使用统一单位。
+另外，我们将按大小（相同单位）对屏幕断点进行排序。对于不同单位的屏幕断点，为避免出现错误，请在配置中使用统一单位。
 
 <!--eslint-skip-->
 

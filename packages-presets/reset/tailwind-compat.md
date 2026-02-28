@@ -1,20 +1,20 @@
 # @unocss/reset/tailwind-compat.css
 
-Based on [tailwind.css](./tailwind.css), with some styles clean up to avoid conflicts with UI frameworks.
+基于 [tailwind.css](./tailwind.css)，对部分样式进行了清理，以避免与 UI 框架冲突。
 
-### Changes
+## 变更
 
-#### [Changes inherit from `tailwind.css`](./tailwind.md)
+### [继承自 `tailwind.css` 的变更](./tailwind.md)
 
-#### Remove background color override for buttons
+### 移除按钮的背景色覆盖
 
-Linked issue: [#2127](https://github.com/unocss/unocss/issues/2127)
+相关 issue：[#2127](https://github.com/unocss/unocss/issues/2127)
 
 <table>
 <thead>
 <tr style="text-align: center">
-<th>Before</th>
-<th>After</th>
+<th>变更前</th>
+<th>变更后</th>
 </tr>
 </thead>
 <tbody>
