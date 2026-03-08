@@ -1,7 +1,7 @@
 {
   "name": "@unocss/monorepo",
   "type": "module",
-  "version": "66.6.2",
+  "version": "66.6.6",
   "private": true,
   "packageManager": "pnpm@10.30.2",
   "scripts": {
@@ -47,6 +47,7 @@
     "@iconify-json/teenyicons": "catalog:icons",
     "@iconify-json/twemoji": "catalog:icons",
     "@iconify-json/uim": "catalog:icons",
+    "@oxc-parser/binding-wasm32-wasi": "catalog:docs",
     "@shikijs/vitepress-twoslash": "catalog:docs",
     "@types/connect": "catalog:types",
     "@types/css-tree": "catalog:types",
