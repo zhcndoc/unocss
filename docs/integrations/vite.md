@@ -4,6 +4,8 @@ description: UnoCSS 的 Vite 插件 (@unocss/vite)。
 outline: deep
 ---
 
+<!-- @unocss-ignore -->
+
 <script setup lang="ts">
 import { examples } from '../.vitepress/content'
 
