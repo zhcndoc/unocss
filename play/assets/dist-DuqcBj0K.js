@@ -1,0 +1,1 @@
+import{U as e}from"./dist-r6iFFadS.js";function t(t={}){return{name:`@unocss/transformer-variant-group`,enforce:`pre`,transform(n){let r=e(n,t.separators);return{get highlightAnnotations(){return[...r.groupsByOffset.values()].flatMap(e=>e.items)}}}}}export{t};
