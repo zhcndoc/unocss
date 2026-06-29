@@ -5,11 +5,26 @@ import { createGenerator, mergeDeep } from '@unocss/core'
 import presetIcons from '@unocss/preset-icons'
 import presetWind3 from '@unocss/preset-wind3'
 import presetWind4 from '@unocss/preset-wind4'
+import transformerDirectives from '@unocss/transformer-directives'
 import MagicString from 'magic-string'
 import parserCSS from 'prettier/parser-postcss'
 import prettier from 'prettier/standalone'
 import { describe, expect, it } from 'vitest'
 import { transformDirectives } from '../packages-presets/transformer-directives/src/transform'
+
+describe('source filter', () => {
+  it('detects supported directives', () => {
+    const transformer = transformerDirectives()
+    expect(transformer.codeFilter?.('.button { color: red }', 'fixture.css')).toBe(false)
+    expect(transformer.codeFilter?.('.button { @apply text-red; }', 'fixture.css')).toBe(true)
+    expect(transformer.codeFilter?.('.button { color: theme("colors.red"); }', 'fixture.css')).toBe(true)
+  })
+
+  it('detects custom apply variables', () => {
+    const transformer = transformerDirectives({ applyVariable: '--custom-apply' })
+    expect(transformer.codeFilter?.('.button { --custom-apply: text-red; }', 'fixture.css')).toBe(true)
+  })
+})
 
 describe('wind3', () => {
   describe('transformer-directives', async () => {
@@ -71,15 +86,16 @@ describe('wind3', () => {
       )
       expect(result)
         .toMatchInlineSnapshot(`
-        ".btn {
-          border-radius: 0.25rem;
-          font-size: 1.125rem;
-          line-height: 1.75rem;
-          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-            "Liberation Mono", "Courier New", monospace;
-        }
-        "
-      `)
+          ".btn {
+            border-radius: 0.25rem;
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+            font-family:
+              ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+              "Courier New", monospace;
+          }
+          "
+        `)
     })
 
     it('basic #4606', async () => {
@@ -624,15 +640,16 @@ div {
       )
       expect(result)
         .toMatchInlineSnapshot(`
-        ".btn {
-          border-radius: 0.25rem;
-          font-size: 1.125rem;
-          line-height: 1.75rem;
-          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-            "Liberation Mono", "Courier New", monospace;
-        }
-        "
-      `)
+          ".btn {
+            border-radius: 0.25rem;
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+            font-family:
+              ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+              "Courier New", monospace;
+          }
+          "
+        `)
     })
 
     it('@apply animate- scoped', async () => {
@@ -787,17 +804,18 @@ div {
 
       expect(result)
         .toMatchInlineSnapshot(`
-        "#app :is(.btn) {
-          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-            "Liberation Mono", "Courier New", monospace;
-        }
-        #app :is(.btn) {
-          border-radius: 0.25rem;
-          font-size: 1.125rem;
-          line-height: 1.75rem;
-        }
-        "
-      `)
+          "#app :is(.btn) {
+            font-family:
+              ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+              "Courier New", monospace;
+          }
+          #app :is(.btn) {
+            border-radius: 0.25rem;
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+          }
+          "
+        `)
     })
 
     it('breakpoints', async () => {
@@ -1284,15 +1302,16 @@ div {
       )
       expect(result)
         .toMatchInlineSnapshot(`
-        "#app :is(.btn) {
-          border-radius: 0.25rem;
-          font-size: 1.125rem;
-          line-height: 1.75rem;
-          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-            "Liberation Mono", "Courier New", monospace;
-        }
-        "
-      `)
+          "#app :is(.btn) {
+            border-radius: 0.25rem;
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+            font-family:
+              ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+              "Courier New", monospace;
+          }
+          "
+        `)
     })
 
     it('@apply animate- scoped', async () => {

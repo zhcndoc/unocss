@@ -113,11 +113,11 @@ export const defaults: Theme['default'] = {
 
 PresetWind4 的基本配置与 [PresetWind3](/presets/wind3#options) 类似，但有以下重要更改。
 
-### Preflights
+### 预检样式
 
 我们在 `PresetWind4` 中添加了 `preflights` 配置选项，以控制是否启用预设样式。
 
-#### Reset
+#### 重置
 
 在 PresetWind4 中，我们使重置样式与 tailwind4 对齐并进行了内部集成。您无需安装任何额外的 CSS 重置包，如 `@unocss/reset` 或 `normalize.css`。
 
@@ -223,7 +223,7 @@ export default defineConfig({
   presets: [
     presetWind4({
       preflights: {
-        property: true, // Enable (default) | `false` to disable [!code ++]
+        property: true, // 启用（默认）| `false` 表示禁用 [!code ++]
       },
     }),
   ],
@@ -242,9 +242,9 @@ export default defineConfig({
     presetWind4({
       preflights: {
         property: {
-          // Custom parent selector (e.g., use @layer instead of @supports)
+          // 自定义父级选择器（例如，使用 @layer 代替 @supports）
           parent: '@layer custom-properties',
-          // Custom selector for applying properties
+          // 用于应用属性的自定义选择器
           selector: ':where(*, ::before, ::after)',
         },
       },
@@ -263,7 +263,7 @@ export default defineConfig({
     presetWind4({
       preflights: {
         property: {
-          parent: false, // No parent wrapper
+          parent: false, // 无父级包装器
         },
       },
     }),
@@ -329,14 +329,15 @@ export default defineConfig({
 
 ::: info
 生成的键名称可能与 `Tailwind4` 的不完全相同。我们尽量避免在主题中对键名称进行重大更改，以尊重从 `presetWind3` 迁移的用户。
-您还可以在 [Preflights 主题处理](#process) 中自定义想要的输出。
+您还可以在 [预检主题处理](#process) 中自定义想要的输出。
 :::
 
 ```css
 :root,
 :host {
   --spacing: 0.25rem;
-  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;

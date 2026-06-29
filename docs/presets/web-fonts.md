@@ -1,6 +1,6 @@
 ---
 title: Web 字体预设
-description: UnoCSS 的 Web 字体支持 (@unocss/preset-web-fonts)。
+description: UnoCSS 的 Web 字体支持（@unocss/preset-web-fonts）。
 outline: deep
 ---
 
@@ -42,7 +42,7 @@ import { defineConfig } from 'unocss'
 export default defineConfig({
   presets: [
     presetWind3(),
-    presetWebFonts({ /* options */ }),
+    presetWebFonts({ /* 选项 */ }),
   ],
 })
 ```
@@ -191,7 +191,7 @@ presetWebFonts({
 ```css
 @import url('https://fonts.googleapis.com/css2?family=Roboto&family=Fira+Code&family=Fira+Mono:wght@400;700&family=Lobster&family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
-/* layer: default */
+/* 层级：默认 */
 .font-lato {
   font-family: "Lato", sans-serif;
 }
@@ -232,13 +232,13 @@ export default defineConfig({
         // 缓存字体的目录
         cacheDir: 'node_modules/.cache/unocss/fonts',
 
-        // 保存字体资产的目录
+        // 保存字体资源的目录
         fontAssetsDir: 'public/assets/fonts',
 
         // 客户端提供字体的基本 URL
         fontServeBaseUrl: '/assets/fonts',
 
-        // Custom fetch function to download the fonts
+        // 用于下载字体的自定义 fetch 函数
         fetch: async url => axios.get(url)
       })
     }),
@@ -246,10 +246,64 @@ export default defineConfig({
 })
 ```
 
-这将把字体资产下载到 `public/assets/fonts` 并从客户端的 `/assets/fonts` 提供它们。在执行此操作时，请确保字体的许可证允许您如此重新分发，工具不对任何法律问题负责。
+这将把字体资源下载到 `public/assets/fonts`，并从客户端的 `/assets/fonts` 提供它们。在执行此操作时，请确保字体的许可证允许您如此重新分发，工具不对任何法律问题负责。
 
 ::: info
 
 此功能特定于 Node.js，无法在浏览器中使用。
 
 :::
+
+## 将字体输出到构建产物
+
+在 CI 环境中或首次构建时，下载到 `public` 目录中的字体可能不会在构建完成前复制到 `dist`。为了确保字体始终包含在生产构建中，请将 `onDownload` 回调与自定义 Vite 插件一起使用。
+
+**vite.config.ts**
+
+```ts
+import { createLocalFontProcessor } from '@unocss/preset-web-fonts/local'
+import { defineConfig } from 'vite'
+
+const emittedFonts = new Map()
+
+// 1. 创建带有 onDownload 钩子的处理器
+export const fontProcessor = createLocalFontProcessor({
+  onDownload(filename, buf) {
+    emittedFonts.set(filename, buf)
+  }
+})
+
+export default defineConfig({
+  plugins: [
+    UnoCSS(),
+    // 2. 在构建期间将收集到的字体作为资源输出
+    {
+      name: 'unocss:font-emit',
+      apply: 'build',
+      generateBundle() {
+        for (const [filename, source] of emittedFonts) {
+          this.emitFile({ type: 'asset', fileName: `assets/fonts/${filename}`, source })
+        }
+        emittedFonts.clear()
+      }
+    },
+  ],
+})
+```
+
+**uno.config.ts**
+
+```ts
+import presetWebFonts from '@unocss/preset-web-fonts'
+import { fontProcessor } from './vite.config'
+
+export default defineConfig({
+  presets: [
+    presetWebFonts({
+      provider: 'google',
+      fonts: { sans: 'Roboto' },
+      processors: [fontProcessor],
+    }),
+  ],
+})
+```

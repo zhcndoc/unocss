@@ -39,6 +39,10 @@ npm install -D unocss
 bun add -D unocss
 ```
 
+```bash [deno]
+deno add -D unocss
+```
+
 :::
 
 安装插件：
@@ -106,7 +110,7 @@ Vite 插件提供了一组模式以启用不同的行为。
 
 ## 在开发者工具中编辑类
 
-因为 "按需" 的限制，开发者工具不知道你尚未在源代码中使用的类。因此，如果你想通过直接更改开发者工具中的类来尝试功能，只需在主入口中添加以下行。
+因为“按需”的限制，开发者工具不知道你尚未在源代码中使用的类。因此，如果你想通过直接更改开发者工具中的类来尝试功能，只需在主入口中添加以下行。
 
 ```ts
 import 'uno.css'
@@ -361,7 +365,7 @@ template.innerHTML = `
 
 ### Solid
 
-你需要在 UnoCSS 的插件之后添加 `vite-plugin-solid` 插件。
+你需要在 UnoCSS 插件之后添加 `vite-plugin-solid` 插件。
 
 ```ts [vite.config.ts]
 import UnoCSS from 'unocss/vite'
@@ -381,7 +385,7 @@ export default {
 
 ### Elm
 
-你需要在 UnoCSS 的插件之前添加 `vite-plugin-elm` 插件。
+你需要在 UnoCSS 插件之前添加 `vite-plugin-elm` 插件。
 
 ```ts [vite.config.ts]
 import UnoCSS from 'unocss/vite'
@@ -400,7 +404,7 @@ export default defineConfig({
 
 ### Marko
 
-你需要在 UnoCSS 的插件之前添加 `@marko/vite` 或 `@marko/run/vite`。
+你需要在 UnoCSS 插件之前添加 `@marko/vite` 或 `@marko/run/vite`。
 
 ```ts [vite.config.ts]
 import marko from '@marko/run/vite'

@@ -128,6 +128,27 @@ describe('preset-wind4', () => {
     await expect(css).toMatchFileSnapshot('./assets/output/preset-wind4-reset.css')
   })
 
+  it('scrollbar gutter utilities', async () => {
+    const uno = await createGenerator({
+      envMode: 'dev',
+      presets: [
+        presetWind4({ preflights: { reset: false } }),
+      ],
+    })
+
+    const { css } = await uno.generate('scrollbar-gutter-auto scrollbar-gutter-stable scrollbar-gutter-both md:scrollbar-gutter-stable', { preflights: false })
+
+    expect(css).toMatchInlineSnapshot(`
+      "/* layer: default */
+      .scrollbar-gutter-auto{scrollbar-gutter:auto;}
+      .scrollbar-gutter-stable{scrollbar-gutter:stable;}
+      .scrollbar-gutter-both{scrollbar-gutter:stable both-edges;}
+      @media (min-width: 48rem){
+      .md\\:scrollbar-gutter-stable{scrollbar-gutter:stable;}
+      }"
+    `)
+  })
+
   it('fully theme prefight', async () => {
     const uno = await createGenerator({
       envMode: 'dev',
@@ -422,7 +443,7 @@ describe('preset-wind4', () => {
       'md:has-aria-[hidden=false]:peer-data-[dialog=open]:group-data-[vv=w]/accordion:b-4',
     ])
 
-    const prettified = prettier.format(css, {
+    const prettified = await prettier.format(css, {
       parser: 'css',
       plugins: [parserCSS],
     })
@@ -489,6 +510,23 @@ describe('preset-wind4', () => {
     .bg-white{background-color:color-mix(in oklab, var(--colors-white) var(--foo-bg-opacity), transparent);}
     }"
   `)
+  })
+
+  it('keeps media parents outside divide and space child selectors', async () => {
+    const uno = await createGenerator({
+      presets: [
+        presetWind4({
+          dark: 'media',
+        }),
+      ],
+    })
+
+    const { css } = await uno.generate('dark:divide-gray-700 dark:space-y-4', { preflights: false })
+
+    expect(css).toContain('@media (prefers-color-scheme: dark){.dark\\:divide-gray-700{\n:where(&>:not(:last-child)){border-color:')
+    expect(css).toContain('@media (prefers-color-scheme: dark){.dark\\:space-y-4{\n:where(&>:not(:last-child)){--un-space-y-reverse:0;')
+    expect(css).not.toContain('.dark\\:divide-gray-700{@media')
+    expect(css).not.toContain('.dark\\:space-y-4{@media')
   })
 })
 

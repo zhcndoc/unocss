@@ -126,7 +126,6 @@ transformerDirectives({
   }
 }
 /* ... */
-...;
 ```
 
 将被转换为：
@@ -301,4 +300,4 @@ transformerDirectives({
 
 ## 许可证
 
-- MIT 许可证 &copy; 2022-PRESENT [hannoeru](https://github.com/hannoeru)
+- MIT 许可证 &copy; 2022-至今 [hannoeru](https://github.com/hannoeru)
