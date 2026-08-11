@@ -1,5 +1,6 @@
 import type { DefaultTheme } from 'vitepress'
 import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
+import { createTwoslasher } from '@unocss/twoslash'
 import { defineConfig } from 'vitepress'
 import { groupIconMdPlugin } from 'vitepress-plugin-group-icons'
 import llmstxt from 'vitepress-plugin-llms'
@@ -45,10 +46,11 @@ const Integrations: DefaultTheme.NavItemWithLink[] = [
   { text: 'CLI', link: '/integrations/cli' },
   { text: 'PostCSS', link: '/integrations/postcss' },
   { text: 'ESLint', link: '/integrations/eslint' },
-  { text: 'VS Code 扩展', link: '/integrations/vscode' },
-  { text: 'JetBrains IDE 插件', link: '/integrations/jetbrains' },
-  { text: 'LSP 支持', link: '/integrations/lsp' },
-  { text: 'Zed 扩展', link: '/integrations/zed' },
+  { text: 'Twoslash', link: '/integrations/twoslash' },
+  { text: 'LSP Support', link: '/integrations/lsp' },
+  { text: 'VS Code Extension', link: '/integrations/vscode' },
+  { text: 'JetBrains IDE Plugin', link: '/integrations/jetbrains' },
+  { text: 'Zed Extension', link: '/integrations/zed' },
 ]
 
 const Presets: DefaultTheme.NavItemWithLink[] = [
@@ -311,6 +313,10 @@ export default defineConfig({
     codeTransformers: [
       transformerTwoslash({
         processHoverInfo: info => info.replace(/_unocss_core\./g, ''),
+      }),
+      transformerTwoslash({
+        langs: ['vue', 'html'],
+        twoslasher: createTwoslasher(),
       }),
     ],
     config(md) {

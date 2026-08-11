@@ -64,6 +64,8 @@ export default [
 - `blocklist` - 禁止特定的类选择器 [可选]。
 - `enforce-class-compile` - 强制类编译 [可选]。
 
+`order-attributify` 会对属性化属性本身进行排序。它不会对属性化值中的工具类进行排序，例如 `un-before="text-center font-sans color-gray"`。
+
 ### 规则选项
 
 #### `order`

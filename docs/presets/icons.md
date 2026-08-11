@@ -27,7 +27,7 @@ const toggleDark = () => {
 
 例如：
 
-```html
+```html twoslash
 <!-- 来自 Phosphor 图标的基本锚点图标 -->
 <div class="i-ph-anchor-simple-thin" />
 <!-- 来自 Material Design 图标的橙色警报 -->
@@ -145,7 +145,7 @@ presetIcons({
 
 例如，`vscode-icons:file-type-light-pnpm` 是一个带有颜色的图标（`svg` 不包含 `currentColor`），将作为背景图像渲染。使用 `vscode-icons:file-type-light-pnpm?mask` 来将其渲染为蒙版图像并忽略其颜色。
 
-```html
+```html twoslash
 <div class="w-full flex items-center justify-center gap-x-4 text-4xl p-2 mt-4">
   <div class="i-vscode-icons:file-type-light-pnpm" />
   <div class="i-vscode-icons:file-type-light-pnpm?mask text-red-300" />
@@ -548,7 +548,7 @@ interface IconMeta {
 
 使用此预设与自定义图标时，请考虑进行类似于 [Iconify](https://iconify.design/) 对任何图标集进行的清理过程。你所需的所有工具都可以在 [Iconify Tools](https://iconify.design/docs/libraries/tools/) 中找到。
 
-你可以查看这个仓库，使用此预设在 `Vue 3` 项目中的例子：[@iconify/tools/@iconify-demo/unocss](https://github.com/iconify/tools/tree/main/%40iconify-demo/unocss)。
+你可以查看这个仓库，了解使用此预设在 `Vue 3` 项目中的示例：[@iconify/tools/@iconify-demo/unocss](https://github.com/iconify/tools/tree/main/%40iconify-demo/unocss)。
 
 阅读 [清理图标](https://iconify.design/docs/articles/cleaning-up-icons/) 文章以获取更多详细信息。
 

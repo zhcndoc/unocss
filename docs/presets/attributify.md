@@ -8,7 +8,7 @@ outline: deep
 
 这启用了其他预设的 [属性模式](#attributify-mode)。
 
-[源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-attributify)
+[源代码](https://github.com/unocss/unocss/tree/main/packages-presets/preset-attributify)。
 
 ## 安装
 
@@ -56,17 +56,17 @@ import { presetAttributify } from 'unocss'
 
 想象一下，您有一个使用 Tailwind CSS 工具的按钮。当列表变得更长时，阅读和维护变得非常困难。
 
-```html
+```html twoslash
 <button
   class="bg-blue-400 hover:bg-blue-500 text-sm text-white font-mono font-light py-2 px-4 rounded border-2 border-blue-200 dark:bg-blue-500 dark:hover:bg-blue-600"
 >
-  Button
+  按钮
 </button>
 ```
 
 使用属性模式，您可以将工具分离到属性中：
 
-```html
+```html twoslash
 <button
   bg="blue-400 hover:blue-500 dark:blue-500 dark:hover:blue-600"
   text="sm white"
@@ -74,7 +74,7 @@ import { presetAttributify } from 'unocss'
   p="y-2 x-4"
   border="2 rounded blue-200"
 >
-  Button
+  按钮
 </button>
 ```
 
@@ -86,14 +86,14 @@ import { presetAttributify } from 'unocss'
 
 例如：
 
-```html
-<button class="border border-red">Button</button>
+```html twoslash
+<button class="border border-red">按钮</button>
 ```
 
 可以写成：
 
-```html
-<button border="~ red">Button</button>
+```html twoslash
+<button border="~ red">按钮</button>
 ```
 
 ## 无值属性
@@ -102,13 +102,13 @@ import { presetAttributify } from 'unocss'
 
 例如，
 
-```html
+```html twoslash
 <div class="m-2 rounded text-teal-400" />
 ```
 
 现在可以是
 
-```html
+```html twoslash
 <div m-2 rounded text-teal-400 />
 ```
 
@@ -204,7 +204,7 @@ declare module 'solid-js' {
 }
 ```
 
-### Svelte & SvelteKit
+### Svelte 与 SvelteKit
 
 ```ts
 declare namespace svelteHTML {
