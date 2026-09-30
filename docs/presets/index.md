@@ -38,11 +38,11 @@
 | [@unocss/extractor-svelte](/extractors/svelte)                         | Svelte 的提取器                |
 | [@unocss/extractor-arbitrary-variants](/extractors/arbitrary-variants) | 支持用于工具的任意变种的提取器 |
 
-## Processors
+## 处理器
 
-| Package                                                    | Description                                         |
-| ---------------------------------------------------------- | --------------------------------------------------- |
-| [@unocss/processor-lightningcss](/processors/lightningcss) | Process generated CSS with Lightning CSS in Node.js |
+| 包                                                         | 描述                                           |
+| ---------------------------------------------------------- | ---------------------------------------------- |
+| [@unocss/processor-lightningcss](/processors/lightningcss) | 在 Node.js 中使用 Lightning CSS 处理生成的 CSS |
 
 ## 社区
 

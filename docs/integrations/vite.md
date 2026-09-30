@@ -254,7 +254,7 @@ export default defineConfig({
 })
 ```
 
-For the default global mode, SvelteKit has no `main.ts` entry. Import the generated stylesheet from the root layout:
+默认的 global 模式下，SvelteKit 没有 `main.ts` 入口。请从根布局导入生成的样式表：
 
 ```svelte [src/routes/+layout.svelte]
 <script>

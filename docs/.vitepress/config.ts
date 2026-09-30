@@ -11,16 +11,16 @@ const ogImage = `${ogUrl}og.png#1`
 const title = 'UnoCSS 中文文档'
 const description = '即时按需生成的原子化 CSS 引擎'
 
-const Guides: DefaultTheme.NavItemWithLink[] = [
+const Guides = [
   { text: '入门指南', link: '/guide/' },
   { text: '为什么选择 UnoCSS？', link: '/guide/why' },
   { text: '预设', link: '/guide/presets' },
   { text: '样式重置', link: '/guide/style-reset' },
   { text: '配置文件', link: '/guide/config-file' },
   { text: '提取 & 安全列表', link: '/guide/extracting' },
-]
+] satisfies DefaultTheme.NavItemWithLink[]
 
-const Configs: DefaultTheme.NavItemWithLink[] = [
+const Configs = [
   { text: '概述', link: '/config/' },
   { text: '规则', link: '/config/rules' },
   { text: '变体', link: '/config/variants' },
@@ -32,9 +32,9 @@ const Configs: DefaultTheme.NavItemWithLink[] = [
   { text: '层', link: '/config/layers' },
   { text: '预设', link: '/config/presets' },
   { text: '转换器', link: '/config/transformers' },
-  { text: 'Processors', link: '/config/processors' },
+  { text: '处理器', link: '/config/processors' },
   { text: '自动完成', link: '/config/autocomplete' },
-]
+] satisfies DefaultTheme.NavItemWithLink[]
 
 const Integrations = [
   { text: 'Vite', link: '/integrations/vite' },
@@ -43,7 +43,7 @@ const Integrations = [
   { text: 'Astro', link: '/integrations/astro' },
   { text: 'Svelte Scoped', link: '/integrations/svelte-scoped' },
   { text: 'Webpack', link: '/integrations/webpack' },
-  { text: 'Rollup and Rolldown', link: '/integrations/rollup' },
+  { text: 'Rollup 与 Rolldown', link: '/integrations/rollup' },
   { text: 'Runtime', link: '/integrations/runtime' },
   { text: 'CLI', link: '/integrations/cli' },
   { text: 'PostCSS', link: '/integrations/postcss' },
@@ -66,31 +66,31 @@ const Presets = [
   { text: 'Legacy 兼容', link: '/presets/legacy-compat' },
   { text: '标签化', link: '/presets/tagify' },
   { text: 'rem 转 px', link: '/presets/rem-to-px' },
-]
+] satisfies DefaultTheme.NavItemWithLink[]
 
-const Transformers: DefaultTheme.NavItemWithLink[] = [
+const Transformers = [
   { text: '变体组', link: '/transformers/variant-group' },
   { text: '指令', link: '/transformers/directives' },
   { text: '编译类', link: '/transformers/compile-class' },
   { text: 'Attributify JSX', link: '/transformers/attributify-jsx' },
 ] satisfies DefaultTheme.NavItemWithLink[]
 
-const Extractors: DefaultTheme.NavItemWithLink[] = [
+const Extractors = [
   { text: 'Pug 提取器', link: '/extractors/pug' },
   { text: 'MDC 提取器', link: '/extractors/mdc' },
   { text: 'Svelte 提取器', link: '/extractors/svelte' },
   { text: '任意变体提取器', link: '/extractors/arbitrary-variants' },
-]
+] satisfies DefaultTheme.NavItemWithLink[]
 
-const Processors: DefaultTheme.NavItemWithLink[] = [
+const Processors = [
   { text: 'Lightning CSS', link: '/processors/lightningcss' },
-]
+] satisfies DefaultTheme.NavItemWithLink[]
 
-const Tools: DefaultTheme.NavItemWithLink[] = [
+const Tools = [
   { text: '检查器', link: '/tools/inspector' },
   { text: '核心', link: '/tools/core' },
   { text: '自动完成', link: '/tools/autocomplete' },
-]
+] satisfies DefaultTheme.NavItemWithLink[]
 
 const Resources: DefaultTheme.NavItemWithLink[] = [
   { text: '交互式文档', link: '/interactive/', target: '_blank' },
@@ -169,7 +169,7 @@ const Nav: DefaultTheme.NavItem[] = [
         items: Extractors,
       },
       {
-        text: 'Processors',
+        text: '处理器',
         items: Processors,
       },
     ],
@@ -259,12 +259,12 @@ const SidebarPresets: DefaultTheme.SidebarItem[] = [
     items: Extractors,
   },
   {
-    text: 'Processors',
+    text: '处理器',
     collapsed: false,
     items: Processors,
   },
   {
-    text: 'Other Packages',
+    text: '其他包',
     collapsed: false,
     items: Tools,
   },

@@ -258,7 +258,7 @@ transformerDirectives({
 }
 ```
 
-It also works in at-rule conditions:
+它也适用于 at-rule 条件：
 
 ```css
 @media (min-width: theme('breakpoints.md')) {

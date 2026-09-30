@@ -1,3 +1,5 @@
+import { execFile } from 'node:child_process'
+import { promisify } from 'node:util'
 import Vue from '@vitejs/plugin-vue'
 // import SimpleGit from 'simple-git'
 import UnoCSS from 'unocss/vite'
@@ -6,25 +8,35 @@ import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
 import Inspect from 'vite-plugin-inspect'
 import { alias } from '../alias'
+import packageJson from '../package.json' with { type: 'json' }
 import { importMapPlugin } from './vite-plugin-import-map'
 
 const GITHUB_REPO = 'unocss/unocss'
-const GITHUB_API = 'https://api.github.com'
+const execFileAsync = promisify(execFile)
 
 async function getGitHubInfo() {
-  const [commitRes, tagsRes] = await Promise.all([
-    fetch(`${GITHUB_API}/repos/${GITHUB_REPO}/commits/main`),
-    fetch(`${GITHUB_API}/repos/${GITHUB_REPO}/tags`),
+  const tag = `v${packageJson.version}`
+  const { stdout } = await execFileAsync('git', [
+    'ls-remote',
+    `https://github.com/${GITHUB_REPO}.git`,
+    'refs/heads/main',
+    `refs/tags/${tag}`,
+    `refs/tags/${tag}^{}`,
   ])
+  const refs = new Map<string, string>()
+  for (const line of stdout.trim().split('\n')) {
+    if (!line)
+      continue
+    const [sha, ref] = line.split('\t')
+    refs.set(ref, sha)
+  }
 
-  const commitData = await commitRes.json()
-  const tagsData = await tagsRes.json()
+  const SHA = refs.get('refs/heads/main')
+  const LASTEST_TAG_SHA = refs.get(`refs/tags/${tag}^{}`) ?? refs.get(`refs/tags/${tag}`)
+  if (!SHA || !LASTEST_TAG_SHA)
+    throw new Error(`Could not resolve main and ${tag} from ${GITHUB_REPO}`)
 
-  const SHA = commitData.sha
-  const LASTEST_TAG = tagsData[0].name.replace('v', '')
-  const LASTEST_TAG_SHA = tagsData[0].commit.sha
-
-  return { SHA, LASTEST_TAG, LASTEST_TAG_SHA }
+  return { SHA, LASTEST_TAG: packageJson.version, LASTEST_TAG_SHA }
 }
 
 const { SHA, LASTEST_TAG, LASTEST_TAG_SHA } = await getGitHubInfo()

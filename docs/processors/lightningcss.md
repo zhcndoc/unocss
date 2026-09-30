@@ -1,16 +1,16 @@
 ---
-title: Lightning CSS processor
-description: Process generated UnoCSS output with Lightning CSS in Node.js (@unocss/processor-lightningcss).
+title: Lightning CSS 处理器
+description: 在 Node.js 中使用 Lightning CSS 处理 UnoCSS 生成内容（@unocss/processor-lightningcss）。
 outline: deep
 ---
 
-# Lightning CSS processor
+# Lightning CSS 处理器
 
-`@unocss/processor-lightningcss` processes each generated UnoCSS layer with [Lightning CSS](https://lightningcss.dev/). It can minify CSS, compile modern CSS syntax, and add compatibility transforms for your browser targets.
+`@unocss/processor-lightningcss` 使用 [Lightning CSS](https://lightningcss.dev/) 处理 UnoCSS 生成的各个层。它可以压缩 CSS、编译现代 CSS 语法，并根据浏览器目标添加兼容性转换。
 
-[Source Code](https://github.com/unocss/unocss/tree/main/packages-presets/processor-lightningcss)
+[源代码](https://github.com/unocss/unocss/tree/main/packages-presets/processor-lightningcss)
 
-## Installation
+## 安装
 
 ::: code-group
 
@@ -32,9 +32,9 @@ bun add -D @unocss/processor-lightningcss
 
 :::
 
-## Usage
+## 使用
 
-Add the processor to the [`processors`](/config/processors) array in your UnoCSS configuration:
+将处理器添加到 UnoCSS 配置中的 [`processors`](/config/processors) 数组：
 
 ```ts [uno.config.ts]
 import processorLightningCSS from '@unocss/processor-lightningcss'
@@ -52,17 +52,17 @@ export default defineConfig({
 })
 ```
 
-The processor runs after UnoCSS generates each non-empty layer. Its output is returned by `getLayer()`, `getLayers()`, and the generated `css` result.
+UnoCSS 生成每个非空层后会运行此处理器。处理结果可通过 `getLayer()`、`getLayers()` 和生成的 `css` 结果获取。
 
-## Options
+## 选项
 
-The processor accepts Lightning CSS [`TransformOptions`](https://github.com/parcel-bundler/lightningcss/blob/master/node/index.d.ts), except for `code` and `filename`. UnoCSS supplies those values for each generated layer.
+该处理器接受 Lightning CSS 的 [`TransformOptions`](https://github.com/parcel-bundler/lightningcss/blob/master/node/index.d.ts)，但不包括 `code` 和 `filename`。UnoCSS 会为每个生成的层提供这两个值。
 
-The current layer name is used as the filename. For example, the `utilities` layer is passed to Lightning CSS as `utilities.css`, which makes transformation errors easier to identify.
+当前层名称会用作文件名。例如，`utilities` 层会以 `utilities.css` 的名称传递给 Lightning CSS，便于定位转换错误。
 
-### Minification
+### 压缩
 
-By default, minification is enabled when `envMode` is `build` and disabled when it is `dev`. Set `minify` explicitly to override that behavior:
+默认情况下，`envMode` 为 `build` 时会启用压缩，为 `dev` 时则会禁用。显式设置 `minify` 可以覆盖此行为：
 
 ```ts [uno.config.ts]
 processorLightningCSS({
@@ -70,9 +70,9 @@ processorLightningCSS({
 })
 ```
 
-### Browser targets
+### 浏览器目标
 
-Use `targets` to control which compatibility transforms Lightning CSS applies:
+使用 `targets` 控制 Lightning CSS 应用哪些兼容性转换：
 
 ```ts [uno.config.ts]
 processorLightningCSS({
@@ -84,10 +84,10 @@ processorLightningCSS({
 })
 ```
 
-## Node.js only
+## 仅限 Node.js
 
-This processor uses the native Node.js build of Lightning CSS and is intended for build-time usage. When it is invoked outside Node.js, UnoCSS emits a warning once and returns the original CSS unchanged.
+此处理器使用 Lightning CSS 的原生 Node.js 构建版本，适用于构建阶段。在 Node.js 之外调用时，UnoCSS 只会发出一次警告，并原样返回 CSS。
 
-## License
+## 许可证
 
-- MIT License &copy; 2021-PRESENT [Anthony Fu](https://github.com/antfu)
+- MIT 许可证 &copy; 2021-PRESENT [Anthony Fu](https://github.com/antfu)

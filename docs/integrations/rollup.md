@@ -1,14 +1,14 @@
 ---
-title: UnoCSS Rollup and Rolldown Plugin
-description: Use UnoCSS with Rollup or Rolldown.
+title: UnoCSS Rollup 与 Rolldown 插件
+description: 在 Rollup 或 Rolldown 中使用 UnoCSS。
 outline: deep
 ---
 
-# Rollup and Rolldown Plugin
+# Rollup 与 Rolldown 插件
 
-Use UnoCSS with Rollup or Rolldown without Vite. The plugin supports the `global` mode and emits a CSS asset when you import `uno.css` from an entry module.
+无需使用 Vite，即可在 Rollup 或 Rolldown 中使用 UnoCSS。该插件支持 `global` 模式；当你在入口模块中导入 `uno.css` 时，它会输出 CSS 资源。
 
-## Installation
+## 安装
 
 ::: code-group
 
@@ -30,9 +30,9 @@ bun add -D unocss rollup
 
 :::
 
-Replace `rollup` with `rolldown` when you use Rolldown.
+使用 Rolldown 时，将 `rollup` 替换为 `rolldown`。
 
-## Rollup
+## Rollup 集成
 
 ```ts [rollup.config.ts]
 import UnoCSS from 'unocss/rollup'
@@ -45,7 +45,7 @@ export default {
 }
 ```
 
-## Rolldown
+## Rolldown 集成
 
 ```ts [rolldown.config.ts]
 import UnoCSS from 'unocss/rolldown'
@@ -58,17 +58,17 @@ export default {
 }
 ```
 
-Import `uno.css` from an entry module:
+在入口模块中导入 `uno.css`：
 
 ```ts [src/main.ts]
 import 'uno.css'
 ```
 
-The plugin emits generated CSS as an output asset. Include that asset in your application with your deployment or HTML pipeline.
+插件会将生成的 CSS 作为输出资源发出。请通过部署流程或 HTML 流程将该资源包含在应用中。
 
-## Configuration
+## 配置
 
-Create a `uno.config.ts` file:
+创建 `uno.config.ts` 文件：
 
 ```ts [uno.config.ts]
 import { defineConfig } from 'unocss'
@@ -78,7 +78,7 @@ export default defineConfig({
 })
 ```
 
-You can also pass the configuration to the plugin directly:
+你也可以直接将配置传递给插件：
 
 ```ts
 import UnoCSS from 'unocss/rollup'

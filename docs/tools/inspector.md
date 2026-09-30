@@ -6,34 +6,34 @@ description: The inspector UI for UnoCSS (@unocss/inspector).
 # Inspector
 
 The inspector UI for UnoCSS: `@unocss/inspector`.
-Provided along with `unocss` and `@unocss/vite`.
+它随 `unocss` 和 `@unocss/vite` 一同提供。
 
-The inspector allows you to inspect the generated CSS rules and the applied classes for each file. It also provides a REPL to test your utilities based on your current configuration.
+检查器可用于查看生成的 CSS 规则以及各文件应用的类。它还提供 REPL，可根据当前配置测试工具类。
 
-Built on top of [devframe](https://devfra.me/), the inspector can be hosted in several ways.
+检查器基于 [devframe](https://devfra.me/) 构建，可通过多种方式托管。
 
-## Vite DevTools (recommended)
+## Vite DevTools（推荐）
 
-When [Vite DevTools](https://devtools.vite.dev/) (`@vitejs/devtools`) is installed, the inspector is mounted automatically as a **UnoCSS dock** inside it — no auth prompt, live updates included.
+安装 [Vite DevTools](https://devtools.vite.dev/)（`@vitejs/devtools`）后，检查器会自动作为 **UnoCSS 停靠面板**挂载其中，无需身份验证提示，并支持实时更新。
 
-`vite build` with DevTools' static build also bakes a pre-computed snapshot of the inspector data into the export, so the analysis is viewable without a dev server.
+使用 DevTools 的静态构建运行 `vite build` 时，也会将预先计算的检查器数据快照打包到导出内容中，因此无需开发服务器即可查看分析结果。
 
-## Standalone URL
+## 独立 URL
 
-Visit <a href="http://localhost:5173/__unocss" target="_blank" rel="noreferrer">localhost:5173/\_\_unocss</a> in your Vite dev server to see the inspector.
+在 Vite 开发服务器中访问 <a href="http://localhost:5173/__unocss" target="_blank" rel="noreferrer">localhost:5173/\_\_unocss</a> 即可查看检查器。
 
-On first use, enter the one-time 6-digit code printed in your dev server terminal to unlock it (the token is remembered per browser). When Vite DevTools is active, this URL redirects into the DevTools UI instead.
+首次使用时，请输入开发服务器终端中显示的一次性 6 位验证码以解锁（令牌会按浏览器记忆）。启用 Vite DevTools 时，此 URL 会改为跳转到 DevTools 界面。
 
 ::: info
-The standalone URL is a deprecated surface — the Vite DevTools dock is the recommended way to use the inspector going forward.
+独立 URL 已弃用；今后建议通过 Vite DevTools 停靠面板使用检查器。
 :::
 
-## Other hosts
+## 其他托管方式
 
-`@unocss/inspector/devframe` exports the inspector as a portable [devframe definition](https://devfra.me/), mountable by any devframe host:
+`@unocss/inspector/devframe` 将检查器导出为可移植的 [devframe 定义](https://devfra.me/)，可挂载到任何 devframe 宿主：
 
-- `createInspectorDevframe(ctx)` — bind the inspector to an existing UnoCSS plugin context.
-- `createStandaloneInspectorDevframe(options)` — build a standalone context by scanning project files, for hosts without a bundler-integrated UnoCSS context (e.g. a Next.js app using `@unocss/postcss` via [`@devframes/next`](https://devfra.me/frameworks/next)).
+- `createInspectorDevframe(ctx)` — 将检查器绑定到现有 UnoCSS 插件上下文。
+- `createStandaloneInspectorDevframe(options)` — 扫描项目文件并构建独立上下文，供没有集成打包器 UnoCSS 上下文的宿主使用（例如通过 [`@devframes/next`](https://devfra.me/frameworks/next) 使用 `@unocss/postcss` 的 Next.js 应用）。
 
 <img src="https://user-images.githubusercontent.com/11247099/140885990-1827f5ce-f12a-4ed4-9d63-e5145a65fb4a.png" loading="lazy" alt="UnoCSS Inspector" />
 <img src="https://user-images.githubusercontent.com/11247099/140886020-7014f412-f020-4aed-a169-d025cc1bbcd3.png" loading="lazy" alt="UnoCSS Inspector REPL" />

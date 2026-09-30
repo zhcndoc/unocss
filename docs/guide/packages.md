@@ -28,7 +28,7 @@ UnoCSS 是一个包含多个包的单体仓库。此页面列出了所有包及�
 | [@unocss/transformer-attributify-jsx](/transformers/attributify-jsx) | 支持在 JSX/TSX 中使用无值的属性     | ✅              | 否   |
 | [@unocss/extractor-pug](/extractors/pug)                             | Pug 的提取器                        | 否              | -    |
 | [@unocss/extractor-svelte](/extractors/svelte)                       | Svelte 的提取器                     | 否              | -    |
-| [@unocss/processor-lightningcss](/processors/lightningcss)           | Process generated CSS with Lightning CSS | 否          | 否   |
+| [@unocss/processor-lightningcss](/processors/lightningcss)           | 使用 Lightning CSS 处理生成的 CSS   | 否              | 否   |
 | [@unocss/autocomplete](/tools/autocomplete)                          | 自动补全工具                        | 否              | -    |
 | [@unocss/config](/guide/config-file)                                 | 配置文件加载器                      | ✅              | -    |
 | [@unocss/reset](/guide/style-reset)                                  | 常见 CSS 重置的集合                 | ✅              | 否   |
