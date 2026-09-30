@@ -46,9 +46,6 @@ describe('preset-wind4', () => {
         "color-bluegray-400/10",
         "color-bluegray/10",
         "text-red2",
-        "text-[color:--variable]",
-        "text-[color:var(--color)]",
-        "text-[color:var(--color-x)]:[trick]",
         "ring-red2",
         "ring-red2/5",
         "ring-width-px",
@@ -126,6 +123,22 @@ describe('preset-wind4', () => {
 
     const { css } = await uno.generate('')
     await expect(css).toMatchFileSnapshot('./assets/output/preset-wind4-reset.css')
+  })
+
+  it('blend mode global keywords', async () => {
+    const uno = await createGenerator({
+      envMode: 'dev',
+      presets: [
+        presetWind4({ preflights: { reset: false } }),
+      ],
+    })
+
+    const { css } = await uno.generate('bg-blend-inherit bg-blend-unset mix-blend-revert mix-blend-unset', { preflights: false })
+
+    expect(css).toContain('background-blend-mode:inherit')
+    expect(css).toContain('background-blend-mode:unset')
+    expect(css).toContain('mix-blend-mode:revert')
+    expect(css).toContain('mix-blend-mode:unset')
   })
 
   it('scrollbar gutter utilities', async () => {
@@ -527,6 +540,72 @@ describe('preset-wind4', () => {
     expect(css).toContain('@media (prefers-color-scheme: dark){.dark\\:space-y-4{\n:where(&>:not(:last-child)){--un-space-y-reverse:0;')
     expect(css).not.toContain('.dark\\:divide-gray-700{@media')
     expect(css).not.toContain('.dark\\:space-y-4{@media')
+  })
+
+  it('in-* resolves pseudo-class names against the ancestor', async () => {
+    const uno = await createGenerator({
+      presets: [
+        presetWind4({ preflights: { reset: false } }),
+      ],
+    })
+
+    const { css } = await uno.generate('in-focus:block in-odd:block in-open:block in-div:block in-[.card]:block', { preflights: false })
+
+    expect(css).toMatchInlineSnapshot(`
+      "/* layer: default */
+      .in-\\[\\.card\\]\\:block{
+      :where(*:is(.card)) &{display:block;}
+      }
+      .in-div\\:block{
+      :where(*:is(div)) &{display:block;}
+      }
+      .in-focus\\:block{
+      :where(*:is(:focus)) &{display:block;}
+      }
+      .in-odd\\:block{
+      :where(*:is(:nth-child(odd))) &{display:block;}
+      }
+      .in-open\\:block{
+      :where(*:is(:is([open],:popover-open,:open))) &{display:block;}
+      }"
+    `)
+
+    const { css: skipped } = await uno.generate('in-before:block in-nth:block', { preflights: false })
+    expect(skipped).toContain(':where(*:is(before)) &')
+    expect(skipped).toContain(':where(*:is(nth)) &')
+  })
+
+  it('h-screen-* uses verticalBreakpoint', async () => {
+    const uno = await createGenerator({
+      presets: [
+        presetWind4({
+          preflights: { reset: false, theme: false },
+        }),
+      ],
+      theme: {
+        breakpoint: {
+          sm: '640px',
+          md: '768px',
+        },
+        verticalBreakpoint: {
+          sm: '400px',
+          md: '500px',
+        },
+      },
+    })
+
+    const { getLayer } = await uno.generate([
+      'h-screen-sm',
+      'h-screen-md',
+      'w-screen-sm',
+    ])
+
+    expect(getLayer('default')).toMatchInlineSnapshot(`
+      "/* layer: default */
+      .h-screen-md{height:500px;}
+      .h-screen-sm{height:400px;}
+      .w-screen-sm{width:640px;}"
+    `)
   })
 })
 

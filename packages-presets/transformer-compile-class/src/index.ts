@@ -83,6 +83,7 @@ export default function transformerCompileClass(options: CompileClassOptions = {
 
   return {
     name: '@unocss/transformer-compile-class',
+    docs: 'https://unocss.dev/transformers/compile-class',
     enforce: 'pre',
     async transform(s, _, { uno, tokens, invalidate }) {
       const matches = Array.from(s.original.matchAll(regexp))
@@ -131,8 +132,7 @@ export default function transformerCompileClass(options: CompileClassOptions = {
 
           if (compiledClass.get(className) !== body) {
             compiledClass.set(className, body)
-            uno.cache.delete(className)
-            uno.blocked.delete(className)
+            uno.invalidateToken(className)
             hasChanges = true
           }
           replacements.unshift(className)

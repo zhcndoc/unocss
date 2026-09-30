@@ -4,7 +4,7 @@ import { createTwoslasher } from '@unocss/twoslash'
 import { defineConfig } from 'vitepress'
 import { groupIconMdPlugin } from 'vitepress-plugin-group-icons'
 import llmstxt from 'vitepress-plugin-llms'
-import { version } from '../../package.json'
+import { version } from '../../package.json' with { type: 'json' }
 
 const ogUrl = 'https://unocss.zhcndoc.com/'
 const ogImage = `${ogUrl}og.png#1`
@@ -32,16 +32,18 @@ const Configs: DefaultTheme.NavItemWithLink[] = [
   { text: '层', link: '/config/layers' },
   { text: '预设', link: '/config/presets' },
   { text: '转换器', link: '/config/transformers' },
+  { text: 'Processors', link: '/config/processors' },
   { text: '自动完成', link: '/config/autocomplete' },
 ]
 
-const Integrations: DefaultTheme.NavItemWithLink[] = [
+const Integrations = [
   { text: 'Vite', link: '/integrations/vite' },
   { text: 'Nuxt', link: '/integrations/nuxt' },
   { text: 'Next', link: '/integrations/next' },
   { text: 'Astro', link: '/integrations/astro' },
   { text: 'Svelte Scoped', link: '/integrations/svelte-scoped' },
   { text: 'Webpack', link: '/integrations/webpack' },
+  { text: 'Rollup and Rolldown', link: '/integrations/rollup' },
   { text: 'Runtime', link: '/integrations/runtime' },
   { text: 'CLI', link: '/integrations/cli' },
   { text: 'PostCSS', link: '/integrations/postcss' },
@@ -51,9 +53,9 @@ const Integrations: DefaultTheme.NavItemWithLink[] = [
   { text: 'VS Code Extension', link: '/integrations/vscode' },
   { text: 'JetBrains IDE Plugin', link: '/integrations/jetbrains' },
   { text: 'Zed Extension', link: '/integrations/zed' },
-]
+] satisfies DefaultTheme.NavItemWithLink[]
 
-const Presets: DefaultTheme.NavItemWithLink[] = [
+const Presets = [
   { text: 'Mini', link: '/presets/mini' },
   { text: 'Wind3', link: '/presets/wind3' },
   { text: 'Wind4', link: '/presets/wind4' },
@@ -71,13 +73,17 @@ const Transformers: DefaultTheme.NavItemWithLink[] = [
   { text: '指令', link: '/transformers/directives' },
   { text: '编译类', link: '/transformers/compile-class' },
   { text: 'Attributify JSX', link: '/transformers/attributify-jsx' },
-]
+] satisfies DefaultTheme.NavItemWithLink[]
 
 const Extractors: DefaultTheme.NavItemWithLink[] = [
   { text: 'Pug 提取器', link: '/extractors/pug' },
   { text: 'MDC 提取器', link: '/extractors/mdc' },
   { text: 'Svelte 提取器', link: '/extractors/svelte' },
   { text: '任意变体提取器', link: '/extractors/arbitrary-variants' },
+]
+
+const Processors: DefaultTheme.NavItemWithLink[] = [
+  { text: 'Lightning CSS', link: '/processors/lightningcss' },
 ]
 
 const Tools: DefaultTheme.NavItemWithLink[] = [
@@ -162,8 +168,12 @@ const Nav: DefaultTheme.NavItem[] = [
         text: '提取器',
         items: Extractors,
       },
+      {
+        text: 'Processors',
+        items: Processors,
+      },
     ],
-    activeMatch: '^/(presets|transformers|extractors)/',
+    activeMatch: '^/(presets|transformers|extractors|processors)/',
   },
   {
     text: '资源',
@@ -249,7 +259,12 @@ const SidebarPresets: DefaultTheme.SidebarItem[] = [
     items: Extractors,
   },
   {
-    text: '其他工具',
+    text: 'Processors',
+    collapsed: false,
+    items: Processors,
+  },
+  {
+    text: 'Other Packages',
     collapsed: false,
     items: Tools,
   },
@@ -286,22 +301,19 @@ export default defineConfig({
     ['meta', { name: 'twitter:image', content: ogImage }],
     ['meta', { name: 'twitter:site', content: '@antfu7' }],
     ['meta', { name: 'twitter:url', content: ogUrl }],
-    ['link', { rel: 'search', type: 'application/opensearchdescription+xml', href: '/search.xml', title: 'UnoCSS' }],
     [
-      'script',
+      'link',
       {
-        src: 'https://www.zhcndoc.com/js/common.js',
-        async: '',
+        rel: 'search',
+        type: 'application/opensearchdescription+xml',
+        href: '/search.xml',
+        title: 'UnoCSS',
       },
     ],
   ],
   lastUpdated: true,
-  cleanUrls: false,
-  ignoreDeadLinks: [
-    /^\/play/,
-    /^\/interactive/,
-    /:\/\/localhost/,
-  ],
+  cleanUrls: true,
+  ignoreDeadLinks: [/^\/play/, /^\/interactive/, /:\/\/localhost/],
   sitemap: {
     hostname: 'https://unocss.zhcndoc.com',
   },
@@ -310,6 +322,10 @@ export default defineConfig({
       light: 'vitesse-light',
       dark: 'vitesse-dark',
     },
+    // Preload the grammars the twoslash transformers depend on, so a cold
+    // build can't race on a lazily-loaded language ("Language `html` not
+    // found") — otherwise intermittent in the Netlify deploy build.
+    languages: ['vue', 'html'],
     codeTransformers: [
       transformerTwoslash({
         processHoverInfo: info => info.replace(/_unocss_core\./g, ''),
@@ -384,6 +400,7 @@ export default defineConfig({
       '/presets/': SidebarPresets,
       '/transformers/': SidebarPresets,
       '/extractors/': SidebarPresets,
+      '/processors/': SidebarPresets,
 
       '/config/': SidebarConfig,
     },

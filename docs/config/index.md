@@ -19,6 +19,7 @@ outline: deep
 - [层](/config/layers) - 定义每个工具层的顺序。
 - [预设](/config/presets) - 预定义配置以满足常见用例。
 - [转换器](/config/transformers) - 代码转换器，以用户源代码支持约定。
+- [Processors](/config/processors) - Transform generated CSS before it is exposed.
 - [自动完成](/config/autocomplete) - 定义自定义自动完成建议。
 
 ## 选项
@@ -117,6 +118,12 @@ outline: deep
 - **类型:** `SourceCodeTransformer[]`
 
 自定义源代码转换器。
+
+### processors
+
+- **Type:** `CSSProcessor<Theme>[]`
+
+Custom processors that transform generated CSS layers. See [Processors](/config/processors) for execution details.
 
 ### blocklist
 

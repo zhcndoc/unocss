@@ -258,6 +258,16 @@ transformerDirectives({
 }
 ```
 
+It also works in at-rule conditions:
+
+```css
+@media (min-width: theme('breakpoints.md')) {
+  .btn-blue {
+    background-color: theme('colors.blue.500');
+  }
+}
+```
+
 ### `icon()`
 
 使用 `icon()` 函数将图标工具转换为特定的 svg 图标。
