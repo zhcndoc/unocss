@@ -3,7 +3,22 @@ FROM --platform=$BUILDPLATFORM node:24-bookworm AS build
 RUN npm install --global pnpm@12.11.2
 
 WORKDIR /app
-COPY . .
+COPY --exclude=node_modules \
+    --exclude=**/node_modules \
+    --exclude=.pnpm-store \
+    --exclude=.turbo \
+    --exclude=**/.turbo \
+    --exclude=.cache \
+    --exclude=**/.cache \
+    --exclude=.eslintcache \
+    --exclude=**/.eslintcache \
+    --exclude=**/.nuxt \
+    --exclude=**/.output \
+    --exclude=**/.vitepress/cache \
+    --exclude=**/.vitepress/.temp \
+    --exclude=**/.vitepress/dist \
+    --exclude=docs/dist \
+    . .
 
 RUN pnpm install --frozen-lockfile
 RUN pnpm -w run deploy
