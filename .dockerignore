@@ -1,0 +1,16 @@
+# Keep .git available: playground embeds the commit and latest tag at build time.
+node_modules
+**/node_modules
+.pnpm-store
+.turbo
+**/.turbo
+.cache
+**/.cache
+.eslintcache
+**/.eslintcache
+**/.nuxt
+**/.output
+**/.vitepress/cache
+**/.vitepress/.temp
+**/.vitepress/dist
+docs/dist

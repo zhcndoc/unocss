@@ -93,7 +93,7 @@ theme: {
 ::: tip
 在 `presetWind4` 中，键名已更改为 `breakpoint`。
 
-有关 `presetWind4` 主题文档，请参见 https://unocss.dev/presets/wind4#theme。
+有关 `presetWind4` 主题的说明，请参见 [`presetWind4` 主题章节](/presets/wind4#theme)。
 :::
 
 如果您想继承 `original` 主题断点，可以使用 `extendTheme`：

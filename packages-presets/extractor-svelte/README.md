@@ -1,6 +1,6 @@
 # @unocss/extractor-svelte
 
-Supports extracting classes from `class:` directive.
+支持从 `class:` 指令以及 `.svelte` 文件中不带引号的静态 `class` 属性提取类。
 
 ## Documentation
 

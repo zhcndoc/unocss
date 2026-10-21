@@ -1,7 +1,0 @@
-{
-  "app_dir": "/",
-  "build_command": "pnpm -w run deploy",
-  "cache_dependencies": false,
-  "install_command": "pnpm install",
-  "output_dir": "/docs/dist"
-}
