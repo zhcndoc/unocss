@@ -1,45 +1,19 @@
-FROM --platform=$BUILDPLATFORM node:24-bookworm AS build
-
-RUN npm install --global pnpm@12.11.2
+FROM --platform=$BUILDPLATFORM node:24-bookworm AS builder
 
 WORKDIR /app
-COPY --exclude=node_modules \
-    --exclude=**/node_modules \
-    --exclude=.pnpm-store \
-    --exclude=.turbo \
-    --exclude=**/.turbo \
-    --exclude=.cache \
-    --exclude=**/.cache \
-    --exclude=.eslintcache \
-    --exclude=**/.eslintcache \
-    --exclude=**/.nuxt \
-    --exclude=**/.output \
-    --exclude=**/.vitepress/cache \
-    --exclude=**/.vitepress/.temp \
-    --exclude=**/.vitepress/dist \
-    --exclude=docs/dist \
-    . .
+
+RUN corepack enable pnpm
+
+COPY . .
 
 RUN pnpm install --frozen-lockfile
+
+RUN git fetch https://github.com/unocss/unocss.git --tags
+
 RUN pnpm -w run deploy
 
-FROM caddy:2-alpine
+FROM ikxin/caddy:latest
 
-COPY --from=build /app/docs/dist /srv
+COPY --from=builder /app/docs/dist /usr/share/caddy
 
-COPY <<'EOF' /etc/caddy/Caddyfile
-:80 {
-    root * /srv
-    encode zstd gzip
-
-    try_files {path} {path}.html
-    file_server
-
-    handle_errors 404 {
-        rewrite * /404.html
-        file_server
-    }
-}
-EOF
-
-EXPOSE 80
+EXPOSE 8080
