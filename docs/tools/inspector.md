@@ -10,6 +10,8 @@ The inspector UI for UnoCSS: `@unocss/inspector`.
 
 检查器可用于查看生成的 CSS 规则以及各文件应用的类。它还提供 REPL，可根据当前配置测试工具类。
 
+**文档**标签会将 [Interactive Docs](https://unocss.dev/interactive/) 带入检查器，并根据项目自身的配置生成内容：你可以按类名或生成的 CSS 搜索工具类，并查看每个工具类对应的规则、预设、快捷方式和变体链。这里也包括自定义规则、快捷方式和主题，无需粘贴配置。分析器中的每个工具类都链接到此处对应的页面。
+
 检查器基于 [devframe](https://devfra.me/) 构建，可通过多种方式托管。
 
 ## Vite DevTools（推荐）

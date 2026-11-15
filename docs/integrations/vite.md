@@ -90,6 +90,20 @@ Vite 插件提供了一组模式以启用不同的行为。
 
 此模式将生成的 CSS 注入到 Vue 单文件组件的 `<style scoped>` 中以实现隔离。
 
+默认情况下，生成的 CSS 会注入到 SFC 自身的 `<style>` 块之后，因此优先级相同的工具类会生效。可以使用 `vueScoped.styleOrder` 选项控制顺序：
+
+```ts
+UnoCSS({
+  mode: 'vue-scoped',
+  vueScoped: {
+    // `before`: generated CSS comes before the SFC's own styles,
+    // so the SFC's styles win on equal specificity.
+    // `after` (default): generated CSS comes after the SFC's styles.
+    styleOrder: 'before',
+  },
+})
+```
+
 ### `svelte-scoped`
 
 `svelte-scoped` 模式已被移至其自己的包中，查看 [@unocss/svelte-scoped/vite](/integrations/svelte-scoped)。

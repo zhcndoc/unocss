@@ -131,7 +131,8 @@ export interface ControlSymbolsValue {
   [SymbolShortcutsNoMerge]: true
   [SymbolNoMerge]: true
   [SymbolNoScope]: true
-  [SymbolVariants]: VariantHandler[] | ((handlers: VariantHandler[]) => VariantHandler[])
+  // `any` erases the theme generic, which this non-generic interface cannot carry
+  [SymbolVariants]: VariantHandler[] | ((handlers: VariantHandler[], context: RuleContext<any>) => VariantHandler[])
   [SymbolParent]: string
   [SymbolSelector]: (selector: string) => string
   [SymbolLayer]: string
@@ -867,6 +868,9 @@ export interface ContentOptions {
   /**
    * Glob patterns to extract from the file system, in addition to other content sources.
    *
+   * Resolved against both the project root and the build tool root; backslashes
+   * (for example from `path.join()`) are normalized to `/`.
+   *
    * In dev mode, the files will be watched and trigger HMR.
    *
    * @default []
@@ -881,7 +885,10 @@ export interface ContentOptions {
   /**
    * Filters to determine whether to extract certain modules from the build tools' transformation pipeline.
    *
-   * Currently only works for Vite and Webpack integration.
+   * Used by the Vite (all modes), Webpack and Rollup integrations and the language server.
+   *
+   * Undeclared `include`/`exclude` options fall back to their defaults, also
+   * after configs are merged with `mergeConfigs()`.
    *
    * Set `false` to disable.
    */
@@ -889,6 +896,9 @@ export interface ContentOptions {
     /**
      * Patterns that filter the files being extracted.
      * Supports regular expressions and `picomatch` glob patterns.
+     *
+     * Replaces the defaults instead of extending them; an empty array imposes no
+     * constraint.
      *
      * By default, `.ts` and `.js` files are NOT extracted.
      *
@@ -901,7 +911,9 @@ export interface ContentOptions {
      * Patterns that filter the files NOT being extracted.
      * Supports regular expressions and `picomatch` glob patterns.
      *
-     * By default, `node_modules` and `dist` are also extracted.
+     * Replaces the defaults instead of extending them; an empty array excludes
+     * nothing. By default only CSS files are excluded — `node_modules` and `dist`
+     * are still extracted.
      *
      * @see https://www.npmjs.com/package/picomatch
      * @default [/\.(css|postcss|sass|scss|less|stylus|styl)($|\?)/]

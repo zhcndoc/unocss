@@ -18,7 +18,7 @@ UnoCSS 支持从多个来源提取工具的使用：
 
 ### 从构建工具管道提取
 
-这在 [Vite](/integrations/vite) 和 [Webpack](/integrations/webpack) 集成中受支持。
+这在 [Vite](/integrations/vite)（所有模式）、[Webpack](/integrations/webpack) 和 [Rollup](/integrations/rollup) 集成以及语言服务器中均受支持。
 
 UnoCSS 将读取经过构建工具管道的内容，并从中提取工具的使用。这是提取的最有效和准确的方法，因为我们仅智能地提取在你的应用中实际使用的工具，且提取过程中不进行额外的文件 I/O 操作。
 
@@ -42,6 +42,45 @@ export default defineConfig({
   },
 })
 ```
+
+`include` 和 `exclude` 会同时匹配 `process.cwd()` 与构建工具报告的根目录（通常是项目根目录）。因此，当集成报告的根目录是某个子目录时（例如 Nuxt 报告的 `srcDir`），这些选项仍能正常工作。
+
+`include` 或 `exclude` 显式设置为空列表时表示“不设限制”：`include: []` 会从管道中的所有模块提取内容，而 `exclude: []` 不会排除任何内容。使用 `mergeConfigs()` 合并配置后也是如此。
+
+使用 `mergeConfigs()` 合并配置时，如果其中没有任何配置声明某个选项，该选项会回退到默认值，而不是变为空列表。如果你希望合并后的配置扫描所有模块，请显式设置 `include: []`。
+
+#### 匹配模式说明
+
+指定列表会**替换**该选项的默认值，而不是在默认值基础上追加；空列表则会移除过滤器对应的一侧：
+
+| 配置                       | 行为                                                                                       |
+| -------------------------- | ------------------------------------------------------------------------------------------ |
+| 未设置 `pipeline`          | 使用默认的 `include` 和默认的 `exclude`（`cssIdRE`）                                       |
+| `include: ['src/**/*.ts']` | 替换默认的 `include`：仅扫描 `.ts` 文件，不再扫描 `.vue` 文件                              |
+| `exclude: [/\.spec\.ts$/]` | 替换默认的 `exclude`：默认不再排除 CSS 文件，但它们仍不匹配 `include`                      |
+| `include: []`              | 不限制 `include`（所有模块都作为候选项），仍应用默认的 `exclude`                           |
+| `exclude: []`              | 不排除任何内容，但文件仍须匹配 `include` 才会被扫描                                        |
+| `include: [], exclude: []` | 扫描所有模块（虚拟 `\0` ID 除外）                                                          |
+| `pipeline: false`          | 禁用管道提取；仍会提取 `content.inline` 和魔法注释指定的文件                               |
+| 多个配置                   | `include`/`exclude` 以并集方式合并；只要有一个配置设为 `pipeline: false`，就会禁用管道提取 |
+
+使用默认匹配模式时，`src/` 下的文件处理结果如下：
+
+| 配置                            | `.vue` | `.ts` | `.css` | `.spec.ts` | 虚拟模块 |
+| ------------------------------- | :----: | :---: | :----: | :--------: | :------: |
+| 默认配置                        |   ✓    |   ✗   |   ✗    |     ✗      |    ✗     |
+| `include: []`                   |   ✓    |   ✓   |   ✗    |     ✓      |    ✗     |
+| `include: [], exclude: []`      |   ✓    |   ✓   |   ✓    |     ✓      |    ✗     |
+| `include: ['src/**/*.ts']`      |   ✗    |   ✓   |   ✗    |     ✓      |    ✗     |
+| 上述配置 + `exclude: []`        |   ✗    |   ✓   |   ✗    |     ✓      |    ✗     |
+| `exclude: [/\.spec\.ts$/]`      |   ✓    |   ✗   |   ✗    |     ✗      |    ✗     |
+| `include: [/\.vue$/, /\.css$/]` |   ✓    |   ✗   |   ✗    |     ✗      |    ✗     |
+| 上述配置 + `exclude: []`        |   ✓    |   ✗   |   ✓    |     ✗      |    ✗     |
+| `pipeline: false`               |   ✗    |   ✗   |   ✗    |     ✗      |    ✗     |
+
+`include: []` 并不表示“什么都不扫描”，而是移除 `include` 限制，仍由默认的 `exclude` 决定扫描范围。`exclude: []` 本身不会添加文件，只会移除默认的 CSS 排除规则，因此文件仍须匹配 `include`。
+
+`pipeline: false` 只会关闭管道过滤器本身：始终会提取 `content.inline`，而包含 `@unocss-include` 的文件仍会加入提取。`content.filesystem` 是独立的数据源：PostCSS 等直接扫描该数据源的集成会忽略 `pipeline: false`；Vite、Webpack 和 Rollup 提取器则会让每个匹配的文件经过管道过滤器。上表中的结果均假设文件没有魔法注释。
 
 你还可以在需要 UnoCSS 扫描的文件中的任意位置添加 `@unocss-include` 魔法注释，以逐个文件为单位。这对于需要扫描 `*.js` 或 `*.ts` 文件时尤其有用，需在配置中包含所有 js/ts 文件作为扫描目标。
 
@@ -86,6 +125,8 @@ export default defineConfig({
 ```
 
 符合条件的文件将直接从文件系统读取，并在开发模式下监视其变化。
+
+匹配模式会相对于 `process.cwd()` 和构建工具报告的根目录（通常是项目根目录）解析。建议使用正斜杠：在 Windows 上，反斜杠（例如由 `path.join()` 生成的反斜杠）会规范化为 `/`；在其他平台上，反斜杠会被视为转义字符。
 
 ### 从内联文本提取
 
